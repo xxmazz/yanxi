@@ -49,6 +49,12 @@ const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
   { id: "write", label: "写作工坊", icon: FlaskConical },
 ];
 const STORAGE = "yanxi-demo-library-v1";
+// getRandomValues also works on an HTTP LAN preview; randomUUID requires a secure context.
+function createId() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(16)), (value) =>
+    value.toString(16).padStart(2, "0"),
+  ).join("");
+}
 function loadPapers(): Paper[] {
   try {
     const value = JSON.parse(localStorage.getItem(STORAGE) || "null");
@@ -241,7 +247,7 @@ export default function App() {
         warnings.push("已重新关联：" + file.name);
         return;
       }
-      const id = crypto.randomUUID();
+      const id = createId();
       urlsRef.current[id] = URL.createObjectURL(file);
       added.push({
         id,
@@ -293,7 +299,7 @@ export default function App() {
     setQuestion("");
     setMessages((items) => [
       ...items,
-      { id: crypto.randomUUID(), role: "user", text: prompt },
+      { id: createId(), role: "user", text: prompt },
     ]);
     setBusy(true);
     answerTimer.current = setTimeout(() => {
@@ -327,7 +333,7 @@ export default function App() {
       setMessages((items) => [
         ...items,
         {
-          id: crypto.randomUUID(),
+          id: createId(),
           role: "assistant",
           text: response,
           citations,
