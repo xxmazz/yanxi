@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, BookOpen, Check, CheckCheck, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, Clock3, Columns2, FileText, FlaskConical, FolderOpen, GitBranch, Globe2, LayoutGrid, List, Loader2, MessageSquare, MoreHorizontal, Network, PanelLeftClose, Plus, Search, Settings2, ShieldCheck, Sparkles, Star, Trash2, Upload, X } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { graphEdges, graphNodes, readSections, seedPapers } from './data';
 import type { Paper, View } from './data';
+import { parseChartCsv } from './csv';
 
 const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
   { id: 'library', label: '我的文献', icon: FolderOpen },
@@ -168,5 +169,23 @@ export default function App() {
 }
 
 function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
-  return <div className="empty-state panel"><FlaskConical size={32} /><h3>数据可视化工作台</h3><p>下一开发阶段接入本地 CSV 解析与图表导出。</p><button className="button secondary" onClick={() => notify('本地 CSV 工具正在本次开发中接入。')}>查看开发状态</button></div>;
+  const [csv, setCsv] = useState('方法,得分\nBaseline,68.4\n+ 检索,75.2\n+ 重排序,79.6\n+ 引用校验,82.1');
+  const [chartType, setChartType] = useState<'bar' | 'line'>('bar');
+  const fileRef = useRef<HTMLInputElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const result = useMemo(() => { try { return { data: parseChartCsv(csv), error: '' }; } catch (e) { return { data: null, error: e instanceof Error ? e.message : '无法解析 CSV。' }; } }, [csv]);
+  const data = result.data;
+  const values = data?.rows.map(row => row.value) || [0];
+  const min = Math.min(0, ...values), max = Math.max(0, ...values);
+  const range = max - min || 1;
+  const y = (value: number) => 260 - ((value - min) / range) * 190;
+  const x = (i: number) => 78 + i * (460 / Math.max((data?.rows.length || 1), 1)) + 230 / Math.max((data?.rows.length || 1), 1);
+  const baseline = y(0);
+  const caption = data ? '在本次输入的 ' + data.rows.length + ' 组数据中，' + data.rows.reduce((a, b) => b.value > a.value ? b : a).label + ' 的' + data.label + '最高（' + Math.max(...values) + '），最低为 ' + Math.min(...values) + '。该描述仅概括输入数据，不代表统计显著性或真实实验结论。' : '';
+  const loadCsv = async (file?: File) => {
+    if (!file) return;
+    if (file.size > 1024 * 1024) { notify('CSV 文件请控制在 1 MB 以内。'); return; }
+    try { const text = await file.text(); parseChartCsv(text); setCsv(text); notify('已读取本地 CSV。'); } catch (e) { notify(e instanceof Error ? e.message : '文件读取失败。'); }
+  };
+  return <div className="chart-layout"><section className="chart-input panel"><span className="eyebrow">FROM DATA TO INSIGHT</span><h3>让数据，讲述你的发现。</h3><p>粘贴两列 CSV，或导入本地文件。下方初始数据为虚构演示，不是实验结果。</p><label htmlFor="csv-data">CSV 数据 · 类别 + 数值</label><textarea id="csv-data" spellCheck={false} value={csv} onChange={e => setCsv(e.target.value)} />{result.error && <p className="chart-error" role="alert">{result.error}</p>}<div className="chart-tools"><button className="button secondary small" onClick={() => fileRef.current?.click()}><Upload size={14} />导入 CSV</button><button className="button secondary small" onClick={() => { setCsv('方法,得分\nBaseline,68.4\n+ 检索,75.2\n+ 重排序,79.6\n+ 引用校验,82.1'); }}>恢复示例</button></div><input ref={fileRef} type="file" accept=".csv,text/csv" onChange={e => { void loadCsv(e.target.files?.[0]); e.target.value = ''; }} /><div className="info-note" style={{ marginTop: 22 }}><ShieldCheck size={18} /><p>图表在浏览器本地计算。支持负值、零值和带引号的类别。最多 30 行。</p></div></section><section className="chart-output panel"><header><h3>{data ? data.title + ' · ' + data.label : '数据预览'}</h3><div className="chart-type"><button className={chartType === 'bar' ? 'active' : ''} onClick={() => setChartType('bar')}>柱状图</button><button className={chartType === 'line' ? 'active' : ''} onClick={() => setChartType('line')}>折线图</button></div></header>{data ? <><svg ref={svgRef} className="chart-svg" viewBox="0 0 610 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={data.label + '数据图表'}><rect width="610" height="340" fill="#ffffff" /><text x="30" y="32" fill="#849373" fontSize="10" fontFamily="sans-serif">{data.label} · 本地数据图表</text>{Array.from({ length: 5 }, (_, i) => { const v = min + (range / 4) * i; return <g key={i}><line x1="65" x2="560" y1={y(v)} y2={y(v)} stroke="#e8eee0" strokeDasharray="3 4" /><text x="52" y={y(v) + 4} textAnchor="end" fontSize="10" fill="#a2b48e" fontFamily="sans-serif">{Number(v.toPrecision(4))}</text></g>; })}<line x1="65" x2="560" y1={baseline} y2={baseline} stroke="#b8cba4" />{chartType === 'line' && <polyline fill="none" stroke="#6c8d55" strokeWidth="2.5" points={data.rows.map((r, i) => x(i) + ',' + y(r.value)).join(' ')} />}{data.rows.map((r, i) => <g key={i}>{chartType === 'bar' ? <rect x={x(i) - Math.min(24, 170 / data.rows.length)} y={Math.min(baseline, y(r.value))} width={Math.min(48, 340 / data.rows.length)} height={Math.max(1, Math.abs(baseline - y(r.value)))} rx="3" fill={i === data.rows.length - 1 ? '#64874d' : '#bfd2ac'} /> : <circle cx={x(i)} cy={y(r.value)} r="4" fill="#6c8d55" stroke="white" strokeWidth="2" />}<text x={x(i)} y={r.value >= 0 ? y(r.value) - 10 : y(r.value) + 15} textAnchor="middle" fontSize="10" fill="#80986b" fontFamily="sans-serif">{Number(r.value.toPrecision(5))}</text><text x={x(i)} y="295" textAnchor="middle" fontSize={data.rows.length > 8 ? '7' : '10'} fill="#99ad85" fontFamily="sans-serif">{r.label.length > 10 ? r.label.slice(0, 9) + '…' : r.label}</text></g>)}<text x="310" y="325" textAnchor="middle" fontSize="8" fill="#bac7aa" fontFamily="sans-serif">研析 · 由用户输入数据生成 · 请核对来源</text></svg><div className="chart-caption"><b>Figure Caption · 数据描述</b><p>{caption}</p></div><div className="chart-tools"><button className="button secondary small" onClick={() => { if (svgRef.current) { download('研析-数据图表.svg', new XMLSerializer().serializeToString(svgRef.current), 'image/svg+xml'); notify('已导出矢量图。'); } }}><ArrowDownToLine size={14} />导出 SVG</button><button className="button secondary small" onClick={() => download('研析-图表说明.md', '# 数据描述\n\n' + caption + '\n\n## 输入数据\n\n' + csv)}>导出图注</button></div></> : <div className="empty-state"><FlaskConical size={32} /><p>修正数据后将自动绘图。</p></div>}</section></div>;
 }
