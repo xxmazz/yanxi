@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "initial library and search",
+    "favorite persists through reload",
+    "comparison modal and escape",
+    "reading and bilingual toggles",
+    "demo answer and unknown question",
+    "graph keyboard interactions",
+    "writing template and markdown download",
+    "CSV charts, negatives, validation and SVG export",
+    "local PDF preview and metadata persistence",
+    "desktop screenshot and overflow",
+    "mobile navigation, layout and modal"
+  ],
+  "consoleErrors": []
+}
