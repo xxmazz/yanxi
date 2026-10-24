@@ -21,6 +21,7 @@ export type Paper = {
   version?: string;
   local?: boolean;
   filename?: string;
+  contentFingerprint?: string;
 };
 export const seedPapers: Paper[] = [
   {
