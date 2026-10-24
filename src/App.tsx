@@ -39,6 +39,7 @@ import type { LucideIcon } from "lucide-react";
 import { graphEdges, graphNodes, readSections, seedPapers } from "./data";
 import type { Paper, View } from "./data";
 import { parseChartCsv } from "./csv";
+import { fingerprintPdf } from "./pdf-fingerprint";
 
 const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
   { id: "library", label: "我的文献", icon: FolderOpen },
@@ -225,27 +226,31 @@ export default function App() {
     setMenu(null);
     notify("已从本地文献库移除，可在设置中恢复示例文献。");
   };
-  const importFiles = (files: FileList | File[] | null) => {
+  const importFiles = async (files: FileList | File[] | null) => {
     if (!files) return;
     const added: Paper[] = [];
     const warnings: string[] = [];
-    Array.from(files).forEach((file) => {
+    for (const file of Array.from(files)) {
       if (
         !file.name.toLowerCase().endsWith(".pdf") ||
         (file.type && file.type !== "application/pdf")
       ) {
         warnings.push(file.name + " 不是 PDF");
-        return;
+        continue;
       }
       if (file.size > 20 * 1024 * 1024) {
         warnings.push(file.name + " 超过 20 MB");
-        return;
+        continue;
       }
-      const duplicate = papers.find((p) => p.filename === file.name);
+      const contentFingerprint = await fingerprintPdf(file);
+      const duplicate = [...papers, ...added].find(
+        (p) => p.contentFingerprint === contentFingerprint,
+      );
       if (duplicate) {
-        urlsRef.current[duplicate.id] = URL.createObjectURL(file);
-        warnings.push("已重新关联：" + file.name);
-        return;
+        warnings.push(
+          "内容重复：" + file.name + " 与「" + duplicate.title + "」一致",
+        );
+        continue;
       }
       const id = createId();
       urlsRef.current[id] = URL.createObjectURL(file);
@@ -264,8 +269,9 @@ export default function App() {
         favorite: false,
         local: true,
         filename: file.name,
+        contentFingerprint,
       });
-    });
+    }
     setUrls({ ...urlsRef.current });
     if (added.length) setPapers((items) => [...added, ...items]);
     setModal(null);
@@ -1622,6 +1628,7 @@ export default function App() {
                   <FileText size={34} />
                   <b>点击选择，或将 PDF 拖到这里</b>
                   <span>支持批量导入 · 单文件不超过 20 MB</span>
+                  <span>本地文件指纹可识别内容完全相同的重复 PDF</span>
                   <span className="button primary small">
                     选择文件 <Plus size={14} />
                   </span>
