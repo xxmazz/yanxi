@@ -40,6 +40,7 @@ import { graphEdges, graphNodes, readSections, seedPapers } from "./data";
 import type { Paper, View } from "./data";
 import { parseChartCsv } from "./csv";
 import { fingerprintPdf } from "./pdf-fingerprint";
+import { hasPdfHeader } from "./pdf-validation";
 
 const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
   { id: "library", label: "我的文献", icon: FolderOpen },
@@ -240,6 +241,11 @@ export default function App() {
       }
       if (file.size > 20 * 1024 * 1024) {
         warnings.push(file.name + " 超过 20 MB");
+        continue;
+      }
+      const header = new Uint8Array(await file.slice(0, 1028).arrayBuffer());
+      if (!hasPdfHeader(header)) {
+        warnings.push(file.name + " 不是有效的 PDF 文件");
         continue;
       }
       const contentFingerprint = await fingerprintPdf(file);

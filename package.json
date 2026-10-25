@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "node --test tests/csv.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "format": "prettier --write src vite.config.ts tests README.md docs index.html package.json tsconfig.json",
     "format:check": "prettier --check src vite.config.ts tests README.md docs index.html package.json tsconfig.json"
   },
