@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -128,6 +130,7 @@ export default function App() {
   const [writingTab, setWritingTab] = useState<"outline" | "chart">("outline");
   const [idea, setIdea] = useState("面向科研文献的可验证问答与证据溯源");
   const [outline, setOutline] = useState("");
+  const [outlinePreview, setOutlinePreview] = useState(false);
 
   const active = papers.find((p) => p.id === currentId) || papers[0];
   const title = nav.find((n) => n.id === view)!.label;
@@ -1540,12 +1543,55 @@ export default function App() {
                         导出 Markdown
                       </button>
                     </div>
+                    {outline && (
+                      <div
+                        className="draft-mode"
+                        role="group"
+                        aria-label="草稿显示方式"
+                      >
+                        <button
+                          className={
+                            "button small " +
+                            (!outlinePreview ? "primary" : "secondary")
+                          }
+                          onClick={() => setOutlinePreview(false)}
+                          aria-pressed={!outlinePreview}
+                        >
+                          编辑
+                        </button>
+                        <button
+                          className={
+                            "button small " +
+                            (outlinePreview ? "primary" : "secondary")
+                          }
+                          onClick={() => setOutlinePreview(true)}
+                          aria-pressed={outlinePreview}
+                        >
+                          预览
+                        </button>
+                      </div>
+                    )}
                     {outline ? (
-                      <textarea
-                        aria-label="编辑框架草稿"
-                        value={outline}
-                        onChange={(e) => setOutline(e.target.value)}
-                      />
+                      outlinePreview ? (
+                        <article
+                          className="markdown-preview"
+                          aria-label="框架草稿预览"
+                        >
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            skipHtml
+                            components={{ img: () => null }}
+                          >
+                            {outline}
+                          </ReactMarkdown>
+                        </article>
+                      ) : (
+                        <textarea
+                          aria-label="编辑框架草稿"
+                          value={outline}
+                          onChange={(e) => setOutline(e.target.value)}
+                        />
+                      )
                     ) : (
                       <div className="empty-state">
                         <FileText size={36} />

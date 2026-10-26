@@ -2991,3 +2991,48 @@ textarea {
     opacity: 0.3;
   }
 }
+
+.draft-mode {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+.markdown-preview {
+  color: #344636;
+  line-height: 1.8;
+  min-height: 450px;
+  overflow-wrap: anywhere;
+  overflow-x: auto;
+}
+.writing-output .markdown-preview h3 {
+  display: block;
+  color: inherit;
+  font-size: 1.15em;
+  font-weight: 600;
+}
+.markdown-preview h1,
+.markdown-preview h2 {
+  line-height: 1.4;
+  margin: 1em 0 0.5em;
+}
+.markdown-preview pre {
+  background: #f0f3eb;
+  padding: 14px;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+.markdown-preview table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.markdown-preview th,
+.markdown-preview td {
+  border: 1px solid #dce4d5;
+  padding: 8px;
+  text-align: left;
+}
+.markdown-preview blockquote {
+  margin-left: 0;
+  border-left: 3px solid #8aa070;
+  padding-left: 16px;
+}
