@@ -9,7 +9,7 @@
 - PDF 阅读：校验 PDF 文件头，导入本机 PDF 并预览原文件；本机指纹识别内容完全相同的重复文件，浏览器保存文献元数据。
 - 阅读问答：固定论文阅读示例、双语切换、预置问题回答与来源入口。
 - 研究图谱：示例关系的选择、筛选、键盘操作与 JSON 导出。
-- 写作工具：论文框架模板编辑与 Markdown 导出。
+- 写作工具：论文框架模板编辑、Markdown 排版预览与导出。
 - 数据图表：两列 CSV 导入、数值校验、柱状与折线图、SVG 和图注导出。
 - 自适应布局：桌面与移动端导航、弹窗和内容排版。
 
@@ -17,29 +17,29 @@
 
 环境：Node.js 22.18+ 或 Node.js 24。
 
-~~~sh
+```sh
 npm ci
 npm run dev
-~~~
+```
 
-浏览器访问 http://localhost:4173。
+浏览器访问 `http://localhost:4173`。
 
-~~~sh
+```sh
 npm run build
 npm test
 npm run preview
-~~~
+```
 
 ## 技术栈与目录
 
-React 19、TypeScript、Vite、Lucide 图标。
+React 19、TypeScript、Vite、Lucide 图标、react-markdown 与 remark-gfm。
 
-| 目录 | 内容 |
-| --- | --- |
-| src/ | 页面、样式、演示数据与 CSV 解析 |
-| tests/ | CSV 解析与 PDF 文件头校验测试 |
-| scripts/ | 生产构建静态预览服务 |
-| docs/ | 开发记录、协作说明与验证记录 |
+| 目录     | 内容                            |
+| -------- | ------------------------------- |
+| src/     | 页面、样式、演示数据与 CSV 解析 |
+| tests/   | CSV 解析与 PDF 文件头校验测试   |
+| scripts/ | 生产构建静态预览服务            |
+| docs/    | 开发记录、协作说明与验证记录    |
 
 ## 演示范围与数据
 
@@ -49,7 +49,7 @@ React 19、TypeScript、Vite、Lucide 图标。
 
 ## 开发与验证
 
-2026-10-23 完成工程初始化、工作台交互、写作与图表工具、响应式检查，以及内网 HTTP 兼容性修复。2026-10-25 增加本地 PDF 文件头校验和重复文件检测。生产构建、5 项自动化测试与 11 组浏览器交互检查通过，详情见 docs/VERIFICATION.md。
+2026-10-23 完成工程初始化、工作台交互、写作与图表工具、响应式检查，以及内网 HTTP 兼容性修复。2026-10-25 增加本地 PDF 文件头校验和重复文件检测。2026-10-26 增加写作草稿编辑／预览切换，支持 GFM 表格；模块来源见 [依赖说明](docs/MARKDOWN_MODULES.md)。生产构建、5 项自动化测试与 11 组浏览器交互检查通过，详情见 docs/VERIFICATION.md。
 
 开发日志：docs/DEVELOPMENT.md · 进度记录：docs/PROGRESS.md · AI 协作说明：docs/AI_COLLABORATION.md
 
