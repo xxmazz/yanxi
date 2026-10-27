@@ -22,6 +22,8 @@ from .graph import build_graph
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 from .translation import TranslationService
+from .writing import prepare as prepare_writing
+from .writing import render_draft
 
 log = logging.getLogger("yanxi")
 store = Store(Path(os.getenv("YANXI_DATA_DIR", "runtime/library")))
@@ -629,6 +631,57 @@ async def graph_review(request: GraphReview):
             "insufficient_evidence": refused,
             "covered_documents": [item["document_id"] for item in evidence],
         }
+
+
+class WritingRequest(BaseModel):
+    idea: str = Field(min_length=3, max_length=1200)
+    document_ids: list[str] = Field(min_length=1, max_length=30)
+
+
+class WritingCheck(BaseModel):
+    document_ids: list[str] = Field(min_length=1, max_length=30)
+    fingerprint: str = Field(min_length=64, max_length=64)
+
+
+async def check_writing_sources(document_ids, fingerprint):
+    try:
+        current = await asyncio.to_thread(build_graph, store, document_ids)
+    except ValueError as exc:
+        raise HTTPException(409, "写作来源状态已变化，请重新选择文献") from exc
+    if current["fingerprint"] != fingerprint:
+        raise HTTPException(409, "写作原文或书目信息已变化，请重新生成并核对引用")
+    return {"fingerprint": fingerprint, "current": True}
+
+
+@app.post("/api/writing/check")
+async def writing_check(request: WritingCheck):
+    return await check_writing_sources(request.document_ids, request.fingerprint)
+
+
+@app.post("/api/writing/outline")
+async def writing_outline(request: WritingRequest):
+    idea = request.idea.strip()
+    if len(idea) < 3:
+        raise HTTPException(422, "请填写至少三个字符的研究设想")
+    if chat_lock.locked():
+        raise HTTPException(429, "本地模型正在处理其他请求，请稍后生成研究计划")
+    async with chat_lock:
+        try:
+            bundle = await asyncio.to_thread(prepare_writing, store, request.document_ids)
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        if models.llm is None:
+            raise HTTPException(503, "本地模型未就绪")
+        try:
+            raw = await asyncio.to_thread(models.draft_outline, idea, bundle["evidence"])
+            result = await asyncio.to_thread(render_draft, idea, raw, bundle)
+        except (ValueError, RuntimeError) as exc:
+            log.warning("Writing output rejected: %s", exc)
+            raise HTTPException(
+                422, "本次写作未通过结构、来源或数值检查，请重试；现有草稿仍保留"
+            ) from exc
+        await check_writing_sources(bundle["document_ids"], bundle["fingerprint"])
+        return result
 
 
 dist = Path(os.getenv("YANXI_DIST_DIR", "dist"))

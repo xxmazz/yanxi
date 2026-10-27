@@ -1,0 +1,173 @@
+{
+  "verified_at": "2026-10-27T13:28:16.539494+00:00",
+  "model": "Qwen2.5-7B-Instruct",
+  "seconds": 12.41,
+  "selected_pdfs": 4,
+  "referenced_works": 3,
+  "source_offsets_and_hashes_verified": true,
+  "bibliography_scope_verified": true,
+  "stale_check_verified": true,
+  "diagram_structure_verified": true,
+  "markdown_sha256": "aa871dacc68c6acb6f0be4e6fc5fba22b2fa1b275a417a2e974bfa79afbfd3e4",
+  "result": {
+    "version": "writing-v1",
+    "generated_at": "2026-10-27T13:28:16.248879+00:00",
+    "idea": "面向科研文献的可验证问答与证据溯源：结合本地检索、引用核验和文献评估，设计研究方法与可复现实验。",
+    "fingerprint": "02551ac35bbd33128c660f7c0429784d372da200da09c7b2ddfcbcb1d8148c17",
+    "document_ids": [
+      "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+      "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+      "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+    ],
+    "markdown": "# 面向科研文献的可验证问答与证据溯源\n\n> 研究计划草稿：方法与评估为拟议内容，不代表已经完成实验；已有研究结论的编号对应下方真实文献。\n\n## Abstract\n\n本文拟围绕“如何设计一种方法，结合本地检索、引用核验和文献评估，以实现科研文献中的可验证问答与证据溯源？”开展研究。拟采用以下路径：构建一个基于本地数据库的检索系统，用于快速获取相关文献。；开发一种引用核验机制，确保引用的文献真实存在且正确引用。；设计一套文献评估标准，包括引用正确率、证据覆盖率等，以评估文献质量。；集成上述三个模块，形成一个完整的问答与证据溯源系统。计划通过“通过对比不同文献库的检索准确率来评估检索系统的性能。；使用已知正确引用的文献集进行引用核验，计算引用正确率。；采用多个领域内的文献集进行评估，计算证据覆盖率和整体文献质量评分”检验方案，研究效果以实际实验为准。\n\n## 1. Introduction\n\n研究设想：面向科研文献的可验证问答与证据溯源：结合本地检索、引用核验和文献评估，设计研究方法与可复现实验。。\n\n研究问题：如何设计一种方法，结合本地检索、引用核验和文献评估，以实现科研文献中的可验证问答与证据溯源？。\n\n已有研究基础：提出了一种基于注意力机制的新型网络架构Transformer，完全摒弃了循环和卷积结构 [1]\n\n## 2. Related Work\n\n提出了一种基于注意力机制的新型网络架构Transformer，完全摒弃了循环和卷积结构 [1]\n\n提出了一种检索增强生成（RAG）方法，结合预训练参数化和非参数化记忆进行语言生成 [2]\n\n提出了一种不依赖人工标注的标准答案的框架Ragas，用于评估检索增强生成(RAG)管道的不同维度 [3]\n\n## 3. Proposed Method\n\n1. 拟开展：构建一个基于本地数据库的检索系统，用于快速获取相关文献。\n2. 拟开展：开发一种引用核验机制，确保引用的文献真实存在且正确引用。\n3. 拟开展：设计一套文献评估标准，包括引用正确率、证据覆盖率等，以评估文献质量。\n4. 拟开展：集成上述三个模块，形成一个完整的问答与证据溯源系统\n\n## 4. Evaluation Plan\n\n- 计划验证：通过对比不同文献库的检索准确率来评估检索系统的性能。\n- 计划验证：使用已知正确引用的文献集进行引用核验，计算引用正确率。\n- 计划验证：采用多个领域内的文献集进行评估，计算证据覆盖率和整体文献质量评分\n\n## 5. Limitations\n\n相关工作仅依据本次选取的论文摘要，不能代替全文研究与语义核验。拟议方案的有效性、创新性与统计显著性需要真实实验及更新文献核验。\n\n## References\n\n[1] Ashish Vaswani; Noam Shazeer; Niki Parmar; Jakob Uszkoreit; Llion Jones; Aidan N. Gomez; Łukasz Kaiser; Illia Polosukhin. Attention Is All You Need. 2017. https://arxiv.org/abs/1706.03762\n\n[2] Patrick Lewis; Ethan Perez; Aleksandra Piktus; Fabio Petroni; Vladimir Karpukhin; Naman Goyal; Heinrich Küttler; Mike Lewis; Wen-tau Yih; Tim Rocktäschel; Sebastian Riedel; Douwe Kiela. Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. 2020. https://arxiv.org/abs/2005.11401\n\n[3] Shahul Es; Jithin James; Luis Espinosa-Anke; Steven Schockaert. Ragas: Automated Evaluation of Retrieval Augmented Generation. 2023. https://arxiv.org/abs/2309.15217\n",
+    "references": [
+      {
+        "number": 1,
+        "label": "E1",
+        "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "title": "Attention Is All You Need",
+        "authors": "Ashish Vaswani; Noam Shazeer; Niki Parmar; Jakob Uszkoreit; Llion Jones; Aidan N. Gomez; Łukasz Kaiser; Illia Polosukhin",
+        "year": 2017,
+        "metadata_origin": "PDF 解析信息",
+        "arxiv_id": "1706.03762",
+        "source_url": "https://arxiv.org/abs/1706.03762",
+        "pdf_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf",
+        "evidence": {
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "page": 1,
+          "start": 601,
+          "end": 2001,
+          "page_sha256": "01c0c25f3f61c18bf5ae332fba683e7a62b554375d0956882f48e252bddecfe4",
+          "method": "native",
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "preview_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/1",
+          "quote_sha256": "63d7f913d2375699eed5e18cf873b1ee6108a42c044708199ae52af91f000bb2",
+          "quote_characters": 1400
+        },
+        "merged_versions": 2
+      },
+      {
+        "number": 2,
+        "label": "E2",
+        "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+        "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+        "authors": "Patrick Lewis; Ethan Perez; Aleksandra Piktus; Fabio Petroni; Vladimir Karpukhin; Naman Goyal; Heinrich Küttler; Mike Lewis; Wen-tau Yih; Tim Rocktäschel; Sebastian Riedel; Douwe Kiela",
+        "year": 2020,
+        "metadata_origin": "arXiv 官方来源",
+        "arxiv_id": "2005.11401",
+        "source_url": "https://arxiv.org/abs/2005.11401",
+        "pdf_url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf",
+        "evidence": {
+          "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+          "page": 1,
+          "start": 359,
+          "end": 1759,
+          "page_sha256": "1fa9e1a97c1c5202313b155c4c0ea25ef6be6be0343cc72cd87b99807c05bcb3",
+          "method": "native",
+          "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=1",
+          "preview_url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/render/1",
+          "quote_sha256": "22cf320f63e4b2dbc855aaa8403b7695dfb7e6c7cb7d66ed141002fe30c3fa3c",
+          "quote_characters": 1400
+        },
+        "merged_versions": 1
+      },
+      {
+        "number": 3,
+        "label": "E3",
+        "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+        "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+        "authors": "Shahul Es; Jithin James; Luis Espinosa-Anke; Steven Schockaert",
+        "year": 2023,
+        "metadata_origin": "arXiv 官方来源",
+        "arxiv_id": "2309.15217",
+        "source_url": "https://arxiv.org/abs/2309.15217",
+        "pdf_url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/pdf",
+        "evidence": {
+          "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+          "page": 1,
+          "start": 326,
+          "end": 1392,
+          "page_sha256": "1af9642b5104014ce6746b36ecabb4a53b4d522852238b47bf80b73e28af6c93",
+          "method": "native",
+          "url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/pdf#page=1",
+          "preview_url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/render/1",
+          "quote_sha256": "525253cc497f112318c947d62196f3b213a9c1deb6c642a548073f05964b827b",
+          "quote_characters": 1066
+        },
+        "merged_versions": 1
+      }
+    ],
+    "skipped": [],
+    "diagram": {
+      "nodes": [
+        {
+          "id": "idea",
+          "label": "研究问题"
+        },
+        {
+          "id": "m1",
+          "label": "构建一个基于本地数据库的检索系统，用于快速获取相关文献。"
+        },
+        {
+          "id": "m2",
+          "label": "开发一种引用核验机制，确保引用的文献真实存在且正确引用。"
+        },
+        {
+          "id": "m3",
+          "label": "设计一套文献评估标准，包括引用正确率、证据覆盖率等，以评估文献质量。"
+        },
+        {
+          "id": "m4",
+          "label": "集成上述三个模块，形成一个完整的问答与证据溯源系统"
+        },
+        {
+          "id": "evaluation",
+          "label": "实验与失败案例评估"
+        }
+      ],
+      "edges": [
+        {
+          "source": "idea",
+          "target": "m1"
+        },
+        {
+          "source": "m1",
+          "target": "m2"
+        },
+        {
+          "source": "m2",
+          "target": "m3"
+        },
+        {
+          "source": "m3",
+          "target": "m4"
+        },
+        {
+          "source": "m4",
+          "target": "evaluation"
+        }
+      ],
+      "mermaid": "flowchart TD\n  idea[\"研究问题\"]\n  m1[\"构建一个基于本地数据库的检索系统，用于快速获取相关文献。\"]\n  m2[\"开发一种引用核验机制，确保引用的文献真实存在且正确引用。\"]\n  m3[\"设计一套文献评估标准，包括引用正确率、证据覆盖率等，以评估文献质量。\"]\n  m4[\"集成上述三个模块，形成一个完整的问答与证据溯源系统\"]\n  evaluation[\"实验与失败案例评估\"]\n  idea --> m1\n  m1 --> m2\n  m2 --> m3\n  m3 --> m4\n  m4 --> evaluation\n",
+      "kind": "拟议方法流程"
+    },
+    "checks": [
+      "文献范围与原文指纹",
+      "逐条来源与原文摘录",
+      "相关工作数值",
+      "全部摘要覆盖",
+      "服务端生成真实书目"
+    ]
+  },
+  "limitations": "该验证检查结构、真实书目、逐字来源、数值校验路径与计划标记；不证明模型生成方案具有创新性、实验已完成或所有结论语义完全正确。Mermaid 图是研究计划流程，未自动执行任何脚本。",
+  "browser_checks": {
+    "outline_and_three_references_visible": true,
+    "source_excerpt_and_page_image_visible": true,
+    "source_snapshot_recheck": true,
+    "manual_edit_notice_and_preview": true,
+    "draft_and_scope_restored_after_reload": true,
+    "diagram_and_mermaid_visible": true,
+    "download_files_verified": false,
+    "download_note": "内置浏览器中导出按钮已触发，但未观察到下载事件或落盘文件；仍需标准浏览器复核。"
+  }
+}

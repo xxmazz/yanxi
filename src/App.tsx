@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -46,6 +44,7 @@ import { hasPdfHeader } from "./pdf-validation";
 import { api } from "./api";
 import { Discovery } from "./discovery";
 import { CitationGraph } from "./citation-graph";
+import { WritingWorkspace } from "./writing-workspace";
 import { DocumentActions, ArchivePanel, ServerReader } from "./document-tools";
 import type { Evidence, Health, ServerDocument } from "./api";
 
@@ -136,9 +135,6 @@ export default function App() {
   const changed = () => setRefreshTick((n) => n + 1);
   const [importing, setImporting] = useState(false);
   const [writingTab, setWritingTab] = useState<"outline" | "chart">("outline");
-  const [idea, setIdea] = useState("面向科研文献的可验证问答与证据溯源");
-  const [outline, setOutline] = useState("");
-  const [outlinePreview, setOutlinePreview] = useState(false);
 
   const active = papers.find((p) => p.id === currentId) || papers[0];
   const title = nav.find((n) => n.id === view)!.label;
@@ -1404,7 +1400,7 @@ export default function App() {
                   <h1>写作工坊</h1>
                   <p>从一个想法开始，把研究组织得更清楚。</p>
                 </div>
-                <span className="subtle-label">模板与本地数据工具</span>
+                <span className="subtle-label">本地模型与真实文献</span>
               </div>
               <div className="tabs writing-tabs">
                 <button
@@ -1421,112 +1417,7 @@ export default function App() {
                 </button>
               </div>
               {writingTab === "outline" ? (
-                <div className="writing-layout">
-                  <section className="writing-input panel">
-                    <span className="eyebrow">START WITH AN IDEA</span>
-                    <h2>你在研究什么？</h2>
-                    <p>输入研究主题，建立一份可编辑的论文框架。</p>
-                    <label htmlFor="research-idea">研究主题</label>
-                    <textarea
-                      id="research-idea"
-                      value={idea}
-                      onChange={(e) => setIdea(e.target.value)}
-                      placeholder="例如：基于引用图谱的科研文献推荐…"
-                    />
-                    <div className="info-note">
-                      <ShieldCheck size={18} />
-                      <p>
-                        当前使用确定性框架模板，不会生成研究结果或虚构参考文献。
-                      </p>
-                    </div>
-                    <button
-                      className="button primary"
-                      disabled={!idea.trim()}
-                      onClick={() =>
-                        setOutline(
-                          "# " +
-                            idea.trim() +
-                            "\n\n## Abstract\n[填写真实的研究问题、方法、数据与结果。]\n\n## 1. Introduction\n- 研究背景与实际痛点\n- 现有方案的局限\n- 本研究的贡献（待验证）\n\n## 2. Related Work\n[导入并核对真实文献后补充。]\n\n## 3. Method\n- 问题定义与整体架构\n- 核心模块及证据验证机制\n\n## 4. Experiments\n- 数据集与评测指标\n- 基线、消融及失败案例\n- 真实实验结果（待完成）\n\n## 5. Limitations\n[说明适用边界、成本与失败条件。]\n\n## 6. Conclusion\n[依据已验证结果撰写。]\n\n## References\n[仅填写已核对的真实来源。]",
-                        )
-                      }
-                    >
-                      <Sparkles size={16} />
-                      生成框架模板
-                    </button>
-                  </section>
-                  <section className="writing-output panel">
-                    <div>
-                      <h3>
-                        <FileText size={17} />
-                        框架草稿
-                      </h3>
-                      <button
-                        disabled={!outline}
-                        className="button secondary small"
-                        onClick={() => download("研析-论文框架.md", outline)}
-                      >
-                        <ArrowDownToLine size={14} />
-                        导出 Markdown
-                      </button>
-                    </div>
-                    {outline && (
-                      <div
-                        className="draft-mode"
-                        role="group"
-                        aria-label="草稿显示方式"
-                      >
-                        <button
-                          className={
-                            "button small " +
-                            (!outlinePreview ? "primary" : "secondary")
-                          }
-                          onClick={() => setOutlinePreview(false)}
-                          aria-pressed={!outlinePreview}
-                        >
-                          编辑
-                        </button>
-                        <button
-                          className={
-                            "button small " +
-                            (outlinePreview ? "primary" : "secondary")
-                          }
-                          onClick={() => setOutlinePreview(true)}
-                          aria-pressed={outlinePreview}
-                        >
-                          预览
-                        </button>
-                      </div>
-                    )}
-                    {outline ? (
-                      outlinePreview ? (
-                        <article
-                          className="markdown-preview"
-                          aria-label="框架草稿预览"
-                        >
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            skipHtml
-                            components={{ img: () => null }}
-                          >
-                            {outline}
-                          </ReactMarkdown>
-                        </article>
-                      ) : (
-                        <textarea
-                          aria-label="编辑框架草稿"
-                          value={outline}
-                          onChange={(e) => setOutline(e.target.value)}
-                        />
-                      )
-                    ) : (
-                      <div className="empty-state">
-                        <FileText size={36} />
-                        <h3>让一个想法，有清晰的结构。</h3>
-                        <p>生成后可以直接编辑，再导出 Markdown。</p>
-                      </div>
-                    )}
-                  </section>
-                </div>
+                <WritingWorkspace documents={serverDocs} />
               ) : (
                 <ChartWorkspace notify={notify} />
               )}
@@ -1704,7 +1595,7 @@ export default function App() {
                       <b>
                         所有 AI 文献问答连接本地服务器模型与按页索引；探索页连接
                         arXiv
-                        真实检索；图谱由已入库论文的参考文献匹配构建，写作仍有模板功能。浏览器保存目录偏好，上传的
+                        真实检索；图谱由已入库论文的参考文献匹配构建，写作可依据真实文献生成研究计划与架构图。浏览器保存目录偏好，上传的
                         PDF 保存在服务器。
                       </b>
                     </span>

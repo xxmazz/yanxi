@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 import networkx as nx
 
-VERSION = "references-v1"
+VERSION = "references-v2"
 MAX_DOCUMENTS = 30
 HEADING = re.compile(r"(?im)^\s*(?:\d+[.\s]+)?(?:references|bibliography|参考文献)\s*[:：]?\s*$")
 APPENDIX = re.compile(
@@ -211,7 +211,10 @@ def groups(documents, pages, sources):
         raw_pages = pages[doc_id]
         if raw_pages:
             first = raw_pages[0]
-            abstract = re.search(r"\babstract\b\s*[:：]?|摘要\s*[:：]?", first["text"], re.I)
+            abstract = re.search(
+                r"(?im)^[ \t]*(?:abstract|摘要)(?:[ \t]*[:：.—–-][ \t]*|[ \t]*\n)",
+                first["text"],
+            )
             if abstract:
                 start = abstract.end()
                 ending = re.search(
