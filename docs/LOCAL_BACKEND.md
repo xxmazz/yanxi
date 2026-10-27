@@ -19,7 +19,7 @@
 | ---------------- | --------------------------- | ------------------------- | ---------------------------------------------------------------------------- |
 | 问答、检索词扩展 | Qwen2.5-7B-Instruct，FP16   | GPU 0、1 分片，各预留显存 | [Qwen 官方模型](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct)，Apache-2.0 |
 | 中英检索向量     | multilingual-e5-small，FP32 | GPU 2                     | [intfloat 模型](https://huggingface.co/intfloat/multilingual-e5-small)，MIT  |
-| OCR              | 后续接入                    | GPU 3 预留                | 尚未部署                                                                     |
+| OCR              | EasyOCR 英中识别            | GPU 3                     | [EasyOCR](https://github.com/JaidedAI/EasyOCR)，Apache-2.0                   |
 
 本次机器为 Ubuntu 22.04、4 张 11 GB RTX 2080 Ti、Python 3.12.14。使用 PyTorch 2.13.0+cu130 和 Transformers 5.17.0。实测 FP16 的 eager 注意力产生非有限数值，切换 SDPA 后恢复正常。没有使用 2080 Ti 不支持的 BF16 / FlashAttention 作为前提。
 
@@ -68,25 +68,27 @@ tail -f runtime/server.log
 | `POST /api/chat`              | `question` 与 `document_ids`，空列表表示全部已解析文献 |
 
 ```sh
-.venv/bin/python -m unittest backend.test_core backend.test_api
+.venv/bin/python -m unittest discover -s backend -p 'test_*.py'
 npm test
 npm run build
 npm run format:check
 ```
 
-后端八项测试覆盖页码与重叠、中文检索、重复文件、持久化、文献范围隔离、非法来源与数值拦截、无效文件和扫描件错误处理。接口测试用替身隔离模型；真实 GPU 模型的检查单独记录在 [本阶段验证记录](BACKEND_VERIFICATION.md)。
+当前 53 项后端测试覆盖页码与重叠、中文检索、版本决策、归档、持久化、文献范围隔离、非法来源与数值拦截、OCR、检索入库、翻译及引用图谱。接口测试用替身隔离模型；真实 GPU 模型的检查单独记录在 [后端验证](BACKEND_VERIFICATION.md) 及各模块回归数据中。
 
 ## 已知边界
 
-- 仅支持带文本层的 PDF。扫描件返回明确 OCR 错误；复杂公式和表格目前是文本提取结果，没有完成结构化还原。
-- 去重仅为文件字节 SHA256，不声称完成 arXiv v1/v7 语义版本管理。
+- 支持文本层与本地 OCR 扫描页；复杂公式和表格尚未完成结构化还原。
+- 支持字节去重与正文／E5 相似版本候选；官方扫描件、长书和复杂格式仍待完整回归。
 - 对话为单轮证据问答，回答完成后返回；尚未加入会话记忆、Token 流式输出和语义级事实核验。
 - 单模型请求串行执行；第二个并发问答返回 429。解析队列上限八个；没有完成大规模并发与长期运行压测。
-- 暂无服务器文献删除、用户权限隔离和公网 HTTPS 部署。
-- 探索发现、引用图谱、写作框架与中英阅读仍保留原型功能，不能视为已完成赛题六大模块。
+- 文献可归档与恢复；暂无用户权限隔离和公网 HTTPS 部署。
+- 写作仍为模板；自动追踪、最新研究核验、页内参考文献双向跳转等能力尚待补齐，不能视为已完成赛题六大模块。
 
 扫描件与版本管理安装、环境变量及接口见 [OCR 与版本管理](OCR_AND_VERSIONS.md)。在三卡问答基础上，本地 OCR 使用 GPU 3；需要额外安装 `backend/requirements-ocr.txt`、系统 Poppler，并预下载权重。
 
 arXiv 真实检索无需新增密钥，使用现有 httpx；服务器需能访问官方 API 和 PDF 域名。见 [检索与一键入库](DISCOVERY.md)。检索／下载联网，问答和中文检索词转换均在本地模型执行。
 
 对照翻译复用现有本地 Qwen 权重，无需新增依赖或密钥；任务与缓存保存在同一 SQLite 中。使用、接口、资源限制与长书边界见 [本地论文对照翻译](TRANSLATION.md)。
+
+引用图谱与综述接口、NetworkX／SciPy 依赖和验证见 [局域引用图谱](GRAPH.md)。构图不使用外部网络，综述使用本地 Qwen。

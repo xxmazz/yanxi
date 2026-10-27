@@ -18,6 +18,7 @@ from pypdf import PdfReader
 
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, valid_id
+from .graph import build_graph
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 from .translation import TranslationService
@@ -540,6 +541,92 @@ def export_translation(doc_id: str, target: Literal["zh", "en"] = "zh"):
             "Content-Disposition": f'attachment; filename="translation-{doc_id[:12]}-{target}.md"'
         },
     )
+
+
+class GraphScope(BaseModel):
+    document_ids: list[str] = Field(default_factory=list, max_length=30)
+
+
+@app.post("/api/graph/build")
+def citation_graph(request: GraphScope):
+    try:
+        return build_graph(store, request.document_ids)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+class GraphReview(GraphScope):
+    fingerprint: str = Field(min_length=64, max_length=64)
+
+
+@app.post("/api/graph/review")
+async def graph_review(request: GraphReview):
+    if chat_lock.locked():
+        raise HTTPException(429, "本地模型正在处理其他请求，请稍后生成综述")
+    async with chat_lock:
+        try:
+            graph = await asyncio.to_thread(build_graph, store, request.document_ids)
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        if graph["fingerprint"] != request.fingerprint:
+            raise HTTPException(409, "文献范围或原文已变化，请先重新构图")
+        if models.llm is None:
+            raise HTTPException(503, "本地模型未就绪")
+        ranked = sorted(graph["nodes"], key=lambda node: (-node["pagerank"], node["id"]))
+        evidence = []
+        for node in ranked:
+            item = node["abstract_evidence"]
+            if item and item["quote"].strip() and len(evidence) < 6:
+                evidence.append(
+                    {
+                        "label": f"E{len(evidence) + 1}",
+                        "document_id": item["document_id"],
+                        "title": node["title"],
+                        "page": item["page"],
+                        "text": item["quote"],
+                    }
+                )
+        if not evidence:
+            return {
+                "fingerprint": graph["fingerprint"],
+                "answer": "所选文献没有可核对的摘要原文，暂不生成综述。",
+                "citations": [],
+                "insufficient_evidence": True,
+                "covered_documents": [],
+            }
+        question = (
+            f"请按顺序为这 {len(evidence)} 个来源各写一条中文结论，概括该论文研究的问题、方法和结论，形成简短领域综述。"
+            f"必须覆盖全部来源：{', '.join(item['label'] for item in evidence)}，不要只描述第一篇论文。"
+            "每条结论只描述所引用的单篇原文，勿补充背景常识、作者未报告的实验或推断方法继承关系。"
+            "不要评价论文创新性，不要声称未来方向尚未被后续研究解决。保留原文对效果的限定条件。"
+        )
+        try:
+            raw = await asyncio.to_thread(models.answer, question, evidence)
+            answer, labels, refused = validate_answer(raw, evidence)
+            if not refused and set(labels) != {item["label"] for item in evidence}:
+                raise ValueError("综述没有覆盖本轮摘要来源")
+        except (ValueError, RuntimeError) as exc:
+            log.warning("Graph review rejected: %s", exc)
+            return {
+                "fingerprint": graph["fingerprint"],
+                "answer": "本次综述未通过来源、数值或摘要覆盖范围校验，请重试或直接查看原文。",
+                "citations": [citation(item) for item in evidence],
+                "insufficient_evidence": True,
+                "covered_documents": [item["document_id"] for item in evidence],
+            }
+        try:
+            current_graph = await asyncio.to_thread(build_graph, store, request.document_ids)
+        except ValueError as exc:
+            raise HTTPException(409, "生成期间文献状态已变化，请重新构图") from exc
+        if current_graph["fingerprint"] != graph["fingerprint"]:
+            raise HTTPException(409, "生成期间文献原文已变化，请重新构图")
+        return {
+            "fingerprint": graph["fingerprint"],
+            "answer": answer,
+            "citations": [citation(item) for item in evidence if item["label"] in labels],
+            "insufficient_evidence": refused,
+            "covered_documents": [item["document_id"] for item in evidence],
+        }
 
 
 dist = Path(os.getenv("YANXI_DIST_DIR", "dist"))

@@ -38,13 +38,14 @@ import {
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { graphEdges, graphNodes, readSections, seedPapers } from "./data";
+import { readSections, seedPapers } from "./data";
 import type { Paper, View } from "./data";
 import { parseChartCsv } from "./csv";
 import { fingerprintPdf } from "./pdf-fingerprint";
 import { hasPdfHeader } from "./pdf-validation";
 import { api } from "./api";
 import { Discovery } from "./discovery";
+import { CitationGraph } from "./citation-graph";
 import { DocumentActions, ArchivePanel, ServerReader } from "./document-tools";
 import type { Evidence, Health, ServerDocument } from "./api";
 
@@ -134,8 +135,6 @@ export default function App() {
   const [refreshTick, setRefreshTick] = useState(0);
   const changed = () => setRefreshTick((n) => n + 1);
   const [importing, setImporting] = useState(false);
-  const [graphFocus, setGraphFocus] = useState("attention");
-  const [graphFilter, setGraphFilter] = useState("all");
   const [writingTab, setWritingTab] = useState<"outline" | "chart">("outline");
   const [idea, setIdea] = useState("面向科研文献的可验证问答与证据溯源");
   const [outline, setOutline] = useState("");
@@ -498,10 +497,6 @@ export default function App() {
     );
     notify("文献目录已导出。");
   };
-  const visibleNodes = graphNodes.filter(
-    (n) => graphFilter === "all" || n.type === graphFilter,
-  );
-  const graphPaper = seedPapers.find((p) => p.id === graphFocus)!;
 
   return (
     <div className="app-shell">
@@ -1393,206 +1388,13 @@ export default function App() {
             />
           )}
           {view === "graph" && (
-            <>
-              <div className="page-heading">
-                <div>
-                  <div className="eyebrow">SEE THE BIGGER PICTURE</div>
-                  <h1>引用图谱</h1>
-                  <p>一篇文献是一个起点，关联让知识生长。</p>
-                </div>
-                <button
-                  className="button secondary"
-                  onClick={() =>
-                    download(
-                      "研析-示例关系图.json",
-                      JSON.stringify(
-                        {
-                          kind: "curated-demo-relations-not-verified-citations",
-                          nodes: graphNodes,
-                          edges: graphEdges,
-                        },
-                        null,
-                        2,
-                      ),
-                      "application/json",
-                    )
-                  }
-                >
-                  <ArrowDownToLine size={16} />
-                  导出图谱
-                </button>
-              </div>
-              <div className="graph-layout">
-                <section className="graph-canvas">
-                  <div className="graph-top">
-                    <span>
-                      <span className="dot sage" />
-                      Transformer 研究脉络
-                    </span>
-                    <select
-                      aria-label="图谱主题筛选"
-                      value={graphFilter}
-                      onChange={(e) => setGraphFilter(e.target.value)}
-                    >
-                      <option value="all">全部关系</option>
-                      <option value="generation">生成与应用</option>
-                      <option value="understanding">语言理解</option>
-                    </select>
-                  </div>
-                  <svg
-                    viewBox="0 0 800 640"
-                    aria-label="交互式示例研究关系图"
-                    role="group"
-                  >
-                    <defs>
-                      <pattern
-                        id="dots"
-                        x="0"
-                        y="0"
-                        width="22"
-                        height="22"
-                        patternUnits="userSpaceOnUse"
-                      >
-                        <circle cx="1" cy="1" r="1" fill="#dfe7df" />
-                      </pattern>
-                    </defs>
-                    <rect width="800" height="640" fill="url(#dots)" />
-                    {graphEdges.map(([from, to]) => {
-                      const a = visibleNodes.find((n) => n.id === from),
-                        b = visibleNodes.find((n) => n.id === to);
-                      return a && b ? (
-                        <line
-                          key={from + to}
-                          x1={a.x}
-                          y1={a.y}
-                          x2={b.x}
-                          y2={b.y}
-                          stroke={
-                            graphFocus === from || graphFocus === to
-                              ? "#709783"
-                              : "#d3ded6"
-                          }
-                          strokeWidth={
-                            graphFocus === from || graphFocus === to ? 2 : 1.3
-                          }
-                        />
-                      ) : null;
-                    })}
-                    {visibleNodes.map((node) => (
-                      <g
-                        key={node.id}
-                        role="button"
-                        aria-label={"查看 " + node.label}
-                        tabIndex={0}
-                        className={
-                          "graph-node " +
-                          (graphFocus === node.id ? "focused" : "")
-                        }
-                        onClick={() => setGraphFocus(node.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            setGraphFocus(node.id);
-                          }
-                        }}
-                      >
-                        <circle
-                          className="node-halo"
-                          cx={node.x}
-                          cy={node.y}
-                          r={node.r + 10}
-                        />
-                        <circle
-                          cx={node.x}
-                          cy={node.y}
-                          r={node.r}
-                          fill={
-                            node.id === "attention"
-                              ? "#416f56"
-                              : node.type === "understanding"
-                                ? "#d7b27f"
-                                : "#b4cab9"
-                          }
-                          stroke="white"
-                          strokeWidth="4"
-                        />
-                        <text
-                          x={node.x}
-                          y={node.y + 5}
-                          textAnchor="middle"
-                          className={
-                            node.id === "attention" ? "light-label" : ""
-                          }
-                        >
-                          {node.label === "Transformer" ? "T" : node.label}
-                        </text>
-                        <text
-                          x={node.x}
-                          y={node.y + node.r + 27}
-                          textAnchor="middle"
-                          className="graph-label"
-                        >
-                          {node.label}
-                        </text>
-                        <text
-                          x={node.x}
-                          y={node.y + node.r + 45}
-                          textAnchor="middle"
-                          className="graph-sub"
-                        >
-                          {node.sub}
-                        </text>
-                      </g>
-                    ))}
-                  </svg>
-                  <div className="graph-legend">
-                    <span>
-                      <i className="sage" />
-                      基础架构
-                    </span>
-                    <span>
-                      <i className="sand" />
-                      语言理解
-                    </span>
-                    <span>
-                      <i className="pale" />
-                      生成与应用
-                    </span>
-                    <span>点击节点查看文献</span>
-                  </div>
-                </section>
-                <aside className="graph-details">
-                  <span className="eyebrow">PAPER INSIGHT</span>
-                  <span className={"paper-file " + graphPaper.color}>
-                    <FileText size={25} />
-                  </span>
-                  <h2>{graphPaper.title}</h2>
-                  <p>{graphPaper.authors}</p>
-                  <span className={"tag " + graphPaper.color}>
-                    {graphPaper.year} · {graphPaper.venue}
-                  </span>
-                  <div className="details-divider" />
-                  <h4>研究线索</h4>
-                  <p>{graphPaper.abstract}</p>
-                  <a
-                    className="button secondary"
-                    href={graphPaper.source}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    查看原始文献
-                    <ArrowUpRight size={15} />
-                  </a>
-                  <div className="info-note">
-                    <GitBranch size={18} />
-                    <p>
-                      手工整理的主题关系示例，并非自动抽取、验证后的引用图谱。节点大小也不代表
-                      PageRank。
-                    </p>
-                  </div>
-                </aside>
-              </div>
-            </>
+            <CitationGraph
+              documents={serverDocs}
+              open={(id) => {
+                const paper = papers.find((item) => item.id === id);
+                if (paper) openPaper(paper);
+              }}
+            />
           )}
           {view === "write" && (
             <>
@@ -1881,7 +1683,8 @@ export default function App() {
                       <b>
                         文献上传、逐页正文与扫描件
                         OCR、内容相似检测、版本保留与恢复、本地模型问答、原文引用及
-                        CSV 图表、中英逐段翻译与双向联动阅读。
+                        CSV
+                        图表、中英逐段翻译与双向联动阅读、真实引用图谱与有来源的摘要综述。
                       </b>
                     </span>
                   </div>
@@ -1890,7 +1693,7 @@ export default function App() {
                     <span>
                       后续接入
                       <b>
-                        复杂表格与公式还原、参考文献双向跳转、真实引用图谱与定期论文追踪。
+                        复杂表格与公式还原、参考文献双向跳转、研究方向时效核验与定期论文追踪。
                       </b>
                     </span>
                   </div>
@@ -1901,7 +1704,7 @@ export default function App() {
                       <b>
                         所有 AI 文献问答连接本地服务器模型与按页索引；探索页连接
                         arXiv
-                        真实检索，图谱与写作模板仍为示例功能。浏览器保存目录偏好，上传的
+                        真实检索；图谱由已入库论文的参考文献匹配构建，写作仍有模板功能。浏览器保存目录偏好，上传的
                         PDF 保存在服务器。
                       </b>
                     </span>

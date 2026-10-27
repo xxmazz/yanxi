@@ -1,0 +1,329 @@
+{
+  "verified_at": "2026-10-27T12:57:13.772738+00:00",
+  "model": "Qwen2.5-7B-Instruct",
+  "stats": {
+    "documents": 5,
+    "works": 4,
+    "edges": 2,
+    "components": 2,
+    "isolated": 1
+  },
+  "build_seconds": 0.053,
+  "fingerprint": "50c1cff4245f71a55586854c571aaa27ba46694d663d239c81c91c577447dde6",
+  "source_offsets_and_hashes_verified": true,
+  "degree_and_pagerank_verified": true,
+  "scope_and_stale_rejection_verified": true,
+  "graph": {
+    "fingerprint": "50c1cff4245f71a55586854c571aaa27ba46694d663d239c81c91c577447dde6",
+    "version": "references-v1",
+    "generated_at": "2026-10-27T12:57:05.141017+00:00",
+    "document_ids": [
+      "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+      "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+      "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+      "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+    ],
+    "nodes": [
+      {
+        "id": "arxiv:1706.03762",
+        "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "title": "Attention Is All You Need",
+        "authors": "Ashish Vaswani; Noam Shazeer; Niki Parmar; Jakob Uszkoreit; Llion Jones; Aidan N. Gomez; Łukasz Kaiser; Illia Polosukhin",
+        "year": 2017,
+        "documents": [
+          {
+            "id": "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+            "title": "Attention Is All You Need",
+            "version": 0,
+            "ocr_pages": 15,
+            "pages": 15
+          },
+          {
+            "id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "version": 7,
+            "ocr_pages": 0,
+            "pages": 15
+          }
+        ],
+        "arxiv_ids": ["1706.03762"],
+        "titles": ["Attention Is All You Need"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "page": 1,
+          "start": 601,
+          "end": 2001,
+          "page_sha256": "01c0c25f3f61c18bf5ae332fba683e7a62b554375d0956882f48e252bddecfe4",
+          "method": "native",
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "preview_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/1",
+          "quote_sha256": "63d7f913d2375699eed5e18cf873b1ee6108a42c044708199ae52af91f000bb2",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "page": 7,
+            "start": 409,
+            "end": 1280,
+            "page_sha256": "d064d8e2cd883c172466aa42b5b514623ed4f273ceb4a114f8ba9be972703382",
+            "method": "native",
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=7",
+            "preview_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/7",
+            "quote_sha256": "248be6a3cfb739677e5902aacc54e4ce9597a7e87654d9c3e5a789e09790383d",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [10, 11, 12, 13, 14, 15],
+        "in_degree": 1,
+        "out_degree": 0,
+        "pagerank": 0.40054496,
+        "role": "局部基石候选",
+        "x": 397.01,
+        "y": 394.86
+      },
+      {
+        "id": "arxiv:2005.11401",
+        "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+        "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+        "authors": "Patrick Lewis; Ethan Perez; Aleksandra Piktus; Fabio Petroni; Vladimir Karpukhin; Naman Goyal; Heinrich Küttler; Mike Lewis; Wen-tau Yih; Tim Rocktäschel; Sebastian Riedel; Douwe Kiela",
+        "year": 2020,
+        "documents": [
+          {
+            "id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+            "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+            "version": 4,
+            "ocr_pages": 0,
+            "pages": 19
+          }
+        ],
+        "arxiv_ids": ["2005.11401"],
+        "titles": [
+          "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+          "page": 1,
+          "start": 359,
+          "end": 1759,
+          "page_sha256": "1fa9e1a97c1c5202313b155c4c0ea25ef6be6be0343cc72cd87b99807c05bcb3",
+          "method": "native",
+          "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=1",
+          "preview_url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/render/1",
+          "quote_sha256": "22cf320f63e4b2dbc855aaa8403b7695dfb7e6c7cb7d66ed141002fe30c3fa3c",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+            "page": 9,
+            "start": 3025,
+            "end": 4124,
+            "page_sha256": "e1a8e0542272b0787490993b752c994e5d9ddc7d8f611104829fc6e3fc9222c8",
+            "method": "native",
+            "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=9",
+            "preview_url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/render/9",
+            "quote_sha256": "337ed73253a35177dabf945b73167158dbbbd6d7af1f5ac537dc8f7a631dcb89",
+            "quote_characters": 1099
+          }
+        ],
+        "reference_pages": [10, 11, 12, 13, 14, 15, 16],
+        "in_degree": 1,
+        "out_degree": 1,
+        "pagerank": 0.28804982,
+        "role": "局部基石候选",
+        "x": 442.36,
+        "y": 362.95
+      },
+      {
+        "id": "arxiv:2309.15217",
+        "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+        "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+        "authors": "",
+        "year": 2023,
+        "documents": [
+          {
+            "id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+            "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 8
+          }
+        ],
+        "arxiv_ids": ["2309.15217"],
+        "titles": [
+          "Ragas: Automated Evaluation of Retrieval Augmented Generation"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+          "page": 1,
+          "start": 326,
+          "end": 1392,
+          "page_sha256": "1af9642b5104014ce6746b36ecabb4a53b4d522852238b47bf80b73e28af6c93",
+          "method": "native",
+          "url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/pdf#page=1",
+          "preview_url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/render/1",
+          "quote_sha256": "525253cc497f112318c947d62196f3b213a9c1deb6c642a548073f05964b827b",
+          "quote_characters": 1066
+        },
+        "future_work": [],
+        "reference_pages": [6, 7, 8],
+        "in_degree": 0,
+        "out_degree": 1,
+        "pagerank": 0.15570261,
+        "role": "局部较少被引",
+        "x": 492.2,
+        "y": 322.19
+      },
+      {
+        "id": "document:145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+        "document_id": "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+        "title": "A Perspective on Explanations of Molecular Prediction Models",
+        "authors": "Geemi P. Wellawatte; Heta A. Gandhi; D. White",
+        "year": null,
+        "documents": [
+          {
+            "id": "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+            "title": "A Perspective on Explanations of Molecular Prediction Models",
+            "version": 0,
+            "ocr_pages": 0,
+            "pages": 41
+          }
+        ],
+        "arxiv_ids": [],
+        "titles": [
+          "A Perspective on Explanations of Molecular Prediction Models"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+          "page": 1,
+          "start": 397,
+          "end": 1289,
+          "page_sha256": "68a0a96dd2388f082dd23563444795610c8976597a09513375340b867c9a8403",
+          "method": "native",
+          "url": "/api/documents/145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3/pdf#page=1",
+          "preview_url": "/api/documents/145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3/render/1",
+          "quote_sha256": "2afbbb0bbb38304a79454148d42c4634b77571d4ae4c6f48438c7926e2f991ba",
+          "quote_characters": 892
+        },
+        "future_work": [],
+        "reference_pages": [
+          24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41
+        ],
+        "in_degree": 0,
+        "out_degree": 0,
+        "pagerank": 0.15570261,
+        "role": "局部较少被引",
+        "x": 268.43,
+        "y": 80.0
+      }
+    ],
+    "edges": [
+      {
+        "source": "arxiv:2005.11401",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+            "page": 15,
+            "start": 613,
+            "end": 1178,
+            "page_sha256": "4b0b7a277c5b3bb3fc7b751c4b220d2c9caae69d301d0dfc5b122e120cfc656d",
+            "method": "native",
+            "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=15",
+            "preview_url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/render/15",
+            "quote_sha256": "5a0e16c4ea0c3fa67cbeb05a78d5d250a11a736b9f6e261ca143372520ea5687",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2309.15217",
+        "target": "arxiv:2005.11401",
+        "match_method": "full_title",
+        "matched_text": "Retrieval-augmented generation for\nknowledge-intensive NLP tasks",
+        "evidence": [
+          {
+            "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+            "page": 6,
+            "start": 3571,
+            "end": 4175,
+            "page_sha256": "07e544f50365aabc226073e29f395b0906d5ea94c1ed6638a984f5e6a782a94a",
+            "method": "native",
+            "url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/pdf#page=6",
+            "preview_url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/render/6",
+            "quote_sha256": "c7162bbf2ab5b553a4d8d10f7755e30a9a63e8c09a6a1cb0523f93a1784144b0",
+            "quote_characters": 604
+          }
+        ]
+      }
+    ],
+    "stats": {
+      "documents": 5,
+      "works": 4,
+      "edges": 2,
+      "components": 2,
+      "isolated": 1
+    },
+    "warnings": [],
+    "interpretation": "箭头从引用论文指向被引论文；指标只统计当前已入库范围，不是全球引用量或创新性评价。"
+  },
+  "review": {
+    "fingerprint": "50c1cff4245f71a55586854c571aaa27ba46694d663d239c81c91c577447dde6",
+    "answer": "提出了基于注意力机制的Transformer模型，无需递归或卷积网络，适用于机器翻译任务。[E1]\n\n引入了检索增强生成（RAG）模型，结合预训练参数化和非参数化记忆，用于知识密集型NLP任务。[E2]\n\n开发了Ragas框架，用于参考免费评估检索增强生成（RAG）管道的不同维度，包括检索系统、LLM利用能力和生成质量。[E3]\n\n探讨了可解释的人工智能（XAI）在化学领域的应用，通过化学反事实和描述符解释来解释深度学习模型的预测，揭示结构-性质关系。[E4]",
+    "citations": [
+      {
+        "id": "E1",
+        "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "title": "Attention Is All You Need",
+        "page": 1,
+        "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+        "quote_sha256": "63d7f913d2375699eed5e18cf873b1ee6108a42c044708199ae52af91f000bb2",
+        "quote_characters": 1400
+      },
+      {
+        "id": "E2",
+        "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+        "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+        "page": 1,
+        "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=1",
+        "quote_sha256": "22cf320f63e4b2dbc855aaa8403b7695dfb7e6c7cb7d66ed141002fe30c3fa3c",
+        "quote_characters": 1400
+      },
+      {
+        "id": "E3",
+        "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+        "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+        "page": 1,
+        "url": "/api/documents/6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb/pdf#page=1",
+        "quote_sha256": "525253cc497f112318c947d62196f3b213a9c1deb6c642a548073f05964b827b",
+        "quote_characters": 1066
+      },
+      {
+        "id": "E4",
+        "document_id": "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+        "title": "A Perspective on Explanations of Molecular Prediction Models",
+        "page": 1,
+        "url": "/api/documents/145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3/pdf#page=1",
+        "quote_sha256": "2afbbb0bbb38304a79454148d42c4634b77571d4ae4c6f48438c7926e2f991ba",
+        "quote_characters": 892
+      }
+    ],
+    "insufficient_evidence": false,
+    "covered_documents": [
+      "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+      "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3"
+    ],
+    "seconds": 8.38
+  },
+  "limitations": "真实样本规模以 stats 为准；20 篇拓扑使用构造数据测试。此记录不验证所有论文的引用召回率、综述语义完全正确性或未来方向新颖性。"
+}
