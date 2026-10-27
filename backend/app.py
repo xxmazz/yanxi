@@ -598,6 +598,8 @@ async def graph_review(request: GraphReview):
             f"请按顺序为这 {len(evidence)} 个来源各写一条中文结论，概括该论文研究的问题、方法和结论，形成简短领域综述。"
             f"必须覆盖全部来源：{', '.join(item['label'] for item in evidence)}，不要只描述第一篇论文。"
             "每条结论只描述所引用的单篇原文，勿补充背景常识、作者未报告的实验或推断方法继承关系。"
+            "特别注意否定条件的对象：without ground truth human annotations 应写为不依赖人工标注的标准答案，"
+            "不能改写成无需参考文本或无需检索上下文；reference-free evaluation 也不等于无需检索上下文。"
             "不要评价论文创新性，不要声称未来方向尚未被后续研究解决。保留原文对效果的限定条件。"
         )
         try:

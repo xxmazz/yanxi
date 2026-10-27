@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-10-27T12:57:13.772738+00:00",
+  "verified_at": "2026-10-27T13:00:38.729600+00:00",
   "model": "Qwen2.5-7B-Instruct",
   "stats": {
     "documents": 5,
@@ -8,7 +8,7 @@
     "components": 2,
     "isolated": 1
   },
-  "build_seconds": 0.053,
+  "build_seconds": 0.055,
   "fingerprint": "50c1cff4245f71a55586854c571aaa27ba46694d663d239c81c91c577447dde6",
   "source_offsets_and_hashes_verified": true,
   "degree_and_pagerank_verified": true,
@@ -16,7 +16,7 @@
   "graph": {
     "fingerprint": "50c1cff4245f71a55586854c571aaa27ba46694d663d239c81c91c577447dde6",
     "version": "references-v1",
-    "generated_at": "2026-10-27T12:57:05.141017+00:00",
+    "generated_at": "2026-10-27T13:00:28.420938+00:00",
     "document_ids": [
       "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
       "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
@@ -277,7 +277,7 @@
   },
   "review": {
     "fingerprint": "50c1cff4245f71a55586854c571aaa27ba46694d663d239c81c91c577447dde6",
-    "answer": "提出了基于注意力机制的Transformer模型，无需递归或卷积网络，适用于机器翻译任务。[E1]\n\n引入了检索增强生成（RAG）模型，结合预训练参数化和非参数化记忆，用于知识密集型NLP任务。[E2]\n\n开发了Ragas框架，用于参考免费评估检索增强生成（RAG）管道的不同维度，包括检索系统、LLM利用能力和生成质量。[E3]\n\n探讨了可解释的人工智能（XAI）在化学领域的应用，通过化学反事实和描述符解释来解释深度学习模型的预测，揭示结构-性质关系。[E4]",
+    "answer": "Transformer架构通过完全摒弃循环和卷积网络，仅依赖注意力机制构建了一个新的简单网络结构，在机器翻译任务中表现出色，训练时间显著减少。[E1]\n\nRAG模型结合了预训练参数化和非参数化记忆，通过神经检索器访问维基百科索引，提高了知识密集型NLP任务的表现，并在开放域问答任务上达到了新纪录。[E2]\n\nRagas框架提供了一套无需人工标注标准答案的评估指标，用于评估检索增强生成（RAG）管道的不同维度，有助于加快RAG架构的评估周期。[E3]\n\nXAI方法如化学反事实和描述符解释能够解释深度学习模型的预测，揭示结构-性质关系，但这些方法仍需与黑盒模型开发过程相结合才能有效应用。[E4]",
     "citations": [
       {
         "id": "E1",
@@ -323,7 +323,7 @@
       "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
       "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3"
     ],
-    "seconds": 8.38
+    "seconds": 10.06
   },
   "limitations": "真实样本规模以 stats 为准；20 篇拓扑使用构造数据测试。此记录不验证所有论文的引用召回率、综述语义完全正确性或未来方向新颖性。"
 }
