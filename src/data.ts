@@ -22,6 +22,8 @@ export type Paper = {
   local?: boolean;
   filename?: string;
   contentFingerprint?: string;
+  backendId?: string;
+  backendStatus?: "queued" | "ready" | "error";
 };
 export const seedPapers: Paper[] = [
   {

@@ -43,6 +43,8 @@ import type { Paper, View } from "./data";
 import { parseChartCsv } from "./csv";
 import { fingerprintPdf } from "./pdf-fingerprint";
 import { hasPdfHeader } from "./pdf-validation";
+import { api } from "./api";
+import type { Evidence, Health, ServerDocument } from "./api";
 
 const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
   { id: "library", label: "我的文献", icon: FolderOpen },
@@ -94,7 +96,8 @@ type Message = {
   id: string;
   role: "user" | "assistant";
   text: string;
-  citations?: string[];
+  evidence?: Evidence[];
+  steps?: string[];
 };
 
 export default function App() {
@@ -124,7 +127,8 @@ export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
   const [chatScope, setChatScope] = useState("all");
-  const answerTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [health, setHealth] = useState<Health | null>(null);
+  const [importing, setImporting] = useState(false);
   const [graphFocus, setGraphFocus] = useState("attention");
   const [graphFilter, setGraphFilter] = useState("all");
   const [writingTab, setWritingTab] = useState<"outline" | "chart">("outline");
@@ -150,10 +154,74 @@ export default function App() {
   useEffect(
     () => () => {
       Object.values(urlsRef.current).forEach(URL.revokeObjectURL);
-      if (answerTimer.current) clearTimeout(answerTimer.current);
     },
     [],
   );
+  useEffect(() => {
+    let disposed = false;
+    let refreshing = false;
+    const refresh = async () => {
+      if (refreshing) return;
+      refreshing = true;
+      try {
+        const status = await api<Health>("/api/health");
+        const docs = await api<ServerDocument[]>("/api/documents");
+        if (disposed) return;
+        setHealth(status);
+        setPapers((items) => {
+          const server = docs.map(
+            (doc): Paper => ({
+              id: doc.id,
+              backendId: doc.id,
+              backendStatus: doc.status,
+              title: doc.title,
+              authors:
+                doc.status === "ready"
+                  ? "服务器文献库"
+                  : doc.status === "error"
+                    ? "解析失败"
+                    : "正在解析与建索引",
+              year: new Date(doc.created + "Z").getFullYear(),
+              venue: "服务器导入",
+              tag:
+                doc.status === "ready"
+                  ? "已建立索引"
+                  : doc.status === "error"
+                    ? "需要处理"
+                    : "解析中",
+              color: "blue",
+              abstract:
+                doc.error ||
+                (doc.status === "ready"
+                  ? "已按页建立原文索引，可用于本地模型问答。"
+                  : "PDF 已保存，正在后台提取正文。"),
+              pages: doc.pages,
+              date: doc.created.slice(0, 10),
+              favorite:
+                items.find((p) => p.backendId === doc.id)?.favorite || false,
+              local: true,
+              source: `/api/documents/${doc.id}/pdf`,
+              filename: doc.filename,
+            }),
+          );
+          const merged = [...server, ...items.filter((p) => !p.backendId)];
+          return JSON.stringify(merged) === JSON.stringify(items)
+            ? items
+            : merged;
+        });
+      } catch {
+        if (!disposed) setHealth(null);
+      } finally {
+        refreshing = false;
+      }
+    };
+    void refresh();
+    const timer = setInterval(refresh, 5000);
+    return () => {
+      disposed = true;
+      clearInterval(timer);
+    };
+  }, []);
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -220,6 +288,10 @@ export default function App() {
       items.map((p) => (p.id === id ? { ...p, favorite: !p.favorite } : p)),
     );
   const removePaper = (id: string) => {
+    if (papers.find((p) => p.id === id)?.backendId) {
+      notify("服务器原文当前保留，删除管理将在后续加入。");
+      return;
+    }
     setPapers((items) => items.filter((p) => p.id !== id));
     setSelected((items) => items.filter((x) => x !== id));
     if (urlsRef.current[id]) {
@@ -231,7 +303,37 @@ export default function App() {
     notify("已从本地文献库移除，可在设置中恢复示例文献。");
   };
   const importFiles = async (files: FileList | File[] | null) => {
-    if (!files) return;
+    if (!files || importing) return;
+    if (health) {
+      setImporting(true);
+      const notes: string[] = [];
+      try {
+        for (const file of Array.from(files)) {
+          const form = new FormData();
+          form.append("file", file);
+          try {
+            const doc = await api<ServerDocument>("/api/documents", {
+              method: "POST",
+              body: form,
+            });
+            notes.push(
+              doc.duplicate
+                ? `${file.name} 已在文献库中`
+                : `${file.name} 已上传，正在后台建立索引`,
+            );
+          } catch (error) {
+            notes.push(
+              `${file.name}：${error instanceof Error ? error.message : "上传失败"}`,
+            );
+          }
+        }
+        setModal(null);
+        notify(notes.join("；"));
+      } finally {
+        setImporting(false);
+      }
+      return;
+    }
     const added: Paper[] = [];
     const warnings: string[] = [];
     for (const file of Array.from(files)) {
@@ -308,7 +410,7 @@ export default function App() {
     .sort((a, b) =>
       sort === "发表年份" ? b.year - a.year : b.date.localeCompare(a.date),
     );
-  const ask = (text = question) => {
+  const ask = async (text = question) => {
     const prompt = text.trim();
     if (!prompt || busy) return;
     setQuestion("");
@@ -317,45 +419,48 @@ export default function App() {
       { id: createId(), role: "user", text: prompt },
     ]);
     setBusy(true);
-    answerTimer.current = setTimeout(() => {
-      let response =
-        "当前是前端交互演示，尚未连接真实检索与大模型。这个问题没有对应的预置证据，因此我不会编造答案。你可以试试下方的演示问题，或打开文献核对原文。";
-      let citations: string[] = [];
-      const scope =
-        chatScope === "all"
-          ? papers.filter((p) => !p.local).map((p) => p.id)
-          : [chatScope];
-      if (
-        /BERT|区别|对比/i.test(prompt) &&
-        scope.includes("attention") &&
-        scope.includes("bert")
-      ) {
-        response =
-          "演示回答：Transformer 包含编码器与自回归解码器，用于序列转换；BERT 采用双向 Transformer 编码器，通过掩码语言建模等预训练目标学习语言表征。两者共享注意力架构，但结构选择、注意力可见范围与训练目标不同。下面是供你核对的文献入口；它们尚不是经过后端验证的原文段落证据。";
-        citations = ["attention", "bert"];
-      } else if (/RAG|检索增强/i.test(prompt) && scope.includes("rag")) {
-        response =
-          "演示回答：检索增强生成把外部文档检索与生成模型结合，让生成过程可以利用参数之外的知识。研析计划进一步展示来源段落、原文位置与证据不足提示。检索到文献本身并不等于回答已被证据支持；此演示尚未实现证据校验。";
-        citations = ["rag"];
-      } else if (
-        /注意力|Transformer/i.test(prompt) &&
-        scope.includes("attention")
-      ) {
-        response =
-          "演示回答：多头注意力将表征映射到多个子空间，并行计算注意力，再汇合输出，使模型可以同时关注不同的关系。下面的文献入口可用于核对，当前回答为人工编写的前端样例。";
-        citations = ["attention"];
-      }
+    try {
+      if (!health)
+        throw new Error("无法连接文献后端，请从服务器演示地址打开后再试。");
+      const scoped = papers.find((p) => p.id === chatScope);
+      if (chatScope !== "all" && !scoped?.backendId)
+        throw new Error(
+          "这篇是示例或浏览器本地文件，请先上传 PDF 到服务器文献库。",
+        );
+      const result = await api<{
+        answer: string;
+        citations: Evidence[];
+        steps: string[];
+      }>("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: prompt,
+          document_ids: scoped?.backendId ? [scoped.backendId] : [],
+        }),
+      });
       setMessages((items) => [
         ...items,
         {
           id: createId(),
           role: "assistant",
-          text: response,
-          citations,
+          text: result.answer,
+          evidence: result.citations,
+          steps: result.steps,
         },
       ]);
+    } catch (error) {
+      setMessages((items) => [
+        ...items,
+        {
+          id: createId(),
+          role: "assistant",
+          text: error instanceof Error ? error.message : "请求失败，请重试。",
+        },
+      ]);
+    } finally {
       setBusy(false);
-    }, 950);
+    }
   };
   const exportLibrary = () => {
     download(
@@ -541,7 +646,7 @@ export default function App() {
             </label>
             <span className="demo-pill">
               <i />
-              交互演示
+              {health?.model_ready ? "本地模型已连接" : "浏览器预览"}
             </span>
             <button
               className="icon-button"
@@ -807,11 +912,17 @@ export default function App() {
                     <p className="paper-abstract">{paper.abstract}</p>
                     <div className="paper-meta">
                       <span>
-                        {paper.year}
+                        {paper.backendId ? `导入于 ${paper.year}` : paper.year}
                         <i />
                         {paper.venue}
                       </span>
-                      <span>{paper.local ? "本地 PDF" : "示例文献"}</span>
+                      <span>
+                        {paper.backendId
+                          ? "服务器 PDF"
+                          : paper.local
+                            ? "本地 PDF"
+                            : "示例文献"}
+                      </span>
                     </div>
                     <div className="paper-card-footer">
                       <label>
@@ -827,7 +938,13 @@ export default function App() {
                             )
                           }
                         />
-                        <span>{paper.local ? "待解析" : "阅读样例"}</span>
+                        <span>
+                          {paper.backendId
+                            ? `${paper.pages} 页 · ${paper.backendStatus === "ready" ? "可问答" : paper.backendStatus === "error" ? "解析失败" : "解析中"}`
+                            : paper.local
+                              ? "本地预览"
+                              : "阅读样例"}
+                        </span>
                       </label>
                       <button onClick={() => openPaper(paper)}>
                         开始阅读
@@ -856,8 +973,9 @@ export default function App() {
               )}
               <div className="bottom-note">
                 <ShieldCheck size={14} />
-                示例文献用于体验界面；导入的文件仅在本机浏览器预览，尚未进行 AI
-                解析。
+                {health
+                  ? "上传的 PDF 保存在你的服务器；索引完成后可用于本地模型问答。示例卡片用于体验界面。"
+                  : "浏览器预览模式：本地 PDF 尚未上传服务器，不能用于模型问答。"}
               </div>
             </>
           )}
@@ -907,8 +1025,13 @@ export default function App() {
                   </div>
                   {active.local ? (
                     <div className="local-preview">
-                      {urls[active.id] ? (
-                        <iframe title={active.title} src={urls[active.id]} />
+                      {active.backendId || urls[active.id] ? (
+                        <iframe
+                          title={active.title}
+                          src={
+                            active.backendId ? active.source : urls[active.id]
+                          }
+                        />
                       ) : (
                         <div className="empty-state">
                           <FileText size={32} />
@@ -1037,11 +1160,16 @@ export default function App() {
                       <span className="mini-mark">
                         <Sparkles size={15} />
                       </span>
-                      研析助手<small>预置回答演示</small>
+                      研析助手
+                      <small>
+                        {health?.model_ready
+                          ? "本地模型 · 原文证据"
+                          : "等待模型连接"}
+                      </small>
                     </span>
                     <span className="small-status">
                       <i />
-                      本地演示
+                      {health?.model_ready ? "模型已就绪" : "模型未连接"}
                     </span>
                   </div>
                   <div className="chat-messages" aria-live="polite">
@@ -1054,9 +1182,9 @@ export default function App() {
                         <p>选择研究范围，从一个好问题开始。</p>
                         <div className="suggestion-grid">
                           {[
-                            "Transformer 与 BERT 有什么区别？",
-                            "如何理解多头注意力？",
-                            "RAG 如何引入外部知识？",
+                            "所选文献的主要研究问题是什么？",
+                            "所选文献使用了哪些实验设置？",
+                            "所选文献提出了哪些局限？",
                           ].map((q, i) => (
                             <button key={q} onClick={() => ask(q)}>
                               <span>0{i + 1}</span>
@@ -1082,40 +1210,42 @@ export default function App() {
                         <div>
                           <b>
                             {message.role === "assistant"
-                              ? "研析 · 演示回答"
+                              ? "研析 · 文献回答"
                               : "你"}
                           </b>
                           <p>{message.text}</p>
-                          {message.citations &&
-                            message.citations.length > 0 && (
-                              <div className="citation-list">
-                                {message.citations.map((id, index) => {
-                                  const paper = seedPapers.find(
-                                    (p) => p.id === id,
-                                  )!;
-                                  return (
-                                    <a
-                                      href={paper.source}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      key={id}
-                                    >
-                                      <span>{index + 1}</span>
-                                      <FileText size={13} />
-                                      {paper.title}
-                                      <ArrowUpRight size={13} />
-                                    </a>
-                                  );
-                                })}
-                              </div>
-                            )}
+                          {message.steps && (
+                            <div className="answer-steps">
+                              {message.steps.join(" → ")}
+                            </div>
+                          )}
+                          {message.evidence && message.evidence.length > 0 && (
+                            <div className="evidence-list">
+                              {message.evidence.map((e) => (
+                                <details key={e.id}>
+                                  <summary>
+                                    [{e.id}] {e.title} · 第 {e.page} 页
+                                  </summary>
+                                  <blockquote>{e.quote}</blockquote>
+                                  <a
+                                    href={e.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    打开原文第 {e.page} 页{" "}
+                                    <ArrowUpRight size={13} />
+                                  </a>
+                                </details>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
                     {busy && (
                       <div className="assistant-loading">
                         <Loader2 size={16} className="spin" />
-                        正在载入对应演示样例…
+                        正在检索原文并运行本地模型…
                       </div>
                     )}
                   </div>
@@ -1141,7 +1271,9 @@ export default function App() {
                     <div>
                       <span>
                         <ShieldCheck size={14} />
-                        当前未连接大模型 · 请核对原文
+                        {health?.model_ready
+                          ? "本地模型推理 · 关键结论请核对原文"
+                          : "模型未连接 · 请先启动服务器"}
                       </span>
                       <button
                         className="send-button"
@@ -1165,16 +1297,22 @@ export default function App() {
                     value={chatScope}
                     onChange={(e) => setChatScope(e.target.value)}
                   >
-                    <option value="all">全部文献</option>
-                    {papers.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.title}
-                      </option>
-                    ))}
+                    <option value="all">全部已解析文献</option>
+                    {papers
+                      .filter((p) => p.backendId && p.backendStatus === "ready")
+                      .map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.title}
+                        </option>
+                      ))}
                   </select>
                   <div className="scope-papers">
                     {papers
-                      .filter((p) => chatScope === "all" || p.id === chatScope)
+                      .filter(
+                        (p) =>
+                          p.backendId &&
+                          (chatScope === "all" || p.id === chatScope),
+                      )
                       .map((p) => (
                         <button key={p.id} onClick={() => openPaper(p)}>
                           <FileText size={16} />
@@ -1192,7 +1330,8 @@ export default function App() {
                     <ShieldCheck size={20} />
                     <strong>证据，比答案更重要</strong>
                     <p>
-                      当前展示固定问答及文献入口。真实段落检索、引用校验和模型流式输出将在后续接入。
+                      问答仅使用服务器已解析的文献。展开引用可查看检索原文，并跳转
+                      PDF 页码；引用标号校验不等于结论一定正确。
                     </p>
                   </div>
                 </aside>
@@ -1611,7 +1750,9 @@ export default function App() {
               研析 <i />
               让知识连接，让研究发生。
             </span>
-            <span>Frontend Demo · v0.1</span>
+            <span>
+              {health ? "本地科研工作台 · v0.2" : "浏览器预览 · v0.2"}
+            </span>
           </footer>
         </main>
       </div>
@@ -1679,10 +1820,14 @@ export default function App() {
                 >
                   <FileText size={34} />
                   <b>点击选择，或将 PDF 拖到这里</b>
-                  <span>支持批量导入 · 单文件不超过 20 MB</span>
+                  <span>
+                    {health
+                      ? "上传至本地服务器 · 单文件不超过 100 MB"
+                      : "浏览器本地预览 · 单文件不超过 20 MB"}
+                  </span>
                   <span>本地文件指纹可识别内容完全相同的重复 PDF</span>
                   <span className="button primary small">
-                    选择文件 <Plus size={14} />
+                    {importing ? "正在上传…" : "选择文件"} <Plus size={14} />
                   </span>
                 </div>
                 <input
@@ -1699,8 +1844,9 @@ export default function App() {
                 <div className="info-note">
                   <ShieldCheck size={17} />
                   <p>
-                    文件只在本地预览，刷新后需重新选择。当前不包含
-                    OCR、语义去重或真实 AI 解析。
+                    {health
+                      ? "PDF 保存到你的服务器，后台提取正文并建立问答索引。扫描件需要 OCR 支持。"
+                      : "后端未连接：文件只在浏览器预览，刷新后需重新选择。"}
                   </p>
                 </div>
               </>
@@ -1770,7 +1916,8 @@ export default function App() {
                       数据说明
                       <b>
                         所有 AI
-                        内容均为明确标记的演示或模板。无密钥、无真实后端；浏览器保存目录与星标。
+                        文献问答连接本地服务器模型与按页索引；探索、图谱与写作模板仍为示例功能。浏览器保存目录偏好，上传的
+                        PDF 保存在服务器。
                       </b>
                     </span>
                   </div>

@@ -3036,3 +3036,39 @@ textarea {
   border-left: 3px solid #8aa070;
   padding-left: 16px;
 }
+
+.answer-steps {
+  color: var(--muted, #6e7974);
+  font-size: 11px;
+  margin-top: 12px;
+}
+.evidence-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+.evidence-list details {
+  border: 1px solid #dfe5df;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+.evidence-list summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.evidence-list blockquote {
+  white-space: pre-wrap;
+  line-height: 1.7;
+  margin: 12px 0;
+  padding-left: 12px;
+  border-left: 2px solid #8ca893;
+  max-height: 250px;
+  overflow: auto;
+}
+.evidence-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #37654e;
+}
