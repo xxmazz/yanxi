@@ -86,3 +86,5 @@ npm run format:check
 - 探索发现、引用图谱、写作框架与中英阅读仍保留原型功能，不能视为已完成赛题六大模块。
 
 扫描件与版本管理安装、环境变量及接口见 [OCR 与版本管理](OCR_AND_VERSIONS.md)。在三卡问答基础上，本地 OCR 使用 GPU 3；需要额外安装 `backend/requirements-ocr.txt`、系统 Poppler，并预下载权重。
+
+arXiv 真实检索无需新增密钥，使用现有 httpx；服务器需能访问官方 API 和 PDF 域名。见 [检索与一键入库](DISCOVERY.md)。检索／下载联网，问答和中文检索词转换均在本地模型执行。

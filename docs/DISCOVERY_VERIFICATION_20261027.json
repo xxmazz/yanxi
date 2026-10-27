@@ -1,0 +1,91 @@
+{
+  "search_seconds": 0.41,
+  "query": "检索增强生成",
+  "search_query": "retrieval augmented generation",
+  "returned": 8,
+  "total": 8832,
+  "library_ranking_verified": true,
+  "sample_results": [
+    {
+      "arxiv_id": "2309.15217v2",
+      "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+      "url": "https://arxiv.org/abs/2309.15217v2",
+      "related_document": {
+        "id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+        "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+        "similarity": 0.9926
+      }
+    },
+    {
+      "arxiv_id": "2601.05264v1",
+      "title": "Engineering the RAG Stack: A Comprehensive Review of the Architecture and Trust Frameworks for Retrieval-Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2601.05264v1",
+      "related_document": {
+        "id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+        "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+        "similarity": 0.9281
+      }
+    },
+    {
+      "arxiv_id": "2507.23334v2",
+      "title": "MUST-RAG: MUSical Text Question Answering with Retrieval Augmented Generation",
+      "url": "https://arxiv.org/abs/2507.23334v2",
+      "related_document": {
+        "id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+        "title": "Ragas: Automated Evaluation of Retrieval Augmented Generation",
+        "similarity": 0.9065
+      }
+    }
+  ],
+  "document": {
+    "id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "pages": 19,
+    "status": "ready",
+    "version": 4
+  },
+  "source": {
+    "arxiv_id": "2005.11401v4",
+    "url": "https://arxiv.org/abs/2005.11401v4",
+    "authors": [
+      "Patrick Lewis",
+      "Ethan Perez",
+      "Aleksandra Piktus",
+      "Fabio Petroni",
+      "Vladimir Karpukhin",
+      "Naman Goyal",
+      "Heinrich Küttler",
+      "Mike Lewis",
+      "Wen-tau Yih",
+      "Tim Rocktäschel",
+      "Sebastian Riedel",
+      "Douwe Kiela"
+    ],
+    "published": "2020-05-22T21:34:34Z"
+  },
+  "repeat_import_same_document": true,
+  "pdf_sha256_verified": true,
+  "chat_seconds": 4.17,
+  "answer": {
+    "answer": "RAG 的非参数记忆使用了维基百科数据源[E5]",
+    "citations": [
+      {
+        "id": "E5",
+        "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+        "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+        "page": 2,
+        "quote": "marginalize over seq2seq predictions given different documents.\nbut have only explored open-domain extractive question answering. Here, we bring hybrid parametric\nand non-parametric memory to the “workhorse of NLP,” i.e. sequence-to-sequence (seq2seq) models.\nWe endow pre-trained, parametric-memory generation models with a non-parametric memory through\na general-purpose ﬁne-tuning approach which we refer to as retrieval-augmented generation (RAG).\nWe build RAG models where the parametric memory is a pre-trained seq2seq transformer, and the\nnon-parametric memory is a dense vector index of Wikipedia, accessed with a pre-trained neural\nretriever. We combine these components in a probabilistic model trained end-to-end (Fig. 1). The\nretriever (Dense Passage Retriever [26], henceforth DPR) provides latent documents conditioned on\nthe input, and the seq2seq model (BART [32]) then conditions on these latent documents together with\nthe input to generate the output. We marginalize the latent documents with a top-K approximation,\neither on a per-output basis (assuming the same document is resp",
+        "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=2"
+      }
+    ],
+    "insufficient_evidence": false,
+    "steps": [
+      "检查文献范围",
+      "生成中英检索词",
+      "混合检索",
+      "本地模型阅读证据",
+      "校验原文摘录与数值"
+    ]
+  },
+  "citations_verified_in_original_pdf": true
+}

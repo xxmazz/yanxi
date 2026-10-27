@@ -196,6 +196,23 @@ export function ServerReader({
   title: string;
   pages: number;
 }) {
+  const [sources, setSources] = useState<
+    { arxiv_id: string; title: string; url: string; imported_at: string }[]
+  >([]);
+  useEffect(() => {
+    let disposed = false;
+    setSources([]);
+    api<
+      { arxiv_id: string; title: string; url: string; imported_at: string }[]
+    >(`/api/documents/${documentId}/sources`)
+      .then((value) => {
+        if (!disposed) setSources(value);
+      })
+      .catch(() => {});
+    return () => {
+      disposed = true;
+    };
+  }, [documentId]);
   const [number, setNumber] = useState(1);
   const [page, setPage] = useState<ParsedPage | null>(null);
   const [error, setError] = useState("");
@@ -219,6 +236,19 @@ export function ServerReader({
   }, [documentId, number]);
   return (
     <section className="parsed-reader">
+      {!!sources.length && (
+        <details className="archive-panel">
+          <summary>论文检索来源</summary>
+          {sources.map((source) => (
+            <p key={source.arxiv_id}>
+              <a href={source.url} target="_blank" rel="noreferrer">
+                arXiv:{source.arxiv_id} · {source.title}
+              </a>{" "}
+              · 导入记录 {source.imported_at} UTC
+            </p>
+          ))}
+        </details>
+      )}
       <div className="reader-pagination">
         <button disabled={number <= 1} onClick={() => setNumber((n) => n - 1)}>
           上一页

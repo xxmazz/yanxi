@@ -4,18 +4,20 @@ import os
 import subprocess
 import tempfile
 import threading
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
 
 from .core import Store, chunks_for_page, retrieve, validate_answer
+from .discovery import ArxivDiscovery, DiscoveryError, valid_id
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 
@@ -23,6 +25,10 @@ log = logging.getLogger("yanxi")
 store = Store(Path(os.getenv("YANXI_DATA_DIR", "runtime/library")))
 models = LocalModels()
 ocr = LocalOCR()
+discovery = ArxivDiscovery(store)
+download_workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="arxiv-import")
+download_slots = threading.BoundedSemaphore(2)
+search_lock = asyncio.Lock()
 workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="pdf-index")
 upload_lock = threading.Lock()
 chat_lock = asyncio.Lock()
@@ -53,6 +59,11 @@ def index_document(doc_id):
             for chunk, vector in zip(chunks, vectors):
                 chunk["vector"] = vector.tobytes()
         info = metadata(reader, first)
+        sources = discovery.sources(doc_id)
+        if sources:
+            source = sources[0]
+            info["authors"] = "; ".join(source["authors"])[:1000]
+            info["abstract"] = info["abstract"] or source["abstract"][:1800]
         analysis = store.analyze(doc_id, "\n".join(texts), chunks, info)
         store.finish(doc_id, len(reader.pages), chunks, info["title"], analysis, info)
     except Exception as exc:
@@ -75,7 +86,9 @@ async def lifespan(app):
                 workers.submit(index_document, doc["id"])
             else:
                 store.fail(doc["id"], "重启恢复队列已满，请重新导入")
+    discovery.recover_jobs()
     yield
+    download_workers.shutdown(wait=True)
     workers.shutdown(wait=True)
 
 
@@ -92,6 +105,159 @@ def health():
         "retrieval": "bm25+e5-rrf" if models.encoder is not None else "bm25",
         "ocr_ready": ocr.reader is not None,
     }
+
+
+@app.get("/api/discovery/search")
+async def search_papers(
+    q: str = Query(min_length=2, max_length=240),
+    start: int = Query(default=0, ge=0, le=992),
+    sort: Literal["relevance", "newest", "library"] = "relevance",
+):
+    if search_lock.locked():
+        raise HTTPException(429, "正在处理另一个论文检索，请稍后重试")
+    async with search_lock:
+        translated = q.strip()
+        steps = ["读取检索主题"]
+        if any("\u4e00" <= char <= "\u9fff" for char in q):
+            if models.llm is None:
+                raise HTTPException(503, "中文主题需要本地模型，请稍后重试或输入英文关键词")
+            if chat_lock.locked():
+                raise HTTPException(429, "本地模型正在回答问题，请稍后检索")
+            async with chat_lock:
+                try:
+                    translated = await asyncio.to_thread(models.discovery_query, q)
+                except (ValueError, RuntimeError) as exc:
+                    raise HTTPException(
+                        503, "本地模型检索词转换失败，请输入英文关键词重试"
+                    ) from exc
+            steps.append("将中文主题转换为英文检索词")
+        try:
+            result = await asyncio.to_thread(
+                discovery.search, translated, start, "relevance" if sort == "library" else sort
+            )
+        except DiscoveryError as exc:
+            raise HTTPException(exc.status, str(exc)) from exc
+        steps.append("查询 arXiv 官方元数据" if not result["cached"] else "读取 arXiv 查询缓存")
+        items = result["items"]
+        library_ranked = False
+        library = [d for d in store.documents() if d["status"] == "ready"]
+        if library and items and models.encoder is not None:
+            vectors = await asyncio.to_thread(
+                models.encode,
+                [d["title"] + " " + d["abstract"][:1800] for d in library[:40]]
+                + [d["title"] + " " + d["abstract"][:1800] for d in items],
+            )
+            if vectors is not None:
+                import numpy as np
+
+                count = min(len(library), 40)
+                base = np.asarray(vectors[:count])
+                for item, vector in zip(items, vectors[count:]):
+                    scores = base @ vector
+                    index = int(np.argmax(scores))
+                    item["related_document"] = {
+                        "id": library[index]["id"],
+                        "title": library[index]["title"],
+                        "similarity": round(float(scores[index]), 4),
+                    }
+                library_ranked = True
+                if sort == "library":
+                    items.sort(
+                        key=lambda item: item["related_document"]["similarity"], reverse=True
+                    )
+                steps.append("本地 E5 比较候选摘要与文献库主题")
+        imported = discovery.imported()
+        for item in items:
+            item["imported"] = imported.get(item["arxiv_id"])
+        return {
+            **result,
+            "query": q.strip(),
+            "search_query": translated,
+            "start": start,
+            "page_size": 8,
+            "sort": sort,
+            "steps": steps,
+            "library_count": len(library),
+            "library_ranked": library_ranked,
+        }
+
+
+class ImportPaper(BaseModel):
+    arxiv_id: str = Field(min_length=6, max_length=60)
+
+
+def import_paper_job(job_id, arxiv_id):
+    submitted = False
+    try:
+        discovery.update_job(job_id, "downloading")
+        item = discovery.lookup(arxiv_id)
+        existing = discovery.imported().get(item["arxiv_id"])
+        if existing:
+            doc = store.document(existing["document_id"])
+            if existing["archived"]:
+                raise DiscoveryError("该版本已归档，请在文献库的归档记录中恢复", 409)
+            if doc["status"] != "error":
+                discovery.update_job(job_id, "complete", doc["id"])
+                return
+        data = discovery.download(item)
+        with upload_lock:
+            doc, duplicate = store.create(data, item["arxiv_id"].replace("/", "_") + ".pdf")
+            if doc["trashed_at"] or not doc["is_active"]:
+                raise DiscoveryError("相同原文件已归档，请先从归档记录恢复", 409)
+            discovery.source(doc["id"], item)
+            if duplicate and doc["status"] == "error":
+                store.queue(doc["id"])
+                duplicate = False
+            if not duplicate:
+                workers.submit(index_document, doc["id"])
+                submitted = True
+        discovery.update_job(job_id, "complete", doc["id"])
+    except Exception as exc:
+        log.warning("arXiv import failed: %s", exc)
+        message = (
+            str(exc)
+            if isinstance(exc, (DiscoveryError, ValueError))
+            else "arXiv 下载失败，请稍后重试"
+        )
+        discovery.update_job(job_id, "error", error=message[:300])
+    finally:
+        if not submitted:
+            pending.release()
+        download_slots.release()
+
+
+@app.post("/api/discovery/import", status_code=202)
+def import_paper(request: ImportPaper):
+    try:
+        valid_id(request.arxiv_id)
+    except DiscoveryError as exc:
+        raise HTTPException(exc.status, str(exc)) from exc
+    if not download_slots.acquire(blocking=False):
+        raise HTTPException(429, "下载队列已满，请等待当前论文导入完成")
+    if not pending.acquire(blocking=False):
+        download_slots.release()
+        raise HTTPException(429, "解析队列已满，请稍后导入")
+    job_id = uuid.uuid4().hex
+    try:
+        discovery.create_job(job_id, request.arxiv_id)
+        download_workers.submit(import_paper_job, job_id, request.arxiv_id)
+    except Exception:
+        pending.release()
+        download_slots.release()
+        raise
+    return discovery.job(job_id)
+
+
+@app.get("/api/discovery/jobs")
+def import_jobs():
+    return discovery.jobs()
+
+
+@app.get("/api/documents/{doc_id}/sources")
+def document_sources(doc_id: str):
+    if not store.document(doc_id):
+        raise HTTPException(404, "文献不存在")
+    return discovery.sources(doc_id)
 
 
 @app.get("/api/documents")

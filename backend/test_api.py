@@ -16,11 +16,16 @@ class ApiTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.module = importlib.import_module("backend.app")
         self.old = self.module.store
+        self.old_discovery = self.module.discovery
         self.module.store = Store(Path(self.temp.name))
+        from backend.discovery import ArxivDiscovery
+
+        self.module.discovery = ArxivDiscovery(self.module.store)
         self.client = TestClient(self.module.app)
 
     def tearDown(self):
         self.module.store = self.old
+        self.module.discovery = self.old_discovery
         self.temp.cleanup()
 
     def wait_document(self, doc_id):

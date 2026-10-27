@@ -44,6 +44,7 @@ import { parseChartCsv } from "./csv";
 import { fingerprintPdf } from "./pdf-fingerprint";
 import { hasPdfHeader } from "./pdf-validation";
 import { api } from "./api";
+import { Discovery } from "./discovery";
 import { DocumentActions, ArchivePanel, ServerReader } from "./document-tools";
 import type { Evidence, Health, ServerDocument } from "./api";
 
@@ -1377,73 +1378,19 @@ export default function App() {
             </>
           )}
           {view === "discover" && (
-            <>
-              <div className="page-heading">
-                <div>
-                  <div className="eyebrow">FOLLOW YOUR CURIOSITY</div>
-                  <h1>探索发现</h1>
-                  <p>沿着一条研究线索，发现值得阅读的下一篇。</p>
-                </div>
-                <span className="subtle-label">精选样例 · 非实时检索</span>
-              </div>
-              <div className="discover-intro">
-                <Globe2 size={34} />
-                <div>
-                  <h2>从经典出发，探索研究脉络。</h2>
-                  <p>本阶段展示固定文献集；实时 arXiv 检索将在后端接入。</p>
-                </div>
-              </div>
-              <div className="discovery-list">
-                {seedPapers
-                  .filter((p) =>
-                    (p.title + p.tag)
-                      .toLowerCase()
-                      .includes(query.toLowerCase()),
-                  )
-                  .map((p, i) => (
-                    <article key={p.id}>
-                      <div className={"discovery-number " + p.color}>
-                        {String(i + 1).padStart(2, "0")}
-                      </div>
-                      <div>
-                        <span className="discovery-meta">
-                          {p.venue} · {p.year}
-                          <i />
-                          {p.tag}
-                        </span>
-                        <h3>{p.title}</h3>
-                        <p>{p.abstract}</p>
-                        <span className="recommend-reason">
-                          <Sparkles size={12} />
-                          主题样例：与你的 Transformer 与语言模型研究脉络相关
-                        </span>
-                      </div>
-                      <div className="discovery-actions">
-                        {papers.some((x) => x.id === p.id) ? (
-                          <span>
-                            <Check size={15} />
-                            已在文献库
-                          </span>
-                        ) : (
-                          <button
-                            className="button secondary small"
-                            onClick={() => {
-                              setPapers((items) => [...items, p]);
-                              notify("已添加到文献库。");
-                            }}
-                          >
-                            <Plus size={14} />
-                            加入文献库
-                          </button>
-                        )}
-                        <a href={p.source} target="_blank" rel="noreferrer">
-                          原始文献 <ArrowUpRight size={14} />
-                        </a>
-                      </div>
-                    </article>
-                  ))}
-              </div>
-            </>
+            <Discovery
+              documents={serverDocs}
+              changed={changed}
+              notify={notify}
+              open={(id) => {
+                const paper = papers.find((item) => item.id === id);
+                if (paper) openPaper(paper);
+                else {
+                  changed();
+                  go("library");
+                }
+              }}
+            />
           )}
           {view === "graph" && (
             <>
@@ -1943,7 +1890,7 @@ export default function App() {
                     <span>
                       后续接入
                       <b>
-                        复杂表格与公式还原、段落对齐翻译、真实引用图谱与实时论文检索。
+                        复杂表格与公式还原、段落对齐翻译、真实引用图谱与定期论文追踪。
                       </b>
                     </span>
                   </div>
@@ -1952,8 +1899,9 @@ export default function App() {
                     <span>
                       数据说明
                       <b>
-                        所有 AI
-                        文献问答连接本地服务器模型与按页索引；探索、图谱与写作模板仍为示例功能。浏览器保存目录偏好，上传的
+                        所有 AI 文献问答连接本地服务器模型与按页索引；探索页连接
+                        arXiv
+                        真实检索，图谱与写作模板仍为示例功能。浏览器保存目录偏好，上传的
                         PDF 保存在服务器。
                       </b>
                     </span>
