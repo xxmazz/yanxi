@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-27",
+  "translation_version": "academic-v2:Qwen2.5-7B-Instruct",
+  "whole_document": {
+    "document_id": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+    "page": 1,
+    "whole": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "seconds": 183.26,
+    "timing_note": "任务可能复用已完成段落，此时间不代表整篇首次翻译耗时",
+    "all_requested_pages_verified": [1, 2, 3, 4, 5, 6, 7, 8],
+    "segments": 5,
+    "completed": 39,
+    "total": 39,
+    "original_text_exactly_preserved": true,
+    "source_hash_verified": true,
+    "cache_reused": true,
+    "cached_page_seconds": 0.01,
+    "sample_translation": "系统用于识别相关且聚焦的上下文段落，LLM在利用这些段落时的忠实程度，或者生成本身的质量。借助Ragas，我们提出了一套可以用来评估这些不同维度的指标，而无需依赖真实的人工标注。我们认为，这样的框架对于加速RAG架构的评估周期至关重要，尤其是在LLM快速采用的情况下。\n\n1 引言\n语言模型（LMs）捕捉了关于世界的大量知识，这使得它们能够在不访问任何外部来源的情况下回答问题。这一关于LMs作为知识库的想法在BERT（Devlin等，2019）推出后不久就出现了，并随着更大规模的LMs的引入而更加稳固（Roberts等，2020）。虽然最",
+    "protected_source": "We train the Transformer on 8 GPUs for 3.5 days with a learning rate of 0.0003. The objective is $L = -\\log p(y|x)$. Keep the code `model.eval()` unchanged.",
+    "protected_translation": "我们在8块GPU上训练Transformer，持续3.5天，学习率为0.0003。目标是$L = -\\log p(y|x)$。请保持代码`model.eval()`不变。",
+    "protected_items_preserved": true,
+    "chinese_source": "本文提出一种检索增强生成方法，将本地知识库与语言模型结合。实验在 8 张 GPU 上运行，学习率为 0.0003。",
+    "academic_english": "This paper proposes a retrieval-augmented generation method that combines a local knowledge base with a language model. The experiments were conducted on 8 GPUs, with a learning rate of 0.0003.",
+    "export": {
+      "bytes": 62842,
+      "sha256": "b0b0838c6a5f595becad3caddf252d67d4cf06cf1fe02c1ec2dfcd7dd1d77c72"
+    }
+  },
+  "rag_page": {
+    "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+    "page": 2,
+    "whole": false,
+    "model": "Qwen2.5-7B-Instruct",
+    "seconds": 95.22,
+    "timing_note": "任务可能复用已完成段落，此时间不代表整篇首次翻译耗时",
+    "all_requested_pages_verified": [2],
+    "segments": 6,
+    "completed": 6,
+    "total": 6,
+    "original_text_exactly_preserved": true,
+    "source_hash_verified": true,
+    "cache_reused": true,
+    "cached_page_seconds": 0.02,
+    "sample_translation": "最终预测中，我们将treatz视为一个潜在变量，并对给定不同文档的seq2seq预测进行边缘化处理。\n但我们仅探索了开放领域抽取式问答。在这里，我们将混合参数性和非参数性记忆引入“NLP的基本工具”，即序列到序列（seq2seq）模型。\n我们通过一种通用的微调方法，赋予预训练的参数性记忆生成模型非参数性记忆，这种方法我们称之为检索增强生成（RAG）。\n我们构建了RAG模型，其中参数性记忆是一个预训练的seq2seq变换器，而非参数性记忆是通过预训练神经检索器访问的维基百科密集向量索引。我们将这些组件在一个端到端训练的概率模型中结合（图1）。检索器（密集段落检索器[26]，以下简称DPR）根据条件提供潜在文档。",
+    "protected_source": "We train the Transformer on 8 GPUs for 3.5 days with a learning rate of 0.0003. The objective is $L = -\\log p(y|x)$. Keep the code `model.eval()` unchanged.",
+    "protected_translation": "我们在8块GPU上训练Transformer，持续3.5天，学习率为0.0003。目标是$L = -\\log p(y|x)$。请保持代码`model.eval()`不变。",
+    "protected_items_preserved": true,
+    "chinese_source": "本文提出一种检索增强生成方法，将本地知识库与语言模型结合。实验在 8 张 GPU 上运行，学习率为 0.0003。",
+    "academic_english": "This paper proposes a retrieval-augmented generation method that combines a local knowledge base with a language model. The experiments were conducted on 8 GPUs, with a learning rate of 0.0003.",
+    "export": null
+  },
+  "browser": {
+    "original_to_translation_same_segment": true,
+    "translation_to_original_same_segment": true,
+    "left_to_right_observed_segment_index": 1,
+    "right_to_left_observed_segment_index": 2,
+    "screenshot": "浏览器验证截图保存在本地输出目录"
+  },
+  "limitations": [
+    "机器翻译仍需人工核对，自动校验不保证语义完全正确",
+    "没有 LaTeX 标记的 PDF 公式与复杂表格未做完整结构恢复",
+    "官方 541 页教材尚未完成全量翻译回归"
+  ]
+}

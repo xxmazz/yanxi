@@ -88,3 +88,5 @@ npm run format:check
 扫描件与版本管理安装、环境变量及接口见 [OCR 与版本管理](OCR_AND_VERSIONS.md)。在三卡问答基础上，本地 OCR 使用 GPU 3；需要额外安装 `backend/requirements-ocr.txt`、系统 Poppler，并预下载权重。
 
 arXiv 真实检索无需新增密钥，使用现有 httpx；服务器需能访问官方 API 和 PDF 域名。见 [检索与一键入库](DISCOVERY.md)。检索／下载联网，问答和中文检索词转换均在本地模型执行。
+
+对照翻译复用现有本地 Qwen 权重，无需新增依赖或密钥；任务与缓存保存在同一 SQLite 中。使用、接口、资源限制与长书边界见 [本地论文对照翻译](TRANSLATION.md)。

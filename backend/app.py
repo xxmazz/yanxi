@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
@@ -20,12 +20,14 @@ from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, valid_id
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
+from .translation import TranslationService
 
 log = logging.getLogger("yanxi")
 store = Store(Path(os.getenv("YANXI_DATA_DIR", "runtime/library")))
 models = LocalModels()
 ocr = LocalOCR()
 discovery = ArxivDiscovery(store)
+translation = TranslationService(store, models)
 download_workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="arxiv-import")
 download_slots = threading.BoundedSemaphore(2)
 search_lock = asyncio.Lock()
@@ -87,7 +89,9 @@ async def lifespan(app):
             else:
                 store.fail(doc["id"], "重启恢复队列已满，请重新导入")
     discovery.recover_jobs()
+    translation.recover()
     yield
+    await asyncio.to_thread(translation.shutdown)
     download_workers.shutdown(wait=True)
     workers.shutdown(wait=True)
 
@@ -463,6 +467,79 @@ def citation(e, quote=None):
         "quote": quote or e["text"],
         "url": f"/api/documents/{e['document_id']}/pdf#page={e['page']}",
     }
+
+
+def translation_action(operation):
+    try:
+        return operation()
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    except OverflowError as exc:
+        raise HTTPException(429, str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(503, str(exc)) from exc
+
+
+class DocumentTranslation(BaseModel):
+    target: Literal["zh", "en"] = "zh"
+    page: int | None = Field(default=None, ge=1, le=650)
+
+
+class TextTranslation(BaseModel):
+    target: Literal["zh", "en"] = "zh"
+    text: str = Field(min_length=1, max_length=2400)
+
+
+@app.post("/api/documents/{doc_id}/translation", status_code=202)
+def translate_document(doc_id: str, request: DocumentTranslation):
+    return translation_action(lambda: translation.start(request.target, doc_id, request.page))
+
+
+@app.get("/api/documents/{doc_id}/translation/pages/{number}")
+def translated_page(doc_id: str, number: int, target: Literal["zh", "en"] = "zh"):
+    return translation_action(lambda: translation.page(doc_id, number, target))
+
+
+@app.get("/api/documents/{doc_id}/translation/jobs")
+def document_translation_jobs(doc_id: str):
+    translation_action(lambda: translation.check_document(doc_id))
+    with store.connect() as db:
+        ids = db.execute(
+            "SELECT id FROM translation_jobs WHERE document_id=? ORDER BY rowid DESC LIMIT 8",
+            (doc_id,),
+        ).fetchall()
+    return [translation.job(row["id"]) for row in ids]
+
+
+@app.post("/api/translation/text", status_code=202)
+def translate_text(request: TextTranslation):
+    if not request.text.strip():
+        raise HTTPException(422, "请输入需要翻译的文本")
+    return translation_action(lambda: translation.start(request.target, text=request.text))
+
+
+@app.get("/api/translation/jobs/{job_id}")
+def translation_job(job_id: str):
+    return translation_action(lambda: translation.job(job_id))
+
+
+@app.post("/api/translation/jobs/{job_id}/cancel")
+def cancel_translation(job_id: str):
+    return translation_action(lambda: translation.cancel(job_id))
+
+
+@app.get("/api/documents/{doc_id}/translation/export")
+def export_translation(doc_id: str, target: Literal["zh", "en"] = "zh"):
+    content = translation_action(lambda: translation.export(doc_id, target))
+    return Response(
+        content,
+        media_type="text/markdown; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="translation-{doc_id[:12]}-{target}.md"'
+        },
+    )
 
 
 dist = Path(os.getenv("YANXI_DIST_DIR", "dist"))

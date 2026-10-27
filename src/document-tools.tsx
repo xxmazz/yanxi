@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
 import type { ServerDocument, ParsedPage } from "./api";
+import { TranslationReader } from "./translation";
 
 type ActionsProps = {
   document: ServerDocument;
@@ -214,6 +215,7 @@ export function ServerReader({
     };
   }, [documentId]);
   const [number, setNumber] = useState(1);
+  const [mode, setMode] = useState<"original" | "translation">("original");
   const [page, setPage] = useState<ParsedPage | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {
@@ -250,6 +252,18 @@ export function ServerReader({
         </details>
       )}
       <div className="reader-pagination">
+        <button
+          aria-pressed={mode === "original"}
+          onClick={() => setMode("original")}
+        >
+          原页与解析正文
+        </button>
+        <button
+          aria-pressed={mode === "translation"}
+          onClick={() => setMode("translation")}
+        >
+          中英对照翻译
+        </button>
         <button disabled={number <= 1} onClick={() => setNumber((n) => n - 1)}>
           上一页
         </button>
@@ -276,58 +290,68 @@ export function ServerReader({
           下一页
         </button>
       </div>
-      <div className="parsed-columns">
-        <div className="page-image">
-          <a
-            href={`/api/documents/${documentId}/pdf#page=${number}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            打开原始 PDF · 第 {number} 页
-          </a>
-          <img
-            key={`${documentId}-${number}`}
-            alt={`${title} · 物理第 ${number} 页`}
-            src={`/api/documents/${documentId}/render/${number}`}
-          />
+      {mode === "translation" ? (
+        <TranslationReader
+          key={documentId}
+          documentId={documentId}
+          number={number}
+        />
+      ) : (
+        <div className="parsed-columns">
+          <div className="page-image">
+            <a
+              href={`/api/documents/${documentId}/pdf#page=${number}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              打开原始 PDF · 第 {number} 页
+            </a>
+            <img
+              key={`${documentId}-${number}`}
+              alt={`${title} · 物理第 ${number} 页`}
+              src={`/api/documents/${documentId}/render/${number}`}
+            />
+          </div>
+          <article className="parsed-text">
+            <h3>{page?.method === "ocr" ? "扫描页 · 本地 OCR" : "逐页正文"}</h3>
+            {error ? (
+              <p role="status">{error}</p>
+            ) : !page ? (
+              <p>正在加载本页…</p>
+            ) : (
+              <>
+                <p>
+                  物理第 {number} 页 ·{" "}
+                  {page.method === "ocr"
+                    ? `${page.blocks.length} 个文字区域，点击查看坐标与识别置信度`
+                    : "来自 PDF 文本层"}
+                </p>
+                {page.method === "ocr" ? (
+                  page.blocks.map((block, i) => (
+                    <details className="ocr-block" key={i}>
+                      <summary>{block.text}</summary>
+                      <small>
+                        OCR 置信度 {(block.confidence * 100).toFixed(1)}% ·
+                        像素坐标{" "}
+                        {block.bbox
+                          .map((point) => point.map(Math.round).join(","))
+                          .join(" / ")}
+                      </small>
+                    </details>
+                  ))
+                ) : (
+                  <pre>{page.text || "此页没有正文。"}</pre>
+                )}
+                {page.method === "ocr" && (
+                  <p>
+                    OCR 可能误识别公式、符号和阅读顺序，请结合左侧原页核对。
+                  </p>
+                )}
+              </>
+            )}
+          </article>
         </div>
-        <article className="parsed-text">
-          <h3>{page?.method === "ocr" ? "扫描页 · 本地 OCR" : "逐页正文"}</h3>
-          {error ? (
-            <p role="status">{error}</p>
-          ) : !page ? (
-            <p>正在加载本页…</p>
-          ) : (
-            <>
-              <p>
-                物理第 {number} 页 ·{" "}
-                {page.method === "ocr"
-                  ? `${page.blocks.length} 个文字区域，点击查看坐标与识别置信度`
-                  : "来自 PDF 文本层"}
-              </p>
-              {page.method === "ocr" ? (
-                page.blocks.map((block, i) => (
-                  <details className="ocr-block" key={i}>
-                    <summary>{block.text}</summary>
-                    <small>
-                      OCR 置信度 {(block.confidence * 100).toFixed(1)}% ·
-                      像素坐标{" "}
-                      {block.bbox
-                        .map((point) => point.map(Math.round).join(","))
-                        .join(" / ")}
-                    </small>
-                  </details>
-                ))
-              ) : (
-                <pre>{page.text || "此页没有正文。"}</pre>
-              )}
-              {page.method === "ocr" && (
-                <p>OCR 可能误识别公式、符号和阅读顺序，请结合左侧原页核对。</p>
-              )}
-            </>
-          )}
-        </article>
-      </div>
+      )}
     </section>
   );
 }
