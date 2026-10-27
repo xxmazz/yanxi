@@ -1,0 +1,52 @@
+{
+  "fixture": "Attention v1 经 Poppler/Pillow 自行栅格化的 15 页无文本层 PDF，非官网 img 测试文件",
+  "native_versions": {
+    "old_version": 1,
+    "new_version": 7,
+    "older_excluded": true,
+    "source_retained": true
+  },
+  "scan": {
+    "id": "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+    "pages": 15,
+    "ocr_pages": 15,
+    "page5_blocks": 85,
+    "no_native_text": true
+  },
+  "chat_seconds": 4.15,
+  "answer": {
+    "answer": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是 2048[E1]",
+    "citations": [
+      {
+        "id": "E1",
+        "document_id": "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+        "title": "Attention Is All You Need",
+        "page": 5,
+        "quote": "rd Networks\nIn addition to attention sub-layers, each of the layers in our encoder and decoder contains a fully\nconnected feed-forward network, which is\napplied\nto each\nposition separately and identically: This\nconsists of two linear transformations with a ReLU activation in between.\nFFN(x)\n=\nmax(0,cWi + b)Wz + bz\nWhile the linear transformations are the same across different positions,\nthey\nuse different parameters\nfrom\nlayer\nto layer: The dimension of input and output is\ndmodel >\nand the inner-layer has dimension\n2048.\n3.4\nEmbeddings and Softmax\nSimilarly to other sequence transduction models, we use learned embeddings t0 convert the input\ntokens and output tokens to vectors of dimension dmodel. We also use the usual learned linear transfor-\nmation and softmax function to convert the decoder output to predicted next-token probabilities. In\nour model,\nwe share the same weight matrix between the two\nembedding layers and the pre-softmax\nlinear transformation_\nIn the\nembedding layers, we multiply those weights by Vdmodel:\n35\nPositional\nEncoding\nSince our model contains no recurrence an",
+        "url": "/api/documents/85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98/pdf#page=5"
+      }
+    ],
+    "insufficient_evidence": false,
+    "steps": [
+      "检查文献范围",
+      "生成中英检索词",
+      "混合检索",
+      "本地模型阅读证据",
+      "校验原文摘录与数值"
+    ]
+  },
+  "ocr_quote_page_verified": true,
+  "scan_similarity": {
+    "id": "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+    "title": "Attention Is All You Need",
+    "overlap": 0.6962,
+    "semantic_similarity": 0.9978,
+    "version": 0,
+    "arxiv_id": "",
+    "recommendation": "review",
+    "reason": "正文词组高度重合，请核对是否为同一论文或不同排版。",
+    "decision": "keep_both",
+    "note": "先完成扫描样本标题抽取，再与原生 v7 内容比较；扫描文本中的 arXiv 边栏未可靠识别，故仅提示核对，不推测版本号。"
+  },
+  "first_scan_import_seconds": 92.9
+}

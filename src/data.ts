@@ -23,7 +23,7 @@ export type Paper = {
   filename?: string;
   contentFingerprint?: string;
   backendId?: string;
-  backendStatus?: "queued" | "ready" | "error";
+  backendStatus?: "queued" | "processing" | "review" | "ready" | "error";
 };
 export const seedPapers: Paper[] = [
   {

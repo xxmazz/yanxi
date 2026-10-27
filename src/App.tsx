@@ -44,6 +44,7 @@ import { parseChartCsv } from "./csv";
 import { fingerprintPdf } from "./pdf-fingerprint";
 import { hasPdfHeader } from "./pdf-validation";
 import { api } from "./api";
+import { DocumentActions, ArchivePanel, ServerReader } from "./document-tools";
 import type { Evidence, Health, ServerDocument } from "./api";
 
 const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
@@ -128,6 +129,9 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [chatScope, setChatScope] = useState("all");
   const [health, setHealth] = useState<Health | null>(null);
+  const [serverDocs, setServerDocs] = useState<ServerDocument[]>([]);
+  const [refreshTick, setRefreshTick] = useState(0);
+  const changed = () => setRefreshTick((n) => n + 1);
   const [importing, setImporting] = useState(false);
   const [graphFocus, setGraphFocus] = useState("attention");
   const [graphFilter, setGraphFilter] = useState("all");
@@ -168,6 +172,7 @@ export default function App() {
         const docs = await api<ServerDocument[]>("/api/documents");
         if (disposed) return;
         setHealth(status);
+        setServerDocs(docs);
         setPapers((items) => {
           const server = docs.map(
             (doc): Paper => ({
@@ -176,22 +181,26 @@ export default function App() {
               backendStatus: doc.status,
               title: doc.title,
               authors:
-                doc.status === "ready"
-                  ? "服务器文献库"
-                  : doc.status === "error"
-                    ? "解析失败"
-                    : "正在解析与建索引",
+                doc.authors ||
+                (doc.status === "review"
+                  ? "相似版本待确认"
+                  : doc.status === "ready"
+                    ? "服务器文献库"
+                    : "正在解析与建索引"),
               year: new Date(doc.created + "Z").getFullYear(),
               venue: "服务器导入",
               tag:
                 doc.status === "ready"
                   ? "已建立索引"
-                  : doc.status === "error"
-                    ? "需要处理"
-                    : "解析中",
+                  : doc.status === "review"
+                    ? "版本待确认"
+                    : doc.status === "error"
+                      ? "需要处理"
+                      : "解析中",
               color: "blue",
               abstract:
                 doc.error ||
+                doc.abstract ||
                 (doc.status === "ready"
                   ? "已按页建立原文索引，可用于本地模型问答。"
                   : "PDF 已保存，正在后台提取正文。"),
@@ -221,7 +230,7 @@ export default function App() {
       disposed = true;
       clearInterval(timer);
     };
-  }, []);
+  }, [refreshTick]);
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -287,9 +296,16 @@ export default function App() {
     setPapers((items) =>
       items.map((p) => (p.id === id ? { ...p, favorite: !p.favorite } : p)),
     );
-  const removePaper = (id: string) => {
+  const removePaper = async (id: string) => {
     if (papers.find((p) => p.id === id)?.backendId) {
-      notify("服务器原文当前保留，删除管理将在后续加入。");
+      try {
+        await api(`/api/documents/${id}/archive`, { method: "POST" });
+        changed();
+        notify("已移入归档，可从归档记录恢复");
+      } catch (error) {
+        notify(error instanceof Error ? error.message : "操作失败");
+      }
+      setMenu(null);
       return;
     }
     setPapers((items) => items.filter((p) => p.id !== id));
@@ -328,6 +344,7 @@ export default function App() {
           }
         }
         setModal(null);
+        changed();
         notify(notes.join("；"));
       } finally {
         setImporting(false);
@@ -676,6 +693,7 @@ export default function App() {
                   导入文献
                 </button>
               </div>
+              {health && <ArchivePanel changed={changed} notify={notify} />}
               <section className="welcome-banner">
                 <div className="banner-copy">
                   <span className="banner-label">
@@ -910,6 +928,18 @@ export default function App() {
                     </button>
                     <div className="paper-authors">{paper.authors}</div>
                     <p className="paper-abstract">{paper.abstract}</p>
+                    {paper.backendId &&
+                      serverDocs.find((doc) => doc.id === paper.backendId) && (
+                        <DocumentActions
+                          document={
+                            serverDocs.find(
+                              (doc) => doc.id === paper.backendId,
+                            )!
+                          }
+                          changed={changed}
+                          notify={notify}
+                        />
+                      )}
                     <div className="paper-meta">
                       <span>
                         {paper.backendId ? `导入于 ${paper.year}` : paper.year}
@@ -940,7 +970,7 @@ export default function App() {
                         />
                         <span>
                           {paper.backendId
-                            ? `${paper.pages} 页 · ${paper.backendStatus === "ready" ? "可问答" : paper.backendStatus === "error" ? "解析失败" : "解析中"}`
+                            ? `${paper.pages} 页 · ${paper.backendStatus === "ready" ? "可问答" : paper.backendStatus === "review" ? "版本待确认" : paper.backendStatus === "error" ? "解析失败" : "解析中"}`
                             : paper.local
                               ? "本地预览"
                               : "阅读样例"}
@@ -987,13 +1017,15 @@ export default function App() {
                   <h1>沉浸阅读</h1>
                   <p>让理解与证据，始终在同一个页面。</p>
                 </div>
-                <button
-                  className="button secondary"
-                  onClick={() => setBilingual(!bilingual)}
-                >
-                  <Columns2 size={16} />
-                  {bilingual ? "中英对照" : "原文视图"}
-                </button>
+                {!active?.local && (
+                  <button
+                    className="button secondary"
+                    onClick={() => setBilingual(!bilingual)}
+                  >
+                    <Columns2 size={16} />
+                    {bilingual ? "中英对照" : "原文视图"}
+                  </button>
+                )}
               </div>
               {active ? (
                 <>
@@ -1023,7 +1055,13 @@ export default function App() {
                       问这篇论文
                     </button>
                   </div>
-                  {active.local ? (
+                  {active.backendId ? (
+                    <ServerReader
+                      documentId={active.backendId}
+                      title={active.title}
+                      pages={active.pages}
+                    />
+                  ) : active.local ? (
                     <div className="local-preview">
                       {active.backendId || urls[active.id] ? (
                         <iframe
@@ -1845,7 +1883,7 @@ export default function App() {
                   <ShieldCheck size={17} />
                   <p>
                     {health
-                      ? "PDF 保存到你的服务器，后台提取正文并建立问答索引。扫描件需要 OCR 支持。"
+                      ? "PDF 保存到你的服务器，后台逐页解析并建立问答索引；扫描页使用本地 OCR，相似版本由你确认保留策略。"
                       : "后端未连接：文件只在浏览器预览，刷新后需重新选择。"}
                   </p>
                 </div>
@@ -1887,16 +1925,16 @@ export default function App() {
                   <FlaskConical size={24} />
                 </span>
                 <h2 id="modal-title">研析 · 当前演示说明</h2>
-                <p>这是第一阶段前端原型，可以体验完整的页面与交互。</p>
+                <p>文献与问答连接本地服务器，模型推理不调用商业 API。</p>
                 <div className="settings-features">
                   <div>
                     <Check size={16} />
                     <span>
                       已实现
                       <b>
-                        文献筛选、星标、对比、PDF
-                        本地预览、阅读样例、固定问答、交互图谱、框架编辑和 CSV
-                        图表。
+                        文献上传、逐页正文与扫描件
+                        OCR、内容相似检测、版本保留与恢复、本地模型问答、原文引用及
+                        CSV 图表。
                       </b>
                     </span>
                   </div>
@@ -1905,8 +1943,7 @@ export default function App() {
                     <span>
                       后续接入
                       <b>
-                        真实 PDF/OCR
-                        解析、混合检索、引用验证、模型流式回答和实时论文检索。
+                        复杂表格与公式还原、段落对齐翻译、真实引用图谱与实时论文检索。
                       </b>
                     </span>
                   </div>

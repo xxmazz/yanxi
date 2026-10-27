@@ -1,6 +1,7 @@
 """按页切块、持久化与检索。索引不依赖第三方在线服务。"""
 
 import hashlib
+import json
 import math
 import re
 import sqlite3
@@ -41,28 +42,74 @@ class Store:
                   offset INTEGER, text TEXT, vector BLOB
                 );
                 CREATE INDEX IF NOT EXISTS chunk_document ON chunks(document_id);
+                CREATE TABLE IF NOT EXISTS pages (
+                  document_id TEXT, page INTEGER, text TEXT, method TEXT,
+                  width REAL, height REAL, blocks TEXT, warning TEXT,
+                  PRIMARY KEY(document_id,page)
+                );
+                CREATE TABLE IF NOT EXISTS version_decisions (
+                  incoming_id TEXT, existing_id TEXT, action TEXT,
+                  created TEXT DEFAULT CURRENT_TIMESTAMP
+                );
             """)
+            columns = {r["name"] for r in db.execute("PRAGMA table_info(documents)")}
+            additions = {
+                "processed_pages": "INTEGER DEFAULT 0",
+                "ocr_pages": "INTEGER DEFAULT 0",
+                "authors": "TEXT DEFAULT ''",
+                "abstract": "TEXT DEFAULT ''",
+                "arxiv_id": "TEXT DEFAULT ''",
+                "version": "INTEGER DEFAULT 0",
+                "profile": "TEXT DEFAULT '{}'",
+                "content_vector": "BLOB",
+                "similar_documents": "TEXT DEFAULT '[]'",
+                "warnings": "TEXT DEFAULT '[]'",
+                "trashed_at": "TEXT",
+                "is_active": "INTEGER DEFAULT 1",
+                "superseded_by": "TEXT",
+            }
+            for name, definition in additions.items():
+                if name not in columns:
+                    db.execute(f"ALTER TABLE documents ADD COLUMN {name} {definition}")
 
     def connect(self):
         db = sqlite3.connect(self.root / "library.sqlite3", timeout=30)
         db.row_factory = sqlite3.Row
         return db
 
-    def documents(self):
+    @staticmethod
+    def public(row):
+        if row is None:
+            return None
+        result = dict(row)
+        result.pop("profile", None)
+        result.pop("content_vector", None)
+        for field in ("similar_documents", "warnings"):
+            result[field] = json.loads(result[field] or "[]")
+        return result
+
+    def documents(self, include_archived=False):
         with self.connect() as db:
-            return [dict(r) for r in db.execute("SELECT * FROM documents ORDER BY created DESC")]
+            where = "" if include_archived else " WHERE trashed_at IS NULL AND is_active=1"
+            return [
+                self.public(r)
+                for r in db.execute(
+                    "SELECT * FROM documents" + where + " ORDER BY created DESC, rowid DESC"
+                )
+            ]
 
     def document(self, doc_id):
         with self.connect() as db:
-            row = db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
-            return dict(row) if row else None
+            return self.public(
+                db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
+            )
 
     def create(self, data: bytes, filename: str):
         doc_id = hashlib.sha256(data).hexdigest()
         with self.connect() as db:
             old = db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
             if old:
-                return dict(old), True
+                return self.public(old), True
             (self.root / (doc_id + ".pdf")).write_bytes(data)
             db.execute(
                 "INSERT INTO documents(id,filename,title,pages,status,error) VALUES(?,?,?,0,'queued','')",
@@ -70,7 +117,82 @@ class Store:
             )
         return self.document(doc_id), False
 
-    def finish(self, doc_id, pages, chunks, title=None):
+    def begin(self, doc_id, count):
+        with self.connect() as db:
+            db.execute("DELETE FROM pages WHERE document_id=?", (doc_id,))
+            db.execute(
+                "UPDATE documents SET status='processing',pages=?,processed_pages=0,ocr_pages=0,error='' WHERE id=?",
+                (count, doc_id),
+            )
+
+    def save_page(self, doc_id, number, page):
+        with self.connect() as db:
+            db.execute(
+                "INSERT OR REPLACE INTO pages VALUES(?,?,?,?,?,?,?,?)",
+                (
+                    doc_id,
+                    number,
+                    page["text"],
+                    page["method"],
+                    page["width"],
+                    page["height"],
+                    json.dumps(page["blocks"], ensure_ascii=False),
+                    page.get("warning", ""),
+                ),
+            )
+            db.execute(
+                "UPDATE documents SET processed_pages=?,ocr_pages=ocr_pages+? WHERE id=?",
+                (number, int(page["method"] == "ocr"), doc_id),
+            )
+
+    def page(self, doc_id, number):
+        with self.connect() as db:
+            row = db.execute(
+                "SELECT * FROM pages WHERE document_id=? AND page=?", (doc_id, number)
+            ).fetchone()
+            return dict(row) if row else None
+
+    def analyze(self, doc_id, text, chunks, metadata):
+        from .similarity import compare_documents, content_profile, identity, mean_vector
+
+        incoming = {**metadata, "profile": content_profile(text), "vector": mean_vector(chunks)}
+        matches = []
+        with self.connect() as db:
+            candidates = db.execute(
+                """SELECT d.* FROM documents d WHERE d.id!=?
+                AND d.status IN ('ready','queued','processing') AND d.trashed_at IS NULL AND d.is_active=1
+                AND EXISTS(SELECT 1 FROM chunks c WHERE c.document_id=d.id)""",
+                (doc_id,),
+            ).fetchall()
+        for row in candidates:
+            existing = dict(row)
+            existing["profile"] = json.loads(existing["profile"] or "{}")
+            existing["vector"] = existing["content_vector"]
+            if not existing["profile"].get("count"):
+                with self.connect() as db:
+                    old_chunks = [
+                        dict(c)
+                        for c in db.execute(
+                            "SELECT c.*, d.title FROM chunks c JOIN documents d ON d.id=c.document_id WHERE d.id=? ORDER BY c.page,c.offset",
+                            (existing["id"],),
+                        )
+                    ]
+                existing["profile"] = content_profile("\n".join(c["text"] for c in old_chunks))
+                existing["vector"] = mean_vector(old_chunks)
+                first_page = "\n".join(c["text"] for c in old_chunks if c["page"] == 1)
+                existing["arxiv_id"], existing["version"] = identity(first_page)
+            match = compare_documents(incoming, existing)
+            if match:
+                matches.append(match)
+        incoming["matches"] = sorted(matches, key=lambda m: m["overlap"], reverse=True)
+        return incoming
+
+    def finish(
+        self, doc_id, pages, chunks, title=None, analysis=None, metadata=None, warnings=None
+    ):
+        metadata = metadata or {}
+        analysis = analysis or {}
+        matches = analysis.get("matches", [])
         with self.connect() as db:
             db.execute("DELETE FROM chunks WHERE document_id=?", (doc_id,))
             db.executemany(
@@ -78,20 +200,111 @@ class Store:
                 [(doc_id, c["page"], c["offset"], c["text"], c.get("vector")) for c in chunks],
             )
             db.execute(
-                "UPDATE documents SET pages=?,status='ready',error='',title=COALESCE(?,title) WHERE id=?",
-                (pages, title, doc_id),
+                """UPDATE documents SET pages=?,processed_pages=?,status=?,error='',title=COALESCE(?,title),
+                       authors=?,abstract=?,arxiv_id=?,version=?,profile=?,content_vector=?,similar_documents=?,warnings=? WHERE id=?""",
+                (
+                    pages,
+                    pages,
+                    "review" if matches else "ready",
+                    title,
+                    metadata.get("authors", ""),
+                    metadata.get("abstract", ""),
+                    metadata.get("arxiv_id", ""),
+                    metadata.get("version", 0),
+                    json.dumps(analysis.get("profile", {})),
+                    analysis.get("vector"),
+                    json.dumps(matches, ensure_ascii=False),
+                    json.dumps(warnings or [], ensure_ascii=False),
+                    doc_id,
+                ),
             )
 
     def fail(self, doc_id, error):
         with self.connect() as db:
-            db.execute(
-                "UPDATE documents SET status='error',error=? WHERE id=?",
-                (error, doc_id),
+            db.execute("UPDATE documents SET status='error',error=? WHERE id=?", (error, doc_id))
+
+    def queue(self, doc_id):
+        with self.connect() as db:
+            row = db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
+            if not row:
+                raise KeyError("文献不存在")
+            if (
+                row["status"] in ("queued", "processing")
+                or row["trashed_at"]
+                or not row["is_active"]
+            ):
+                raise ValueError("文献正在解析或已归档，请稍后重试或先恢复")
+            db.execute("UPDATE documents SET status='queued',error='' WHERE id=?", (doc_id,))
+
+    def trash(self, doc_id, restore=False):
+        with self.connect() as db:
+            row = db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
+            if not row:
+                raise KeyError("文献不存在")
+            if row["status"] in ("queued", "processing"):
+                raise ValueError("解析进行中，请等待完成后再操作")
+            if restore:
+                # review 文献仍需确认版本，不因恢复而绕过冲突检查。
+                db.execute(
+                    "UPDATE documents SET trashed_at=NULL,is_active=1,superseded_by=NULL WHERE id=?",
+                    (doc_id,),
+                )
+            else:
+                db.execute(
+                    "UPDATE documents SET trashed_at=CURRENT_TIMESTAMP WHERE id=?", (doc_id,)
+                )
+        return self.document(doc_id)
+
+    def resolve(self, doc_id, existing_id, action):
+        if action not in ("keep_both", "keep_existing", "replace_existing"):
+            raise ValueError("未知的版本处理方式")
+        with self.connect() as db:
+            # 同一事务内检查并更新，避免两次并发决策修改同一版本。
+            db.execute("BEGIN IMMEDIATE")
+            incoming = db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
+            existing = db.execute("SELECT * FROM documents WHERE id=?", (existing_id,)).fetchone()
+            if not incoming or not existing:
+                raise KeyError("文献不存在")
+            choices = json.loads(incoming["similar_documents"] or "[]")
+            if (
+                incoming["status"] != "review"
+                or incoming["trashed_at"]
+                or existing["trashed_at"]
+                or not existing["is_active"]
+            ):
+                raise ValueError("版本状态已变化，请刷新后重试")
+            if existing_id not in {m["id"] for m in choices}:
+                raise ValueError("所选文献不在相似版本候选中")
+            remaining = (
+                [] if action == "keep_existing" else [m for m in choices if m["id"] != existing_id]
             )
+            db.execute(
+                "UPDATE documents SET status=?,similar_documents=? WHERE id=?",
+                (
+                    "review" if remaining else "ready",
+                    json.dumps(remaining, ensure_ascii=False),
+                    doc_id,
+                ),
+            )
+            if action == "keep_existing":
+                db.execute(
+                    "UPDATE documents SET is_active=0,superseded_by=? WHERE id=?",
+                    (existing_id, doc_id),
+                )
+            elif action == "replace_existing":
+                db.execute(
+                    "UPDATE documents SET is_active=0,superseded_by=? WHERE id=?",
+                    (doc_id, existing_id),
+                )
+            db.execute(
+                "INSERT INTO version_decisions(incoming_id,existing_id,action) VALUES(?,?,?)",
+                (doc_id, existing_id, action),
+            )
+        return self.document(doc_id)
 
     def rows(self, scope):
         with self.connect() as db:
-            sql = "SELECT c.*, d.title FROM chunks c JOIN documents d ON c.document_id=d.id WHERE d.status='ready'"
+            sql = "SELECT c.*, d.title FROM chunks c JOIN documents d ON c.document_id=d.id WHERE d.status='ready' AND d.trashed_at IS NULL AND d.is_active=1"
             args = []
             if scope:
                 sql += " AND document_id IN (" + ",".join("?" for _ in scope) + ")"

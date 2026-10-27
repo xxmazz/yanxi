@@ -3,10 +3,34 @@ export type ServerDocument = {
   title: string;
   filename: string;
   pages: number;
-  status: "queued" | "ready" | "error";
+  status: "queued" | "processing" | "review" | "ready" | "error";
   error: string;
   created: string;
   duplicate?: boolean;
+  processed_pages: number;
+  ocr_pages: number;
+  authors: string;
+  abstract: string;
+  version: number;
+  arxiv_id: string;
+  is_active: number;
+  trashed_at: string | null;
+  warnings: string[];
+  similar_documents: {
+    id: string;
+    title: string;
+    overlap: number;
+    semantic_similarity: number | null;
+    version: number;
+    recommendation: string;
+    reason: string;
+  }[];
+};
+export type ParsedPage = {
+  page: number;
+  text: string;
+  method: "native" | "ocr";
+  blocks: { text: string; bbox: number[][]; confidence: number }[];
 };
 export type Evidence = {
   id: string;
@@ -17,6 +41,7 @@ export type Evidence = {
   url: string;
 };
 export type Health = {
+  ocr_ready: boolean;
   model_ready: boolean;
   embedding_ready: boolean;
   model: string | null;

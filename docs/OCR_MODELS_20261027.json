@@ -1,0 +1,22 @@
+{
+  "source": "https://github.com/JaidedAI/EasyOCR",
+  "version": "1.7.2",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "file": "craft_mlt_25k.pth",
+      "bytes": 83152330,
+      "sha256": "4a5efbfb48b4081100544e75e1e2b57f8de3d84f213004b14b85fd4b3748db17"
+    },
+    {
+      "file": "english_g2.pth",
+      "bytes": 15143997,
+      "sha256": "e2272681d9d67a04e2dff396b6e95077bc19001f8f6d3593c307b9852e1c29e8"
+    },
+    {
+      "file": "zh_sim_g2.pth",
+      "bytes": 21951421,
+      "sha256": "cb678fdef09d651e7763ca551ad790dc89f0b2e3d2a640484330e338fb574c7a"
+    }
+  ]
+}

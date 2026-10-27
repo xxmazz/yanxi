@@ -1,0 +1,6 @@
+# 与 requirements-model.txt 一起安装；CUDA 13.0 官方 wheel 已在 RTX 2080 Ti 验证。
+# uv pip install -r backend/requirements-model.txt -r backend/requirements-ocr.txt \
+#   --extra-index-url https://download.pytorch.org/whl/cu130
+# 系统还需 Poppler（pdftoppm）。权重由 scripts/download_ocr.py 预先下载。
+easyocr==1.7.2
+torchvision==0.28.0
