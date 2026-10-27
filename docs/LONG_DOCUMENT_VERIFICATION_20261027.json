@@ -1,0 +1,364 @@
+{
+  "verified_at": "2026-10-27T14:17:26.330689+00:00",
+  "fixture": {
+    "filename": "UnderstandingDeepLearning_02_09_26_C.pdf",
+    "sha256": "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32",
+    "bytes": 22344992,
+    "pages": 541,
+    "source_url": "https://github.com/udlbook/udlbook/releases/download/v5.0.3/UnderstandingDeepLearning_02_09_26_C.pdf",
+    "origin": "作者公开发布，同赛题文件名与页数；未经组织方资料包哈希比对，不声称已确认官方原件一致"
+  },
+  "runtime": {
+    "pypdf": "6.21.2",
+    "fonttools": "4.67.0",
+    "health": {
+      "status": "ok",
+      "model_ready": true,
+      "embedding_ready": true,
+      "model": "Qwen2.5-7B-Instruct",
+      "retrieval": "bm25+e5-rrf",
+      "ocr_ready": true
+    }
+  },
+  "indexing": {
+    "performed": true,
+    "seconds": 53.13,
+    "progress": [
+      {
+        "seconds": 0.16,
+        "status": "queued",
+        "processed_pages": 541
+      },
+      {
+        "seconds": 3.03,
+        "status": "processing",
+        "processed_pages": 34
+      },
+      {
+        "seconds": 5.14,
+        "status": "processing",
+        "processed_pages": 60
+      },
+      {
+        "seconds": 7.2,
+        "status": "processing",
+        "processed_pages": 92
+      },
+      {
+        "seconds": 9.37,
+        "status": "processing",
+        "processed_pages": 102
+      },
+      {
+        "seconds": 11.55,
+        "status": "processing",
+        "processed_pages": 141
+      },
+      {
+        "seconds": 13.68,
+        "status": "processing",
+        "processed_pages": 163
+      },
+      {
+        "seconds": 16.26,
+        "status": "processing",
+        "processed_pages": 184
+      },
+      {
+        "seconds": 18.36,
+        "status": "processing",
+        "processed_pages": 206
+      },
+      {
+        "seconds": 20.43,
+        "status": "processing",
+        "processed_pages": 224
+      },
+      {
+        "seconds": 22.53,
+        "status": "processing",
+        "processed_pages": 241
+      },
+      {
+        "seconds": 24.69,
+        "status": "processing",
+        "processed_pages": 272
+      },
+      {
+        "seconds": 27.23,
+        "status": "processing",
+        "processed_pages": 288
+      },
+      {
+        "seconds": 29.29,
+        "status": "processing",
+        "processed_pages": 315
+      },
+      {
+        "seconds": 31.38,
+        "status": "processing",
+        "processed_pages": 350
+      },
+      {
+        "seconds": 33.54,
+        "status": "processing",
+        "processed_pages": 379
+      },
+      {
+        "seconds": 35.62,
+        "status": "processing",
+        "processed_pages": 402
+      },
+      {
+        "seconds": 37.68,
+        "status": "processing",
+        "processed_pages": 423
+      },
+      {
+        "seconds": 40.41,
+        "status": "processing",
+        "processed_pages": 423
+      },
+      {
+        "seconds": 42.76,
+        "status": "processing",
+        "processed_pages": 458
+      },
+      {
+        "seconds": 44.83,
+        "status": "processing",
+        "processed_pages": 487
+      },
+      {
+        "seconds": 46.9,
+        "status": "processing",
+        "processed_pages": 541
+      },
+      {
+        "seconds": 48.96,
+        "status": "processing",
+        "processed_pages": 541
+      },
+      {
+        "seconds": 51.02,
+        "status": "processing",
+        "processed_pages": 541
+      },
+      {
+        "seconds": 53.08,
+        "status": "ready",
+        "processed_pages": 541
+      }
+    ],
+    "resources": {
+      "samples": 26,
+      "rss_before_mib": 3060.25,
+      "rss_sampled_max_mib": 3534.16,
+      "gpu_sampled_max_mib": {
+        "0": 6536,
+        "1": 8314,
+        "2": 930,
+        "3": 340
+      },
+      "note": "索引期间每约两秒采样，可能漏掉瞬时峰值；RSS 含常驻模型，GPU 为整卡用量，不能代表本任务独占增量。"
+    }
+  },
+  "verification": {
+    "all_541_pages_match_same_parser_output": true,
+    "parser_warning_pages": [
+      {
+        "page": 424,
+        "warning": "本页图形对象超出解析保护上限，部分内容可能缺失，请核对原页。"
+      }
+    ],
+    "page_hashes_sha256": "aa9c0de78049c04c76f1bdb199233ee329ec905e60bed071bb1f43fdd4022683",
+    "empty_pages": [2, 4, 10, 12],
+    "pdf_download_hash_matches": true,
+    "out_of_range_page_rejected": true,
+    "page435_png_rendered": true,
+    "page205_cff_control_characters": 0
+  },
+  "cases": [
+    {
+      "case": "book_chapter_authors",
+      "question": "这本书第21章 Deep learning and ethics 是由哪两位作者撰写的？",
+      "document_ids": [
+        "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32"
+      ],
+      "seconds": 5.2,
+      "answer": "第21章 Deep learning and ethics是由Travis LaCroix和Simon J.D. Prince撰写的[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32",
+          "title": "Understanding Deep Learning",
+          "page": 435,
+          "url": "/api/documents/f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32/pdf#page=435",
+          "quote_sha256": "20cc3d258cf871baff93d814f2047173b860e0b945f76bbaa506422acafd6da8",
+          "page_sha256": "4252cf71eb4ea459c80f3d033595c2f524f70761351399ec355adcc4cee9f43a"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "book_figure_discount",
+      "question": "按照书中 Figure 19.18，discount factor 的数值是多少？",
+      "document_ids": [
+        "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32"
+      ],
+      "seconds": 3.2,
+      "answer": "折扣因子γ的值是0.9[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32",
+          "title": "Understanding Deep Learning",
+          "page": 415,
+          "url": "/api/documents/f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32/pdf#page=415",
+          "quote_sha256": "8051bf1a4da64d0fc89b046bd2f2ff8f9216ce685ffd92beaafd77e4425321f3",
+          "page_sha256": "2175ec86d4754010d482e36b7e9bf11359b5739d5eab17663c76c5300b1db59c"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "book_figure_ratio",
+      "question": "按照书中 Figure 20.3，ImageNet 上大多数模型参数数量是训练样本数量的多少倍？",
+      "document_ids": [
+        "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32"
+      ],
+      "seconds": 2.77,
+      "answer": "大多数模型的参数数量是训练样本数量的10到100倍[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32",
+          "title": "Understanding Deep Learning",
+          "page": 420,
+          "url": "/api/documents/f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32/pdf#page=420",
+          "quote_sha256": "cd2d66adda00a0f09cbd699d5f9f20feed6b49b16ff56802b0d166d262915768",
+          "page_sha256": "314f150b1f17406f51191adbb7ccef1d599daae668d554c8aca4a9a8a9c9cc41"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "paper_numeric_detail",
+      "question": "Transformer 的前馈网络 inner-layer dimension 是多少？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "seconds": 2.51,
+      "answer": "Transformer 的前馈网络 inner-layer dimension 是 2048。[E2]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E2",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 5,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=5",
+          "quote_sha256": "9475144d08c4a252c208f5e05dd66689ddcc7d7b8c011c7bd2fa01081f89b443",
+          "page_sha256": "4c2bb47d88c410c07389683ae4459c7bc22397ce6c1bee955953aff658b7fa95"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "scan_numeric_detail",
+      "question": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是多少？",
+      "document_ids": [
+        "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98"
+      ],
+      "seconds": 2.57,
+      "answer": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是 2048[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98",
+          "title": "Attention Is All You Need",
+          "page": 5,
+          "url": "/api/documents/85f0feff6d1fdafba3b55943621e23d509cd3767a682b41d6e682715fcd9be98/pdf#page=5",
+          "quote_sha256": "1f6c14b15ae43a3b467eaaf13c4ba0f1f6ccc5ce6cb5653cdea3a68bbf8b023e",
+          "page_sha256": "204bf87a3f99889484c012aec2f90a8e850528e38d012a3ef3baf47ecee797c7"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "cross_paper_mechanisms",
+      "question": "Transformer 如何处理序列，RAG 如何结合参数记忆与外部知识？请分别依据两篇论文概括主要机制。",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233"
+      ],
+      "seconds": 6.56,
+      "answer": "Transformer 使用自注意力机制来计算输入和输出的表示，而无需使用序列对齐的递归神经网络或卷积。[E5]\n\nRAG 模型结合了预训练的参数记忆（如预训练的 seq2seq 模型）和非参数记忆（如维基百科的密集向量索引），并通过一个通用的微调方法实现检索增强生成。[E3]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E3",
+          "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "page": 2,
+          "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=2",
+          "quote_sha256": "72dfcc48e268b75ef7f98badbf2455d62c64d360065c15aef5fd24ccd0743920",
+          "page_sha256": "b10691a15a6ae7b77d0eefbc68781d4869547da974441d38ead4c34e632ee60b"
+        },
+        {
+          "id": "E5",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 2,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=2",
+          "quote_sha256": "d6172307bcf8755ddeb486db20f635f29f7b466cc4f3a500b004196f7781c139",
+          "page_sha256": "3abfc126f1874b8004e944a5ab8fa7d951c0f9735fcf6fa6481e1fda1ba2cc69"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case": "insufficient_evidence",
+      "question": "这篇论文中作者的银行卡号和实验室今日温度是多少？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "seconds": 1.88,
+      "answer": "当前检索到的原文不足以回答这个问题，请补充文献或换一种问法。",
+      "insufficient_evidence": true,
+      "citations": [],
+      "passed": true
+    }
+  ],
+  "limits": "逐页比对采用同一版本 pypdf，验证解析与存储可复现，不证明全部内容被提取；PDF 库触发的内容跳过保护会保留警告。七个固定问答用例不是通用正确率或完整语义评测；扫描件为既有自行栅格化样本，非组织方 img 文件；未验证表格/公式结构化、全书翻译、大规模并发。",
+  "before_fix_sample": [
+    {
+      "question": "这本书第21章 Deep learning and ethics 是由哪两位作者撰写的？",
+      "insufficient_evidence": false,
+      "answer": "第21章 Deep learning and ethics是由Travis LaCroix和Simon J.D. Prince撰写的[E1]",
+      "citation_pages": [435]
+    },
+    {
+      "question": "按照书中 Figure 19.18，discount factor 的数值是多少？",
+      "insufficient_evidence": true,
+      "answer": "当前检索到的原文不足以回答这个问题，请补充文献或换一种问法。",
+      "citation_pages": []
+    },
+    {
+      "question": "按照书中 Figure 20.3，ImageNet 上大多数模型参数数量是训练样本数量的多少倍？",
+      "insufficient_evidence": true,
+      "answer": "当前检索到的原文不足以回答这个问题，请补充文献或换一种问法。",
+      "citation_pages": []
+    }
+  ],
+  "browser_checks": {
+    "book_541_pages_opened": true,
+    "physical_page_435_visible": true,
+    "page_424_warning_visible": true,
+    "figure_19_18_answer_0_9_with_page_415_quote_visible": true
+  }
+}

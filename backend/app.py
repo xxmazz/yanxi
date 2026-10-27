@@ -49,10 +49,12 @@ def index_document(doc_id):
         if len(reader.pages) > 650:
             raise ValueError("当前支持不超过 650 页的 PDF")
         store.begin(doc_id, len(reader.pages))
-        chunks, texts, first = [], [], None
+        chunks, texts, warnings, first = [], [], [], None
         for number, page in enumerate(reader.pages, 1):
             parsed = extract_page(page, path, number, ocr)
             store.save_page(doc_id, number, parsed)
+            if parsed.get("warning"):
+                warnings.append(f"第 {number} 页：{parsed['warning']}")
             if first is None:
                 first = parsed
             texts.append(parsed["text"])
@@ -70,7 +72,7 @@ def index_document(doc_id):
             info["authors"] = "; ".join(source["authors"])[:1000]
             info["abstract"] = info["abstract"] or source["abstract"][:1800]
         analysis = store.analyze(doc_id, "\n".join(texts), chunks, info)
-        store.finish(doc_id, len(reader.pages), chunks, info["title"], analysis, info)
+        store.finish(doc_id, len(reader.pages), chunks, info["title"], analysis, info, warnings)
     except Exception as exc:
         log.exception("PDF indexing failed: %s", doc_id)
         store.fail(doc_id, str(exc)[:300])
@@ -418,7 +420,12 @@ async def chat(request: Question):
             raise HTTPException(503, "本地模型未就绪，请检查服务器模型配置")
         search_question = await asyncio.to_thread(models.search_query, request.question)
         vectors = await asyncio.to_thread(models.encode, [search_question], True)
-        results = retrieve(rows, search_question, vectors[0] if vectors else None)
+        results = retrieve(
+            rows,
+            search_question,
+            vectors[0] if vectors else None,
+            anchor_question=request.question,
+        )
         evidence = [dict(r, label=f"E{i}") for i, r in enumerate(results, 1)]
         steps = [
             "检查文献范围",

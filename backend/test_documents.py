@@ -1,18 +1,55 @@
 """迁移、版本隔离和扫描件路由的行为回归；不需要 GPU 权重。"""
 
+import logging
 import sqlite3
 import tempfile
+import threading
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
 from backend.core import Store, chunks_for_page
-from backend.parsing import extract_page, metadata, page_payload
+from backend.parsing import extract_page, metadata, native_text, page_payload
 from backend.similarity import compare_documents, content_profile, identity
 
 
 class DocumentTests(unittest.TestCase):
+    def test_parser_limit_warning_survives_page_storage(self):
+        def extract():
+            logging.getLogger("pypdf._page").warning(
+                "Exceeded 5000 form XObject invocations while extracting text; further form content is skipped."
+            )
+            return "A native page with enough actual body text to avoid OCR routing."
+
+        page = SimpleNamespace(
+            extract_text=extract, images=[], mediabox=SimpleNamespace(width=100, height=200)
+        )
+        parsed = extract_page(page, Path("complex.pdf"), 19, Mock())
+        self.assertIn("部分内容可能缺失", parsed["warning"])
+        with tempfile.TemporaryDirectory() as directory:
+            store = Store(Path(directory))
+            doc, _ = store.create(b"%PDF-warning", "complex.pdf")
+            store.save_page(doc["id"], 19, parsed)
+            self.assertEqual(store.page(doc["id"], 19)["warning"], parsed["warning"])
+
+    def test_parser_warning_collector_is_thread_scoped_and_removed_after_errors(self):
+        logger = logging.getLogger("pypdf")
+        original = list(logger.handlers)
+
+        def extract():
+            other = threading.Thread(
+                target=lambda: logging.getLogger("pypdf._page").warning("other document")
+            )
+            other.start()
+            other.join()
+            return "current page"
+
+        self.assertEqual(native_text(SimpleNamespace(extract_text=extract)), ("current page", ""))
+        with self.assertRaises(ValueError):
+            native_text(SimpleNamespace(extract_text=Mock(side_effect=ValueError("bad page"))))
+        self.assertEqual(logger.handlers, original)
+
     def test_migration_keeps_old_library_and_citations(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

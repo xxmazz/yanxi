@@ -30,6 +30,7 @@ export type ParsedPage = {
   page: number;
   text: string;
   method: "native" | "ocr";
+  warning?: string;
   blocks: { text: string; bbox: number[][]; confidence: number }[];
 };
 export type Evidence = {

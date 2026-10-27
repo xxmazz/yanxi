@@ -2,7 +2,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from backend.core import Store, chunks_for_page, retrieve, tokens, validate_answer
+from backend.core import (
+    Store,
+    chunks_for_page,
+    reference_anchors,
+    retrieve,
+    tokens,
+    validate_answer,
+)
 
 
 class EvidenceTests(unittest.TestCase):
@@ -42,6 +49,38 @@ class EvidenceTests(unittest.TestCase):
             ("8个注意力头[E1]", ["E1"], False),
         )
         self.assertTrue(validate_answer({"claims": [], "insufficient_evidence": True}, evidence)[2])
+
+    def test_explicit_figure_recovers_caption_from_long_document(self):
+        rows = [
+            {"id": i, "text": "discount factor Figure 19.1 Markov reward discount " * 10}
+            for i in range(20)
+        ] + [
+            {"id": 20, "text": "Problem: see Figure 19.18, discount factor."},
+            {"id": 21, "text": "Notes\nFigure\n19.18 One trajectory. The discount factor is 0.9."},
+            {"id": 22, "text": "Figure 19.180 The discount factor is 0.1."},
+        ]
+        result = retrieve(rows, "Figure 19.18 discount factor", limit=6)
+        self.assertEqual(result[0]["id"], 21)
+        self.assertEqual(len(result), 6)
+        self.assertEqual(len({r["id"] for r in result}), 6)
+
+    def test_anchors_use_original_question_and_cover_multiple_references(self):
+        rows = [
+            {"id": 1, "text": "Figure 2.3 result"},
+            {"id": 2, "text": "Table 4.1 comparison"},
+            {"id": 3, "text": "Equation (5.2) formula"},
+            {"id": 4, "text": "unrelated keyword " * 5},
+        ]
+        question = "比较图2.3、表4.1与公式（5.2）"
+        result = retrieve(rows, "unrelated keyword Figure 9.9", anchor_question=question, limit=3)
+        self.assertEqual({r["id"] for r in result}, {1, 2, 3})
+        self.assertEqual(reference_anchors("learning rate 0.0003 and figurehead 2.3"), [])
+        self.assertEqual(reference_anchors("Fig. 2.3 and Fig. 2.3"), [("figure", "2.3")])
+        # 模型扩写中的虚构图号不得抢占原始问题没有要求的证据。
+        ranked = retrieve(rows, "Equation 5.2 keyword", anchor_question="keyword", limit=4)
+        self.assertEqual(
+            [r["score"] for r in ranked], sorted((r["score"] for r in ranked), reverse=True)
+        )
 
     def test_persistence_dedup_and_scope_isolation(self):
         with tempfile.TemporaryDirectory() as directory:

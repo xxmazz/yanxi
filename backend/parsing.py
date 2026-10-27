@@ -1,6 +1,7 @@
 """本地文本层解析及逐页 OCR，保留物理页码与 OCR 坐标。"""
 
 import json
+import logging
 import os
 import re
 import shutil
@@ -164,17 +165,54 @@ class LocalOCR:
         return {"text": text, "method": "ocr", "width": width, "height": height, "blocks": blocks}
 
 
+class ExtractionWarnings(logging.Handler):
+    """记录当前解析线程的页级警告，不关闭 PDF 库的资源保护上限。"""
+
+    def __init__(self):
+        super().__init__(logging.WARNING)
+        self.owner = threading.get_ident()
+        self.messages = []
+
+    def emit(self, record):
+        if record.thread != self.owner:
+            return
+        raw = record.getMessage()
+        if "further form content is skipped" in raw:
+            message = "本页图形对象超出解析保护上限，部分内容可能缺失，请核对原页。"
+        elif "fontTools is required" in raw:
+            message = "数学字体解析依赖不完整，部分符号可能有误，请核对原页。"
+        else:
+            message = "PDF 文本提取提示：" + " ".join(raw.split())[:200]
+        if message not in self.messages and len(self.messages) < 3:
+            self.messages.append(message)
+
+
+def native_text(page):
+    collector = ExtractionWarnings()
+    logger = logging.getLogger("pypdf")
+    logger.addHandler(collector)
+    try:
+        text = page.extract_text() or ""
+    finally:
+        logger.removeHandler(collector)
+    return text, "；".join(collector.messages)
+
+
 def extract_page(page, path, number, ocr):
-    text = page.extract_text() or ""
+    text, warning = native_text(page)
     # 有图像且正文稀少时 OCR；保留纯空白页，不把页码水印当正文。
     if len(re.sub(r"\W", "", text)) < 40 and len(page.images):
-        return ocr.page(path, number)
+        parsed = ocr.page(path, number)
+        if warning:
+            parsed["warning"] = warning + " 已改用本地 OCR，请结合原页核对识别结果。"
+        return parsed
     return {
         "text": text,
         "method": "native",
         "width": float(page.mediabox.width),
         "height": float(page.mediabox.height),
         "blocks": [],
+        "warning": warning,
     }
 
 

@@ -312,7 +312,7 @@ class Store:
             return [dict(r) for r in db.execute(sql, args)]
 
 
-def retrieve(rows, question, query_vector=None, limit=6):
+def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None):
     """BM25 与本地 E5 向量以 RRF 合并；不把检索分数当事实置信度。"""
     if not rows:
         return []
@@ -352,9 +352,50 @@ def retrieve(rows, question, query_vector=None, limit=6):
         ]
         for rank, (i, _) in enumerate(sorted(dense, key=lambda x: x[1], reverse=True)[:40], 1):
             ranks[i] = ranks.get(i, 0) + 1 / (60 + rank)
-    return [
-        dict(rows[i], score=ranks[i]) for i in sorted(ranks, key=ranks.get, reverse=True)[:limit]
-    ]
+    ranked = sorted(ranks, key=ranks.get, reverse=True)
+    # 长书中章节号、图号被分词成常见整数后，正确图注可能被大量相似段落挤出。
+    # 只对用户明确写出的图／表／公式编号补召回；数值本身不触发规则。
+    anchors = reference_anchors(question if anchor_question is None else anchor_question)
+    anchored = []
+    for kind, number in anchors:
+        pattern = anchor_pattern(kind, number)
+        heading = anchor_pattern(kind, number, heading=True)
+        matches = [i for i, row in enumerate(rows) if pattern.search(row["text"])]
+        matches.sort(
+            key=lambda i: (
+                not bool(heading.search(rows[i]["text"])),
+                -ranks.get(i, 0),
+                i,
+            )
+        )
+        # 先覆盖各个明确编号，再补混合检索结果；不扩大总体证据预算。
+        if matches:
+            anchored.append(matches[0])
+    order = list(dict.fromkeys(anchored + ranked))[:limit]
+    return [dict(rows[i], score=ranks.get(i, 0)) for i in order]
+
+
+ANCHOR_KINDS = {
+    "figure": r"(?:figure|fig\.?|图)",
+    "table": r"(?:table|表)",
+    "equation": r"(?:equation|eq\.?|公式|式)",
+}
+
+
+def reference_anchors(question):
+    found = []
+    for kind, label in ANCHOR_KINDS.items():
+        for match in re.finditer(
+            rf"(?<![a-zA-Z]){label}\s*[（(]?\s*(\d+(?:\.\d+)+)(?![\d.])", question, re.I
+        ):
+            found.append((kind, match.group(1)))
+    return list(dict.fromkeys(found))[:6]
+
+
+def anchor_pattern(kind, number, heading=False):
+    label = ANCHOR_KINDS[kind]
+    prefix = r"^\s*" if heading else r"(?<![a-zA-Z])"
+    return re.compile(rf"{prefix}{label}\s*[（(]?\s*{re.escape(number)}(?![\d.])", re.I | re.M)
 
 
 def validate_answer(value, evidence):

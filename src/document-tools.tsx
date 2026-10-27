@@ -326,6 +326,7 @@ export function ServerReader({
                     ? `${page.blocks.length} 个文字区域，点击查看坐标与识别置信度`
                     : "来自 PDF 文本层"}
                 </p>
+                {page.warning && <p role="status">{page.warning}</p>}
                 {page.method === "ocr" ? (
                   page.blocks.map((block, i) => (
                     <details className="ocr-block" key={i}>
