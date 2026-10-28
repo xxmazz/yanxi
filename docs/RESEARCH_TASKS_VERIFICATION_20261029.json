@@ -1,0 +1,108 @@
+{
+  "verified_at": "2026-10-28T23:21:00.190269+00:00",
+  "cases": [
+    {
+      "query": "2005.11401v4",
+      "status": "complete",
+      "attempt": 1,
+      "events": [
+        {
+          "stage": "plan",
+          "message": "检索主题 → 选择最多 1 篇 → 逐篇入库并等待解析 → 汇总来源",
+          "time": 1793229503.6975567
+        },
+        {
+          "stage": "search",
+          "message": "读取检索检查点",
+          "time": 1793229503.7068174
+        },
+        {
+          "stage": "select",
+          "message": "已保存 1 篇候选，后续重试复用此范围",
+          "time": 1793229505.0743213
+        },
+        {
+          "stage": "import",
+          "message": "处理 Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "time": 1793229505.0767877
+        },
+        {
+          "stage": "parse",
+          "message": "等待正文解析、索引与版本确认",
+          "time": 1793229509.0962958
+        },
+        {
+          "stage": "summarize",
+          "message": "已解析文献来源汇总；检查本地模型是否可生成摘要综述",
+          "time": 1793229509.1080368
+        },
+        {
+          "stage": "complete",
+          "message": "任务完成，原文与来源可回看",
+          "time": 1793229509.1112149
+        }
+      ],
+      "results": [
+        {
+          "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "pages": 19,
+          "pdf_url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf"
+        }
+      ],
+      "model_summary_available": false
+    },
+    {
+      "query": "1905.07830v1",
+      "status": "complete",
+      "attempt": 1,
+      "events": [
+        {
+          "stage": "plan",
+          "message": "检索主题 → 选择最多 1 篇 → 逐篇入库并等待解析 → 汇总来源",
+          "time": 1793229566.9535372
+        },
+        {
+          "stage": "search",
+          "message": "读取检索检查点",
+          "time": 1793229566.964469
+        },
+        {
+          "stage": "select",
+          "message": "已保存 1 篇候选，后续重试复用此范围",
+          "time": 1793229568.1962676
+        },
+        {
+          "stage": "import",
+          "message": "处理 HellaSwag: Can a Machine Really Finish Your Sentence?",
+          "time": 1793229568.1987116
+        },
+        {
+          "stage": "parse",
+          "message": "等待正文解析、索引与版本确认",
+          "time": 1793229574.2206607
+        },
+        {
+          "stage": "summarize",
+          "message": "已解析文献来源汇总；检查本地模型是否可生成摘要综述",
+          "time": 1793229574.2235262
+        },
+        {
+          "stage": "complete",
+          "message": "任务完成，原文与来源可回看",
+          "time": 1793229574.2257361
+        }
+      ],
+      "results": [
+        {
+          "document_id": "9a042fdcc4a22848cffde37e9c5257e423443980172bab7367dffb4e779aac37",
+          "title": "HellaSwag: Can a Machine Really Finish Your Sentence?",
+          "pages": 14,
+          "pdf_url": "/api/documents/9a042fdcc4a22848cffde37e9c5257e423443980172bab7367dffb4e779aac37/pdf"
+        }
+      ],
+      "model_summary_available": false
+    }
+  ],
+  "limitations": "真实单篇任务分别验证已入库 RAG 复用和新下载 HellaSwag 14页；本轮 CPU 无模型推理，摘要综述明确不可用。未完成多篇新下载和中文主题的 GPU 端到端回归。取消、故障恢复、版本确认及状态变化由隔离测试验证。"
+}

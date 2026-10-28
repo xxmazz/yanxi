@@ -27,6 +27,7 @@ from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 from .reading_links import navigation
+from .research_tasks import ResearchTasks
 from .translation import TranslationService
 from .writing import prepare as prepare_writing
 from .writing import render_draft
@@ -37,6 +38,7 @@ models = LocalModels()
 ocr = LocalOCR()
 discovery = ArxivDiscovery(store)
 translation = TranslationService(store, models)
+research_tasks = ResearchTasks(store)
 download_workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="arxiv-import")
 download_slots = threading.BoundedSemaphore(2)
 search_lock = asyncio.Lock()
@@ -88,6 +90,7 @@ def index_document(doc_id):
 
 @asynccontextmanager
 async def lifespan(app):
+    research_tasks.recover()
     if models.llm_path or models.embedding_path:
         await asyncio.to_thread(models.load)
     if ocr.path:
@@ -102,6 +105,7 @@ async def lifespan(app):
     discovery.recover_jobs()
     translation.recover()
     yield
+    await research_tasks.shutdown()
     await asyncio.to_thread(translation.shutdown)
     download_workers.shutdown(wait=True)
     workers.shutdown(wait=True)
@@ -840,6 +844,69 @@ async def writing_outline(request: WritingRequest):
             ) from exc
         await check_writing_sources(bundle["document_ids"], bundle["fingerprint"])
         return result
+
+
+class ResearchTaskRequest(BaseModel):
+    query: str = Field(min_length=2, max_length=240)
+    limit: int = Field(default=2, ge=1, le=3)
+
+
+async def task_search(query):
+    return await search_papers(q=query, start=0, sort="relevance")
+
+
+async def task_import(arxiv_id):
+    return import_paper(ImportPaper(arxiv_id=arxiv_id))
+
+
+async def task_summary(ids):
+    if models.llm is None:
+        return {
+            "answer": "本地模型未启动，已完成原文入库与来源汇总；启动模型后可在引用图谱中生成摘要综述。",
+            "citations": [],
+            "insufficient_evidence": True,
+        }
+    graph = await asyncio.to_thread(build_graph, store, ids)
+    return await graph_review(GraphReview(document_ids=ids, fingerprint=graph["fingerprint"]))
+
+
+def start_research(task_id):
+    research_tasks.start(
+        task_id, search=task_search, submit=task_import, job=discovery.job, summarize=task_summary
+    )
+
+
+@app.get("/api/research/tasks")
+def list_research_tasks():
+    return research_tasks.list()
+
+
+@app.post("/api/research/tasks", status_code=202)
+async def create_research_task(request: ResearchTaskRequest):
+    if len(request.query.strip()) < 2:
+        raise HTTPException(422, "请输入至少两个字符的研究主题")
+    task = document_action(lambda: research_tasks.create(request.query.strip(), request.limit))
+    start_research(task["id"])
+    return task
+
+
+@app.post("/api/research/tasks/{task_id}/retry", status_code=202)
+async def retry_research_task(task_id: str):
+    if task_id in research_tasks.running:
+        raise HTTPException(409, "任务仍在结束中，请稍后重试")
+    task = document_action(lambda: research_tasks.retry(task_id))
+    start_research(task_id)
+    return task
+
+
+@app.post("/api/research/tasks/{task_id}/cancel")
+async def cancel_research_task(task_id: str):
+    return document_action(lambda: research_tasks.cancel(task_id))
+
+
+@app.get("/api/research/tasks/{task_id}")
+def get_research_task(task_id: str):
+    return document_action(lambda: research_tasks.get(task_id))
 
 
 dist = Path(os.getenv("YANXI_DIST_DIR", "dist"))

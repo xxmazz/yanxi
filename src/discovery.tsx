@@ -1,3 +1,4 @@
+import { ResearchTasks } from "./research-tasks";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Download, Search, BookOpen } from "lucide-react";
 import { api } from "./api";
@@ -129,6 +130,7 @@ export function Discovery({
   };
   return (
     <>
+      <ResearchTasks changed={changed} open={open} />
       <div className="page-heading">
         <div>
           <div className="eyebrow">FOLLOW YOUR CURIOSITY</div>

@@ -4065,3 +4065,74 @@ textarea {
   flex-shrink: 0;
   color: #6c7e66;
 }
+
+.research-task-panel {
+  padding: 22px;
+  margin-bottom: 24px;
+  border: 1px solid #dce5d7;
+  border-radius: 9px;
+  background: #fafcf7;
+}
+.research-task-panel h2 {
+  margin: 0 0 10px;
+  font-size: 21px;
+}
+.research-task-panel p,
+.research-task-panel li {
+  font-size: 13px;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+.research-task-panel form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: end;
+  margin: 16px 0;
+}
+.research-task-panel label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+}
+.research-task-panel label:first-child {
+  flex: 1;
+  min-width: 220px;
+}
+.research-task-panel input,
+.research-task-panel select {
+  padding: 10px;
+  border: 1px solid #ccd8c6;
+  border-radius: 5px;
+  background: white;
+}
+.research-task-panel button {
+  padding: 9px 12px;
+  border: 1px solid #bdcdb5;
+  border-radius: 5px;
+  background: #edf3e7;
+  color: #315b32;
+  cursor: pointer;
+}
+.research-task-panel details {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #dce5d7;
+  border-radius: 6px;
+  background: white;
+}
+.research-task-panel summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+.research-task-panel article {
+  border-top: 1px solid #e0e7d9;
+  margin-top: 14px;
+}
+.research-task-panel article h3 {
+  font-size: 15px;
+}
+.research-task-panel .task-answer {
+  white-space: pre-wrap;
+}
