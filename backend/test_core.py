@@ -105,6 +105,23 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual([r["document_id"] for r in store.rows([first["id"]])], [first["id"]])
             self.assertEqual(store.rows(["' OR 1=1 --"]), [])
 
+    def test_hardware_question_recovers_training_heading_without_model_invented_intent(self):
+        rows = [
+            {"id": i, "text": "GPU model base Transformer results " * 10} for i in range(50)
+        ] + [
+            {
+                "id": 50,
+                "text": "5.2 Hardware and Schedule\nWe trained on sixteen Example accelerators.",
+            }
+        ]
+        result = retrieve(rows, "GPU model base Transformer", anchor_question="训练硬件是什么？")
+        self.assertEqual(result[0]["id"], 50)
+        self.assertEqual(len(result), 6)
+        result = retrieve(rows, "GPU hardware", anchor_question="模型结果是什么？")
+        self.assertEqual(
+            [r["score"] for r in result], sorted((r["score"] for r in result), reverse=True)
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

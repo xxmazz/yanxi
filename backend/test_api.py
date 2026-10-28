@@ -175,6 +175,36 @@ class ApiTests(unittest.TestCase):
         self.assertIn("0.0003", result["answer"])
         self.assertIn("32", result["answer"])
 
+    def test_ordered_author_route_uses_scope_and_never_asks_model_to_guess(self):
+        doc, _ = self.module.store.create(b"%PDF-authors", "paper.pdf")
+        text = "A Paper\nAda First\nExample Research\nBea Second\nUniversity of Elsewhere\nAbstract\nBody"
+        self.module.store.save_page(
+            doc["id"],
+            1,
+            {"text": text, "method": "native", "width": 100, "height": 200, "blocks": []},
+        )
+        self.module.store.finish(
+            doc["id"],
+            1,
+            [{"page": 1, "offset": 0, "text": text}],
+            metadata={"authors": "Ada First; Bea Second"},
+        )
+        with patch.object(self.module.models, "answer") as model:
+            result = self.client.post(
+                "/api/chat", json={"question": "第2位作者及机构？", "document_ids": [doc["id"]]}
+            ).json()
+            self.assertFalse(result["insufficient_evidence"])
+            self.assertIn("Bea Second", result["answer"])
+            self.assertIn("University of Elsewhere", result["answer"])
+            self.assertIn(result["citations"][0]["quote"], text)
+            self.assertEqual(result["citations"][0]["document_id"], doc["id"])
+            rejected = self.client.post(
+                "/api/chat", json={"question": "第9位作者？", "document_ids": [doc["id"]]}
+            ).json()
+            self.assertTrue(rejected["insufficient_evidence"])
+            self.assertEqual(rejected["citations"], [])
+            model.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

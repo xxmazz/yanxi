@@ -16,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
 
+from .bibliography import author_ordinal, ordered_author
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, valid_id
 from .graph import build_graph
@@ -415,6 +416,35 @@ async def chat(request: Question):
                 "citations": [],
                 "insufficient_evidence": True,
                 "steps": ["检查文献范围"],
+            }
+        ordinal = author_ordinal(request.question)
+        if ordinal is not None:
+            ids = list(dict.fromkeys(row["document_id"] for row in rows))
+            details = None
+            if len(ids) == 1:
+                document = await asyncio.to_thread(store.document, ids[0])
+                page = await asyncio.to_thread(store.page, ids[0], 1)
+                details = ordered_author(document, page, ordinal)
+            if details is None or details.get("out_of_range"):
+                return {
+                    "answer": "当前署名结构不足以可靠核对这个作者序号，请选择单篇文献并核对首页署名。",
+                    "citations": [],
+                    "insufficient_evidence": True,
+                    "steps": ["检查文献范围", "核对首页署名顺序"],
+                }
+            source = {"label": "E1", "document_id": ids[0], "title": document["title"], "page": 1}
+            institution = "；".join(details["affiliations"]) or "原文署名区未可靠识别到机构"
+            answer = f"{details['name']}，署名机构：{institution}。[E1]"
+            citations = [citation(source, details["quote"])]
+            for index, note in enumerate(details["notes"], 2):
+                label = f"E{index}"
+                answer += f"\n\n署名脚注：{note}[{label}]"
+                citations.append(citation(dict(source, label=label), note))
+            return {
+                "answer": answer,
+                "citations": citations,
+                "insufficient_evidence": False,
+                "steps": ["检查文献范围", "核对首页署名顺序", "读取署名机构及脚注", "定位原页证据"],
             }
         if models.llm is None:
             raise HTTPException(503, "本地模型未就绪，请检查服务器模型配置")

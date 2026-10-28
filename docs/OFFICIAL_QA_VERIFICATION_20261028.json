@@ -1,0 +1,646 @@
+{
+  "verified_at": "2026-10-28T10:37:26.047773+00:00",
+  "provenance": "用户提供的比赛资料包；原件仅保留在本地下载目录与服务器 runtime，仓库仅保存哈希及验证结果。",
+  "manifest": [
+    {
+      "file": "pdf/1607.06450v1.pdf",
+      "bytes": 612446,
+      "pages": 14,
+      "sha256": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7"
+    },
+    {
+      "file": "pdf/1706.03762v1.pdf",
+      "bytes": 2128686,
+      "pages": 15,
+      "sha256": "0a9bff1be3575cf9fe26a4a3d3a9175bc791ecec90de8b9deba4cff75d2b9476"
+    },
+    {
+      "file": "pdf/1706.03762v1_img.pdf",
+      "bytes": 4672118,
+      "pages": 15,
+      "sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d"
+    },
+    {
+      "file": "pdf/1706.03762v7.pdf",
+      "bytes": 2215244,
+      "pages": 15,
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+    },
+    {
+      "file": "pdf/1707.06347v2.pdf",
+      "bytes": 2923532,
+      "pages": 12,
+      "sha256": "e78feadadbdbb0b601b3c2bcc81404722cd431a489b307545f9b7bea1e8c4f5b"
+    },
+    {
+      "file": "pdf/1910.02054v3.pdf",
+      "bytes": 779206,
+      "pages": 24,
+      "sha256": "c531734c7d9ee647fda9b4f0e1a6abd6d58ad34e862bc945451b09032be3167e"
+    },
+    {
+      "file": "pdf/1910.10683v4.pdf",
+      "bytes": 1190021,
+      "pages": 67,
+      "sha256": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f"
+    },
+    {
+      "file": "pdf/2001.08361v1.pdf",
+      "bytes": 2493004,
+      "pages": 30,
+      "sha256": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494"
+    },
+    {
+      "file": "pdf/2002.04745v2.pdf",
+      "bytes": 779713,
+      "pages": 17,
+      "sha256": "e1fa0519ed8e09a676d56c983e99ead5effd7ef840ae86a186729287469bf883"
+    },
+    {
+      "file": "pdf/2005.14165v4.pdf",
+      "bytes": 6768044,
+      "pages": 75,
+      "sha256": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83"
+    },
+    {
+      "file": "pdf/2010.11929v2.pdf",
+      "bytes": 3743814,
+      "pages": 22,
+      "sha256": "8ce7b83971a14508ca711a27c875c9b6914c4f6767cf3150fb1ca6c07aa056d6"
+    },
+    {
+      "file": "pdf/209_Emergent_Abilities_of_Larg.pdf",
+      "bytes": 629661,
+      "pages": 30,
+      "sha256": "2d5d4690b43be8965a6b17ae28b370ab4b8774b2213c41111c1f584cc3c447a3"
+    },
+    {
+      "file": "pdf/2101.03961v3.pdf",
+      "bytes": 1304157,
+      "pages": 40,
+      "sha256": "f340f6ace31abf7d0730ef461404279f40d3c890e9cc2daeb7068b3304afdbd6"
+    },
+    {
+      "file": "pdf/2103.00020v1.pdf",
+      "bytes": 6813639,
+      "pages": 48,
+      "sha256": "6478b6e571a7d6fcd846d8ef77bfd60c285f1986abb8f475eedc43de403074f5"
+    },
+    {
+      "file": "pdf/2106.09685v2.pdf",
+      "bytes": 1609513,
+      "pages": 26,
+      "sha256": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a"
+    },
+    {
+      "file": "pdf/2107.03374v2.pdf",
+      "bytes": 1885177,
+      "pages": 35,
+      "sha256": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855"
+    },
+    {
+      "file": "pdf/2201.11903v6.pdf",
+      "bytes": 891773,
+      "pages": 43,
+      "sha256": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12"
+    },
+    {
+      "file": "pdf/2203.02155v1.pdf",
+      "bytes": 1797405,
+      "pages": 68,
+      "sha256": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98"
+    },
+    {
+      "file": "pdf/2205.14135v2.pdf",
+      "bytes": 2630825,
+      "pages": 34,
+      "sha256": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4"
+    },
+    {
+      "file": "pdf/2206.07682v2.pdf",
+      "bytes": 842905,
+      "pages": 30,
+      "sha256": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755"
+    },
+    {
+      "file": "pdf/2210.02414v2.pdf",
+      "bytes": 4743570,
+      "pages": 56,
+      "sha256": "82d5b9634b3d2601b3eb494dcc9e2189132f5d6e479233b91c7ce411dbdfcfa4"
+    },
+    {
+      "file": "pdf/2211.05100v4.pdf",
+      "bytes": 3029243,
+      "pages": 73,
+      "sha256": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065"
+    },
+    {
+      "file": "pdf/2212.04356v1.pdf",
+      "bytes": 1008644,
+      "pages": 28,
+      "sha256": "6337bde031b2f237547a977b022f831169a7e05b4d9047f29501166d83594566"
+    },
+    {
+      "file": "pdf/2303.08774v6.pdf",
+      "bytes": 5245564,
+      "pages": 100,
+      "sha256": "c33a66dadca2388d7b172d6293b00dc32b71110c6f38fafe0d41112e61be7774"
+    },
+    {
+      "file": "pdf/2304.08485v2.pdf",
+      "bytes": 5906135,
+      "pages": 25,
+      "sha256": "dc8bace378a282ea78caa9b5959306202fbfa3b8cedaf8a66541a9af18f4d3bf"
+    },
+    {
+      "file": "pdf/2305.13048v2.pdf",
+      "bytes": 1590242,
+      "pages": 30,
+      "sha256": "57d18c40bdbb4bc1ab69c078a304f97e31657b4f543c408d8a5520e672a3fab0"
+    },
+    {
+      "file": "pdf/2305.14314v1.pdf",
+      "bytes": 1065470,
+      "pages": 26,
+      "sha256": "33a4e757c19d6ea8d3cca8958fce8fe405e290272e135c99ee66065c775d5bd1"
+    },
+    {
+      "file": "pdf/2305.18290v3.pdf",
+      "bytes": 1299212,
+      "pages": 27,
+      "sha256": "92cb3a2b71362acda98a789b03d88688fd33cf5fcf13f81d2b1de30ee7d3b67a"
+    },
+    {
+      "file": "pdf/2307.09288v2.pdf",
+      "bytes": 13661300,
+      "pages": 77,
+      "sha256": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91"
+    },
+    {
+      "file": "pdf/2310.06825v1.pdf",
+      "bytes": 3749788,
+      "pages": 9,
+      "sha256": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae"
+    },
+    {
+      "file": "pdf/2406.14491v2.pdf",
+      "bytes": 843992,
+      "pages": 22,
+      "sha256": "8bc106e62eeb6f6f15328e8af107df8eb66ce7ddc3ba694a2ef8ea743f829f0f"
+    },
+    {
+      "file": "pdf/2407.21783v3.pdf",
+      "bytes": 9833173,
+      "pages": 92,
+      "sha256": "481f1599468f95a07d05e97fafe55bbe786dc1624c6f881bcb4c7d14c933d083"
+    },
+    {
+      "file": "pdf/2412.15115v2.pdf",
+      "bytes": 1938604,
+      "pages": 26,
+      "sha256": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3"
+    },
+    {
+      "file": "pdf/2412.19437v1.pdf",
+      "bytes": 1887607,
+      "pages": 53,
+      "sha256": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5"
+    },
+    {
+      "file": "pdf/2501.12948v2.pdf",
+      "bytes": 5034998,
+      "pages": 86,
+      "sha256": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4"
+    },
+    {
+      "file": "pdf/333078981_693988129081760_4712707815225756708_n.pdf",
+      "bytes": 621427,
+      "pages": 27,
+      "sha256": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd"
+    },
+    {
+      "file": "pdf/N19-1423.pdf",
+      "bytes": 786279,
+      "pages": 16,
+      "sha256": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4"
+    },
+    {
+      "file": "pdf/UnderstandingDeepLearning_02_09_26_C.pdf",
+      "bytes": 22344992,
+      "pages": 541,
+      "sha256": "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32"
+    },
+    {
+      "file": "pdf/language_understanding_paper.pdf",
+      "bytes": 541036,
+      "pages": 12,
+      "sha256": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0"
+    },
+    {
+      "file": "科研小助手Agent-AI大模型.pdf",
+      "bytes": 584839,
+      "pages": 7,
+      "sha256": "58b406ac67aa2b53ff013ae9cac1920c8579ebdd0d3134afe4c06524f77862f6"
+    }
+  ],
+  "book": {
+    "sha256": "f8237d393163900fa8e43210e680a3f987b45ccac7750b372e156fae3df0bf32",
+    "matches_previous_541_page_run": true,
+    "previous_report_sha256": "93ad8dd6a4658e112871d71f1298bde7d61c98aaded392406df1966bbdf4f229",
+    "note": "沿用同字节原件的上一轮逐页与七问验证；本轮不重新计时报作全书重索引。"
+  },
+  "isolated_versions": {
+    "order": [7, 1],
+    "renamed_files": true,
+    "candidate": {
+      "id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "title": "Attention Is All You Need",
+      "overlap": 0.8,
+      "semantic_similarity": null,
+      "version": 7,
+      "arxiv_id": "1706.03762",
+      "recommendation": "keep_existing",
+      "reason": "正文高度重合；原文 arXiv 标识显示当前库为 v7，新文件为 v1。"
+    },
+    "older_excluded_from_retrieval": true,
+    "both_originals_and_pages_retained": true,
+    "scope": "独立临时 Store、真实 PDF 与生产解析/去重/决策代码；不加载 E5，不覆盖线上已有版本选择。"
+  },
+  "scan": {
+    "id": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+    "native_text_absent_all_15_pages": true,
+    "ocr_pages": 15,
+    "original_download_hash_matches": true,
+    "page5_png_rendered": true,
+    "keep_both_candidates": [],
+    "page_records": [
+      {
+        "page": 1,
+        "text_sha256": "a678784f672e1303d194378bf789831ea03589dd73750c97c245c6e0d0697a87",
+        "blocks": 101
+      },
+      {
+        "page": 2,
+        "text_sha256": "467badd2e49313e63898e66f4c10fbfc2d2ae698f45b743f5deae5e6007cd58f",
+        "blocks": 105
+      },
+      {
+        "page": 3,
+        "text_sha256": "20d87f7ef7e50d54c44a5528cf5cab74051dcd75720ac9795272aa1c49de61cf",
+        "blocks": 74
+      },
+      {
+        "page": 4,
+        "text_sha256": "e772369b5e6f162ac3fce9f2373b7010d73f6b373bfa0e615bf0aa6189c049ce",
+        "blocks": 97
+      },
+      {
+        "page": 5,
+        "text_sha256": "2a0c1ad0cb38678cbdb65d0291f01941414c3b19e71a1790599c7127c159e546",
+        "blocks": 92
+      },
+      {
+        "page": 6,
+        "text_sha256": "bf793531f20f73a1d957e72d3867083e9d0ad0e97b30d616bd78148f51a2143f",
+        "blocks": 116
+      },
+      {
+        "page": 7,
+        "text_sha256": "cca76149e80b847caed331ed84e726ab9aaa5219769c6f8baa9e0bd236653913",
+        "blocks": 100
+      },
+      {
+        "page": 8,
+        "text_sha256": "00daa0e4a01f77829abf7cf85477f6a1c2f9043524e1d904e246aed5797cbdc7",
+        "blocks": 145
+      },
+      {
+        "page": 9,
+        "text_sha256": "c03338bde49b28e03af8441dfbc3d641340cba3111dc71b7310866ddc8edd6a4",
+        "blocks": 201
+      },
+      {
+        "page": 10,
+        "text_sha256": "f52f2724aade9ebfc490acb64834f037d45c89110645fb72427e174b338cbfe0",
+        "blocks": 98
+      },
+      {
+        "page": 11,
+        "text_sha256": "1623690477fc38bdd93afc946795ba4ba7cbbfb522e739dfe2d184d8ea6b119d",
+        "blocks": 87
+      },
+      {
+        "page": 12,
+        "text_sha256": "ed3e6dcfb9059ab9a3c1e985246fc2a2114f433775eec4e55bf53f45f13b8147",
+        "blocks": 27
+      },
+      {
+        "page": 13,
+        "text_sha256": "55cdd6091ec5c24779f972e17cbb10342500ed6e3d2a00da65c90577a7ba4f35",
+        "blocks": 36
+      },
+      {
+        "page": 14,
+        "text_sha256": "c1c38f7bda72f098c09757a7d710550bc8b8e1cc2dda0898585aca0b40176879",
+        "blocks": 76
+      },
+      {
+        "page": 15,
+        "text_sha256": "db1afa5adb3893ee5d3b23b92e3c667556d64be6f1cc09f27431b4164fe25a32",
+        "blocks": 78
+      }
+    ]
+  },
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "cases": [
+    {
+      "case": "official_scan_ffn",
+      "question": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是多少？",
+      "expected_keywords": ["2048"],
+      "expected_page": 5,
+      "answer": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是2048[E1]",
+      "insufficient_evidence": false,
+      "validation_error": null,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+          "title": "Attention Is All You Need",
+          "page": 5,
+          "url": "/api/documents/64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d/pdf#page=5",
+          "quote_sha256": "934ce5438aeec7ed72ce3b26ffb9f5360d3023c671b838d2c8e17732dd14ca18"
+        }
+      ],
+      "seconds": 4.14,
+      "passed": true
+    },
+    {
+      "case": "official_author",
+      "question": "论文 Attention Is All You Need 的第6位作者是谁，署名机构是什么？",
+      "expected_keywords": ["Aidan", "Gomez", "Toronto"],
+      "expected_page": 1,
+      "answer": "Aidan N. Gomez，署名机构：University of Toronto。[E1]\n\n署名脚注：†Work performed while at Google Brain.[E2]",
+      "insufficient_evidence": false,
+      "validation_error": null,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "ecd40b0a4b445baea60a54bd7b3a2ae1c79430d4951a0c836f9f733fc9b4d299"
+        },
+        {
+          "id": "E2",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "114beab5d78d2bdb907b9245986e186bfaa60e4b9d1c9288dd74f2fafbb6c30c"
+        }
+      ],
+      "seconds": 0.03,
+      "passed": true
+    },
+    {
+      "case": "official_adam",
+      "question": "这篇论文中 Adam 优化器的 β1 和 β2 分别是多少？",
+      "expected_keywords": ["0.9", "0.98"],
+      "expected_page": 7,
+      "answer": "β1 的值是 0.9，β2 的值是 0.98[E1]",
+      "insufficient_evidence": false,
+      "validation_error": null,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 7,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=7",
+          "quote_sha256": "9e3b5699520619b6634d481111ed8b6d8a1a39ab4398732fbfb9d8f95b90155d"
+        }
+      ],
+      "seconds": 3.15,
+      "passed": true
+    },
+    {
+      "case": "official_hardware",
+      "question": "Transformer 在训练 Base 模型时用了多少个 GPU，具体型号是什么？",
+      "expected_keywords": ["8", "P100"],
+      "expected_page": 7,
+      "answer": "训练 Base 模型使用了8个NVIDIA P100 GPU[E1]",
+      "insufficient_evidence": false,
+      "validation_error": null,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 7,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=7",
+          "quote_sha256": "9e3b5699520619b6634d481111ed8b6d8a1a39ab4398732fbfb9d8f95b90155d"
+        }
+      ],
+      "seconds": 3.2,
+      "passed": true
+    },
+    {
+      "case": "official_layernorm_reference",
+      "question": "请列出论文引用的 Layer Normalization 参考文献的完整作者和年份。",
+      "expected_keywords": [
+        "Jimmy Lei Ba",
+        "Jamie Ryan Kiros",
+        "Geoffrey",
+        "Hinton",
+        "2016"
+      ],
+      "expected_page": 10,
+      "answer": "Layer Normalization 的参考文献是 Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E Hinton 在 2016 年发表的文章。[E1]",
+      "insufficient_evidence": false,
+      "validation_error": null,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 10,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=10",
+          "quote_sha256": "57e13bceec07b725a867d842cc977eb71aaadcc8149e2b1afb86cff8a565c798"
+        }
+      ],
+      "seconds": 4.64,
+      "passed": true
+    }
+  ],
+  "existing_document_selections_unchanged": true,
+  "limits": "逐页 OCR 文本非空、坐标及引用核对不等于 OCR 全文准确率；独立版本去重未加载 E5；仅覆盖清单中指定问答，不代表全部赛题通过。",
+  "additional_cases": [
+    {
+      "case": "author_chinese_ordinal",
+      "question": "第六位作者的署名机构是什么？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "answer": "Aidan N. Gomez，署名机构：University of Toronto。[E1]\n\n署名脚注：†Work performed while at Google Brain.[E2]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "ecd40b0a4b445baea60a54bd7b3a2ae1c79430d4951a0c836f9f733fc9b4d299"
+        },
+        {
+          "id": "E2",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "114beab5d78d2bdb907b9245986e186bfaa60e4b9d1c9288dd74f2fafbb6c30c"
+        }
+      ],
+      "passed": true,
+      "seconds": 0.03
+    },
+    {
+      "case": "author_another_position",
+      "question": "第5位作者是谁，署名机构是什么？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "answer": "Llion Jones，署名机构：Google Research。[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "a08001ce6ab00b48a6481b70d92120f675b3987c5b62a5c668739c279c0377f6"
+        }
+      ],
+      "passed": true,
+      "seconds": 0.02
+    },
+    {
+      "case": "author_missing_affiliation",
+      "question": "第8位作者是谁，机构是什么？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "answer": "Illia Polosukhin，署名机构：原文署名区未可靠识别到机构。[E1]\n\n署名脚注：‡Work performed while at Google Research.[E2]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "b55f1d2de19b29e19b1ce1d3336602ecbc36ab5b70630a6de73e8253428a7320"
+        },
+        {
+          "id": "E2",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "53cd6e36fd1c02ad8dc6d26cb49e418d60991892841254ccf12e6178b9deb29c"
+        }
+      ],
+      "passed": true,
+      "seconds": 0.02
+    },
+    {
+      "case": "author_out_of_range",
+      "question": "第9位作者是谁？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "answer": "当前署名结构不足以可靠核对这个作者序号，请选择单篇文献并核对首页署名。",
+      "insufficient_evidence": true,
+      "citations": [],
+      "passed": true,
+      "seconds": 0.01
+    },
+    {
+      "case": "author_ocr_layout",
+      "question": "第6位作者及机构？",
+      "document_ids": [
+        "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d"
+      ],
+      "answer": "当前署名结构不足以可靠核对这个作者序号，请选择单篇文献并核对首页署名。",
+      "insufficient_evidence": true,
+      "citations": [],
+      "passed": true,
+      "seconds": 0.01
+    },
+    {
+      "case": "author_ambiguous_scope",
+      "question": "第6位作者是谁？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233"
+      ],
+      "answer": "当前署名结构不足以可靠核对这个作者序号，请选择单篇文献并核对首页署名。",
+      "insufficient_evidence": true,
+      "citations": [],
+      "passed": true,
+      "seconds": 0.01
+    },
+    {
+      "case": "hardware_english",
+      "question": "How many GPUs and which GPU model were used to train the base model?",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "answer": "我们使用了8个NVIDIA P100 GPU来训练基础模型。[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 7,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=7",
+          "quote_sha256": "9e3b5699520619b6634d481111ed8b6d8a1a39ab4398732fbfb9d8f95b90155d"
+        }
+      ],
+      "passed": true,
+      "seconds": 4.16
+    },
+    {
+      "case": "hardware_chinese",
+      "question": "这篇论文训练模型用的硬件是什么？",
+      "document_ids": [
+        "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+      ],
+      "answer": "我们使用了8块NVIDIA P100 GPU进行模型训练。[E1]",
+      "insufficient_evidence": false,
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 7,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=7",
+          "quote_sha256": "9e3b5699520619b6634d481111ed8b6d8a1a39ab4398732fbfb9d8f95b90155d"
+        }
+      ],
+      "passed": true,
+      "seconds": 2.57
+    }
+  ],
+  "backend_tests_passed": 79
+}

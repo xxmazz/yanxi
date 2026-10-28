@@ -54,6 +54,8 @@ React 19、TypeScript、Vite、FastAPI、SQLite、pypdf、PyTorch、Transformers
 
 541 页教材的完整索引、逐页复核和固定问答用例见 [长文档回归](docs/LONG_DOCUMENT.md)，支持明确图号定位并保留解析警告；已与用户提供的比赛资料包原件核对哈希；官方扫描件和版本回归见 [官方样本验证](docs/OFFICIAL_FIXTURES.md)。
 
+官方问答抽查发现的作者顺序与训练硬件问题已修复，署名区直接核对顺序及机构脚注，GPU 问题补召回训练配置段。五问与八项边界检查见 [问答改进](docs/QA_RELIABILITY.md)。
+
 当前服务是内部开发实例，公网访问控制与评审部署另行验收。模型权重、PDF、数据库和密钥均不进入 Git。不要将密钥放进前端变量。
 
 ## 开发与验证

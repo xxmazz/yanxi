@@ -371,7 +371,22 @@ def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None):
         # 先覆盖各个明确编号，再补混合检索结果；不扩大总体证据预算。
         if matches:
             anchored.append(matches[0])
-    order = list(dict.fromkeys(anchored + ranked))[:limit]
+    # 硬件问题优先检查明确的训练配置标题；不把结果/变体表中的 GPU
+    # 或通用模型名当作训练配置，不引入任何论文专属答案。
+    original = question if anchor_question is None else anchor_question
+    hardware = []
+    if re.search(r"\bgpus?\b|显卡|硬件", original, re.I):
+        heading = re.compile(
+            r"^\s*(?:\d+(?:\.\d+)*\s+)?(?:hardware(?:\s+and\s+schedule)?|"
+            r"training infrastructure|硬件配置|训练硬件)\s*$",
+            re.I | re.M,
+        )
+        hardware = [i for i in ranked if heading.search(rows[i]["text"])]
+        # 标题段落即使未进入混合检索前四十名，也可在当前文献范围补召回。
+        hardware += [
+            i for i, row in enumerate(rows) if i not in hardware and heading.search(row["text"])
+        ]
+    order = list(dict.fromkeys(anchored + hardware[:2] + ranked))[:limit]
     return [dict(rows[i], score=ranks.get(i, 0)) for i in order]
 
 
