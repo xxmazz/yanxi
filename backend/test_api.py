@@ -254,6 +254,25 @@ class ApiTests(unittest.TestCase):
             self.assertEqual({c["document_id"] for c in both["citations"]}, set(ids))
             self.assertEqual({e["document_id"] for e in model.call_args_list[-2].args[1]}, {ids[0]})
             self.assertEqual({e["document_id"] for e in model.call_args_list[-1].args[1]}, {ids[1]})
+            model.side_effect = [
+                {
+                    "claims": [
+                        {"text": "编码器使用注意力。", "source": "E1"},
+                        {"text": "原文讨论编码器。", "source": "E1"},
+                    ],
+                    "insufficient_evidence": False,
+                },
+                {
+                    "claims": [{"text": "解码器生成序列。", "source": "E2"}],
+                    "insufficient_evidence": False,
+                },
+            ]
+            adjusted = self.client.post(
+                "/api/chat", json={"question": "两篇相比有什么调整？", "document_ids": ids}
+            ).json()
+            self.assertFalse(adjusted["insufficient_evidence"])
+            self.assertEqual({c["document_id"] for c in adjusted["citations"]}, set(ids))
+            self.assertEqual(model.call_args.kwargs["max_claims"], 2)
 
     def test_metric_calculation_is_returned_with_original_table_not_an_unchecked_model_number(self):
         doc, _ = self.module.store.create(b"%PDF-metric", "paper.pdf")

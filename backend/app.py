@@ -19,6 +19,7 @@ from pypdf import PdfReader
 
 from .architecture import architecture_comparison
 from .bibliography import author_ordinal, ordered_author
+from .comparison import explicit_configuration_facts
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, valid_id
 from .graph import build_graph
@@ -453,7 +454,9 @@ async def chat(request: Question):
             raise HTTPException(503, "本地模型未就绪，请检查服务器模型配置")
         coverage_ids = None
         if len(set(request.document_ids)) > 1 and re.search(
-            r"对比|比较|承袭|区别|变化|分别|compare|versus", request.question, re.I
+            r"对比|比较|相比|相较|承袭|区别|变化|分别|compare|comparison|versus|\bvs\.?\b",
+            request.question,
+            re.I,
         ):
             coverage_ids = list(dict.fromkeys(request.document_ids))
             available = {row["document_id"] for row in rows}
@@ -545,16 +548,28 @@ async def chat(request: Question):
         try:
             if coverage_ids:
                 claims = []
+                max_claims = min(2, 8 // len(coverage_ids))
                 for doc_id in coverage_ids:
                     subset = [e for e in evidence if e["document_id"] == doc_id]
-                    single = await asyncio.to_thread(
-                        models.comparison_facts, request.question, subset
-                    )
-                    _, _, single_refused = validate_answer(single, subset)
-                    if single_refused or len(single["claims"]) != 1:
-                        raise ValueError("一篇所选文献未提供可核对的相关事实")
+                    single = explicit_configuration_facts(request.question, subset)
+                    if single is None or len(single["claims"]) > max_claims:
+                        single = await asyncio.to_thread(
+                            models.comparison_facts, request.question, subset, max_claims=max_claims
+                        )
+                    try:
+                        _, _, single_refused = validate_answer(single, subset)
+                    except ValueError as exc:
+                        raise ValueError(f"{exc}（{doc_id[:8]}）") from exc
+                    if single_refused or not 1 <= len(single["claims"]) <= max_claims:
+                        raise ValueError(f"一篇所选文献未提供可核对的相关事实（{doc_id[:8]}）")
                     claims.extend(single["claims"])
                 raw = {"claims": claims, "insufficient_evidence": False}
+                steps = [
+                    "检查对比文献范围",
+                    "按比较维度逐篇召回",
+                    "逐篇核对原文事实",
+                    "校验原文数值及引用覆盖",
+                ]
             else:
                 raw = await asyncio.to_thread(models.answer, request.question, evidence)
             answer, labels, refused = validate_answer(raw, evidence)

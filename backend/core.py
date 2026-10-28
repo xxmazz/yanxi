@@ -8,6 +8,8 @@ import sqlite3
 from collections import Counter
 from pathlib import Path
 
+from .comparison import comparison_priority, comparison_topic, expand_comparison_evidence
+
 
 def tokens(text: str) -> list[str]:
     # 英文词 + 中文单字及双字，避免中文问题被当成一个长词。
@@ -398,20 +400,38 @@ def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None, c
         ]
     order = list(dict.fromkeys(anchored + hardware[:2] + architecture + ranked))
     if coverage_ids:
-        covered = []
+        groups = []
+        topic = comparison_topic(original)
         for doc_id in dict.fromkeys(coverage_ids):
             candidates = [i for i in order if rows[i].get("document_id") == doc_id]
-            if not candidates:
-                candidates = sorted(
-                    (i for i, row in enumerate(rows) if row.get("document_id") == doc_id),
-                    key=lambda i: (ranks.get(i, 0), scores[i]),
-                    reverse=True,
+            extras = [
+                i
+                for i, row in enumerate(rows)
+                if row.get("document_id") == doc_id and i not in candidates
+            ]
+            extras.sort(key=lambda i: (ranks.get(i, 0), scores[i]), reverse=True)
+            candidates += extras
+            if topic:
+                # 仅原始问题触发维度补召回，不能由模型扩写的词改变问题目标。
+                candidates.sort(
+                    key=lambda i: comparison_priority(rows[i]["text"], topic), reverse=True
                 )
-            if candidates:
-                covered.append(candidates[0])
-        order = list(dict.fromkeys(covered + order))
+            groups.append(candidates)
+        # 逐轮取每篇的下一段，防止长篇或重复模型名占满剩余预算。
+        order = []
+        for position in range(limit):
+            for group in groups:
+                if position < len(group):
+                    order.append(group[position])
+            if len(order) >= limit:
+                break
     order = order[:limit]
-    return [dict(rows[i], score=ranks.get(i, 0)) for i in order]
+    selected = [dict(rows[i], score=ranks.get(i, 0)) for i in order]
+    return (
+        expand_comparison_evidence(selected, rows, comparison_topic(original))
+        if coverage_ids
+        else selected
+    )
 
 
 ANCHOR_KINDS = {

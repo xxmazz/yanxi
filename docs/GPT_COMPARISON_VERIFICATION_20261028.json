@@ -1,0 +1,680 @@
+{
+  "verified_at": "2026-10-28T11:37:43.479002+00:00",
+  "fixtures": [
+    {
+      "generation": 1,
+      "filename": "language_understanding_paper.pdf",
+      "sha256": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+      "pages": 12,
+      "bytes": 541036,
+      "source": "用户提供的官方比赛资料包"
+    },
+    {
+      "generation": 2,
+      "filename": "language_models_are_unsupervised_multitask_learners.pdf",
+      "sha256": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+      "pages": 24,
+      "bytes": 582775,
+      "source": "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf"
+    },
+    {
+      "generation": 3,
+      "filename": "2005.14165v4.pdf",
+      "sha256": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+      "pages": 75,
+      "bytes": 6768044,
+      "source": "用户提供的官方比赛资料包"
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "cases": [
+    {
+      "id": "official_parameters",
+      "question": "对比GPT-1、GPT-2和GPT-3的论文，说明这些模型的参数的变化。",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true,
+        "gpt1_total_not_invented": true,
+        "gpt1_inference_from_gpt2": true,
+        "gpt3_original_units": true,
+        "verbatim_E1": true,
+        "physical_page_E1": true,
+        "verbatim_E2": true,
+        "physical_page_E2": true,
+        "verbatim_E3": true,
+        "physical_page_E3": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "本篇配置段说明使用 12 层 decoder-only Transformer，但该段没有直接报告总参数量；不从层数猜测参数总数。[E1]\n\n本篇参数表列出的模型规模为 117M、345M、762M、1542M，最大为 1542M。[E2]\n\n原文将最小模型等同于原始 GPT；据该表与等价描述归纳，原始 GPT 的对应规模为 117M。原文将最大模型称为 GPT-2，表中规模为 1542M。[E2]\n\n本篇参数表的模型规模从 125M 到 175.0B；最大模型为 GPT-3 175B or “GPT-3”，总参数量为 175.0B。数值与 M／B 单位按原表保留。[E3]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 5,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=5",
+            "page_sha256": "9f349d649ac9c9baf0e775f30fe85de299b4fd38bbe977fbefd43f9377595fa8",
+            "quote_sha256": "905313b09c997f0443a7897e0694f7d94a1e8fe39b9266616bcf1ba563b42515"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "page_sha256": "d4cd5068fc610fda669d731f6919fe3a1e07991c1d9c3b9b8cdae5b844747e75",
+            "quote_sha256": "61db5a11c907d3dd19eb7c95e56c7b62f53c8107ab6366c171699ec7a12a6ad6"
+          },
+          {
+            "id": "E3",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "page_sha256": "b4573f847e73b78746e4beaa03b3c9cc9af7bd62d6b18a3dad6750cc266335aa",
+            "quote_sha256": "4951bcb7d9a65a0844e6338b4cf27825f5119dbc0b207469a0d396ec134ef999"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查对比文献范围",
+          "按比较维度逐篇召回",
+          "本地模型逐篇核对事实",
+          "校验原文数值及引用覆盖"
+        ]
+      },
+      "seconds": 2.24
+    },
+    {
+      "id": "official_normalization",
+      "question": "GPT-2 相比于 GPT-1，在 Transformer 的 Layer Normalization（LN）位置上做了什么关键的调整？",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true,
+        "gpt1_position_not_invented": true,
+        "gpt2_input_and_final_block": true,
+        "verbatim_E1": true,
+        "physical_page_E1": true,
+        "verbatim_E2": true,
+        "physical_page_E2": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "本篇原文明确说明在模型中广泛使用 layernorm；这句话未说明其在子块输入或输出的具体位置。[E1]\n\n层归一化被移动到每个子块的输入，类似于预激活残差网络，并在最终自注意力块之后添加了一个额外的层归一化。[E2]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 5,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=5",
+            "page_sha256": "9f349d649ac9c9baf0e775f30fe85de299b4fd38bbe977fbefd43f9377595fa8",
+            "quote_sha256": "dd15b87658d4397d4451b73a81683af280734160ef1750b8efd5f2132bc1a40b"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "page_sha256": "d4cd5068fc610fda669d731f6919fe3a1e07991c1d9c3b9b8cdae5b844747e75",
+            "quote_sha256": "0a7017afd9d26d09f8a1b1375968c1cacb30bfd2b249186b8d348c010321c03f"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查对比文献范围",
+          "按比较维度逐篇召回",
+          "本地模型逐篇核对事实",
+          "校验原文数值及引用覆盖"
+        ]
+      },
+      "seconds": 3.47
+    },
+    {
+      "id": "official_context",
+      "question": "从 GPT-1 到 GPT-3，模型的最大上下文 Token 长度（Context Window）分别递增到了多少？",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true,
+        "per_paper_lengths": true,
+        "verbatim_E1": true,
+        "physical_page_E1": true,
+        "verbatim_E2": true,
+        "physical_page_E2": true,
+        "verbatim_E3": true,
+        "physical_page_E3": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "本篇模型使用的上下文窗口或连续训练序列长度是512 token[E1]\n\n本篇模型使用的上下文窗口长度是1024 token[E2]\n\n本篇模型使用的上下文窗口长度是2048 token[E3]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 5,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=5",
+            "page_sha256": "9f349d649ac9c9baf0e775f30fe85de299b4fd38bbe977fbefd43f9377595fa8",
+            "quote_sha256": "dd15b87658d4397d4451b73a81683af280734160ef1750b8efd5f2132bc1a40b"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "page_sha256": "d4cd5068fc610fda669d731f6919fe3a1e07991c1d9c3b9b8cdae5b844747e75",
+            "quote_sha256": "0a7017afd9d26d09f8a1b1375968c1cacb30bfd2b249186b8d348c010321c03f"
+          },
+          {
+            "id": "E3",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "page_sha256": "b4573f847e73b78746e4beaa03b3c9cc9af7bd62d6b18a3dad6750cc266335aa",
+            "quote_sha256": "0d9be501ac22cba420c400d66b25ca008dd94bcdeb5aa1c0df4fffb172c800a2"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查对比文献范围",
+          "按比较维度逐篇召回",
+          "本地模型逐篇核对事实",
+          "校验原文数值及引用覆盖"
+        ]
+      },
+      "seconds": 6.09
+    },
+    {
+      "id": "reordered_context",
+      "question": "Compare the context window lengths of the three papers, separately in tokens.",
+      "document_ids": [
+        "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true,
+        "per_paper_lengths": true,
+        "verbatim_E1": true,
+        "physical_page_E1": true,
+        "verbatim_E2": true,
+        "physical_page_E2": true,
+        "verbatim_E3": true,
+        "physical_page_E3": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "本篇模型使用的上下文窗口长度是2048 token[E1]\n\n本篇模型使用的上下文窗口长度是1024 token[E2]\n\n本篇模型使用的连续训练序列长度为512 token[E3]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "page_sha256": "b4573f847e73b78746e4beaa03b3c9cc9af7bd62d6b18a3dad6750cc266335aa",
+            "quote_sha256": "0d9be501ac22cba420c400d66b25ca008dd94bcdeb5aa1c0df4fffb172c800a2"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "page_sha256": "d4cd5068fc610fda669d731f6919fe3a1e07991c1d9c3b9b8cdae5b844747e75",
+            "quote_sha256": "0a7017afd9d26d09f8a1b1375968c1cacb30bfd2b249186b8d348c010321c03f"
+          },
+          {
+            "id": "E3",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 5,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=5",
+            "page_sha256": "9f349d649ac9c9baf0e775f30fe85de299b4fd38bbe977fbefd43f9377595fa8",
+            "quote_sha256": "dd15b87658d4397d4451b73a81683af280734160ef1750b8efd5f2132bc1a40b"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查对比文献范围",
+          "按比较维度逐篇召回",
+          "本地模型逐篇核对事实",
+          "校验原文数值及引用覆盖"
+        ]
+      },
+      "seconds": 5.38
+    },
+    {
+      "id": "parameter_paraphrase",
+      "question": "分别比较三篇论文的参数规模，保留各自原表的 M/B 单位，并区分明确数值和归纳。",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true,
+        "gpt1_total_not_invented": true,
+        "gpt1_inference_from_gpt2": true,
+        "gpt3_original_units": true,
+        "verbatim_E1": true,
+        "physical_page_E1": true,
+        "verbatim_E2": true,
+        "physical_page_E2": true,
+        "verbatim_E3": true,
+        "physical_page_E3": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "本篇配置段说明使用 12 层 decoder-only Transformer，但该段没有直接报告总参数量；不从层数猜测参数总数。[E1]\n\n本篇参数表列出的模型规模为 117M、345M、762M、1542M，最大为 1542M。[E2]\n\n原文将最小模型等同于原始 GPT；据该表与等价描述归纳，原始 GPT 的对应规模为 117M。原文将最大模型称为 GPT-2，表中规模为 1542M。[E2]\n\n本篇参数表的模型规模从 125M 到 175.0B；最大模型为 GPT-3 175B or “GPT-3”，总参数量为 175.0B。数值与 M／B 单位按原表保留。[E3]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 5,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=5",
+            "page_sha256": "9f349d649ac9c9baf0e775f30fe85de299b4fd38bbe977fbefd43f9377595fa8",
+            "quote_sha256": "905313b09c997f0443a7897e0694f7d94a1e8fe39b9266616bcf1ba563b42515"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "page_sha256": "d4cd5068fc610fda669d731f6919fe3a1e07991c1d9c3b9b8cdae5b844747e75",
+            "quote_sha256": "61db5a11c907d3dd19eb7c95e56c7b62f53c8107ab6366c171699ec7a12a6ad6"
+          },
+          {
+            "id": "E3",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "page_sha256": "b4573f847e73b78746e4beaa03b3c9cc9af7bd62d6b18a3dad6750cc266335aa",
+            "quote_sha256": "4951bcb7d9a65a0844e6338b4cf27825f5119dbc0b207469a0d396ec134ef999"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查对比文献范围",
+          "按比较维度逐篇召回",
+          "本地模型逐篇核对事实",
+          "校验原文数值及引用覆盖"
+        ]
+      },
+      "seconds": 0.44
+    },
+    {
+      "id": "normalization_paraphrase",
+      "question": "比较两篇的 layer norm 位置：在哪个子块位置做了调整，末尾是否增加 LN？",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true,
+        "gpt1_position_not_invented": true,
+        "gpt2_input_and_final_block": true,
+        "verbatim_E1": true,
+        "physical_page_E1": true,
+        "verbatim_E2": true,
+        "physical_page_E2": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "本篇原文明确说明在模型中广泛使用 layernorm；这句话未说明其在子块输入或输出的具体位置。[E1]\n\n层归一化被移动到每个子块的输入，类似于预激活残差网络，并在最终自注意力块之后添加了一个额外的层归一化。[E2]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 5,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=5",
+            "page_sha256": "9f349d649ac9c9baf0e775f30fe85de299b4fd38bbe977fbefd43f9377595fa8",
+            "quote_sha256": "dd15b87658d4397d4451b73a81683af280734160ef1750b8efd5f2132bc1a40b"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "page_sha256": "d4cd5068fc610fda669d731f6919fe3a1e07991c1d9c3b9b8cdae5b844747e75",
+            "quote_sha256": "0a7017afd9d26d09f8a1b1375968c1cacb30bfd2b249186b8d348c010321c03f"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查对比文献范围",
+          "按比较维度逐篇召回",
+          "本地模型逐篇核对事实",
+          "校验原文数值及引用覆盖"
+        ]
+      },
+      "seconds": 3.5
+    },
+    {
+      "id": "missing_paper",
+      "question": "比较三篇的参数数量",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "checks": {
+        "refusal_matches": true,
+        "scope": true,
+        "coverage": true
+      },
+      "passed": true,
+      "response": {
+        "answer": "对比需要选择不超过六篇已就绪的有效文献，请检查归档、解析状态及所选范围。",
+        "citations": [],
+        "insufficient_evidence": true,
+        "steps": ["检查对比文献范围"]
+      },
+      "seconds": 0.01
+    }
+  ],
+  "document_selections_unchanged": true,
+  "limits": "固定题、改写题及逐字引文核对不等于通用语义准确率。GPT-1 参数规模是依据 GPT-2 表格与等价描述归纳；仅支持明确的简单配置表和谓词。",
+  "before_fix": [
+    {
+      "id": "parameters",
+      "question": "对比GPT-1、GPT-2和GPT-3的论文，说明这些模型的参数的变化。",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83"
+      ],
+      "response": {
+        "answer": "本次模型回答未通过格式或引用校验，暂不展示。请换一种问法，或直接核对下方原文。",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 3,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=3",
+            "quote_sha256": "79b9722138d0444ba4c210227764b3d51474730d663c16f8fdb6ae782032b079"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 7,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=7",
+            "quote_sha256": "1f75a97a378a89da263b22b46bb8d28f1ba613a97923a3d73a880b4f74c3b364"
+          },
+          {
+            "id": "E3",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 46,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=46",
+            "quote_sha256": "f3703aa05fabc78dda72e45e8becede51ee334e87329406b18bbc6bff4e7ad60"
+          },
+          {
+            "id": "E4",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "quote_sha256": "c009a4b03d4b1189a3e172d1d84dbb1295aa7f575b34c6dcb1942ae6e29e6c9d"
+          },
+          {
+            "id": "E5",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "quote_sha256": "2bd4f1ec7e0697c03e97a3aec39043def0d26a74e2b86fdae7527f10678dd8cf"
+          },
+          {
+            "id": "E6",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 26,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=26",
+            "quote_sha256": "e3ed46fdd80f3fb49b2b0a1b3bf878dc0b85939ef5e8c4a68d9bc0e45324f9de"
+          }
+        ],
+        "insufficient_evidence": true,
+        "steps": [
+          "检查文献范围",
+          "生成中英检索词",
+          "混合检索",
+          "本地模型阅读证据",
+          "校验原文摘录与数值"
+        ],
+        "validation_error": "一篇所选文献未提供可核对的相关事实"
+      },
+      "seconds": 1.27
+    },
+    {
+      "id": "normalization",
+      "question": "GPT-2 相比于 GPT-1，在 Transformer 的 Layer Normalization（LN）位置上做了什么关键的调整？",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e"
+      ],
+      "response": {
+        "answer": "GPT-2 将层归一化移动到每个子块的输入处，类似于预激活残差网络，并在最终自注意力块之后添加了额外的层归一化。[E3]",
+        "citations": [
+          {
+            "id": "E3",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 4,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=4",
+            "quote_sha256": "837708da795d9b483302c9a54b11b95838a501005851b1729f4bc9829f200159"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查文献范围",
+          "生成中英检索词",
+          "混合检索",
+          "本地模型阅读证据",
+          "校验原文摘录与数值"
+        ]
+      },
+      "seconds": 4.13
+    },
+    {
+      "id": "context",
+      "question": "从 GPT-1 到 GPT-3，模型的最大上下文 Token 长度（Context Window）分别递增到了多少？",
+      "document_ids": [
+        "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+        "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83"
+      ],
+      "response": {
+        "answer": "本次模型回答未通过格式或引用校验，暂不展示。请换一种问法，或直接核对下方原文。",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "page": 3,
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=3",
+            "quote_sha256": "79b9722138d0444ba4c210227764b3d51474730d663c16f8fdb6ae782032b079"
+          },
+          {
+            "id": "E2",
+            "document_id": "d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e",
+            "title": "Language Models are Unsupervised Multitask Learners",
+            "page": 6,
+            "url": "/api/documents/d9d852e2894556e73f53cb22b7c605a9643d6f0b19bf604b429ed6192fa24f4e/pdf#page=6",
+            "quote_sha256": "b0919914216bc6c3651bcc56686ea610f3c30447d28293151f8088ed54a03fcb"
+          },
+          {
+            "id": "E3",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 43,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=43",
+            "quote_sha256": "dfa44ee0297e1fb1f915afbfb8bbb58f0547745a9f9432ab96d7a7318ae59f28"
+          },
+          {
+            "id": "E4",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 5,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=5",
+            "quote_sha256": "7345fb57b59beae95d4470b3b1d0407905f000d39985386bd32682c2a4ffe4ff"
+          },
+          {
+            "id": "E5",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 46,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=46",
+            "quote_sha256": "f3703aa05fabc78dda72e45e8becede51ee334e87329406b18bbc6bff4e7ad60"
+          },
+          {
+            "id": "E6",
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "page": 8,
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=8",
+            "quote_sha256": "2bd4f1ec7e0697c03e97a3aec39043def0d26a74e2b86fdae7527f10678dd8cf"
+          }
+        ],
+        "insufficient_evidence": true,
+        "steps": [
+          "检查文献范围",
+          "生成中英检索词",
+          "混合检索",
+          "本地模型阅读证据",
+          "校验原文摘录与数值"
+        ],
+        "validation_error": "一篇所选文献未提供可核对的相关事实"
+      },
+      "seconds": 1.24
+    }
+  ],
+  "backend_tests_passed": 95,
+  "visual_review": {
+    "gpt1_page5": true,
+    "gpt2_page4": true,
+    "gpt3_page8": true
+  },
+  "implementation": {
+    "base_commit": "4546f791cb07a9bf181c229a3e06bd1a27695ae5",
+    "new_models": false,
+    "new_dependencies": false,
+    "database_migration": false
+  },
+  "previous_comparison_recheck": {
+    "verified_at": "2026-10-28T11:40:36.579243+00:00",
+    "record_sha256": "93c688b7cdcf92d5558ea30ead89774ac02a6ce16f6d1cb71e5b0aa29b4e0fce",
+    "cases": [
+      {
+        "id": "official_bleu_comparison",
+        "passed": true
+      },
+      {
+        "id": "bleu_french_table_column",
+        "passed": true
+      },
+      {
+        "id": "bleu_other_model",
+        "passed": true
+      },
+      {
+        "id": "bleu_missing_cell",
+        "passed": true
+      },
+      {
+        "id": "official_architecture_comparison",
+        "passed": true
+      },
+      {
+        "id": "unavailable_comparison_source",
+        "passed": true
+      },
+      {
+        "id": "local_model_cross_paper_facts",
+        "passed": true
+      }
+    ]
+  },
+  "existing_documents_unchanged_on_import": true,
+  "intermediate_comparison_regression": {
+    "verified_at": "2026-10-28T11:38:13.219651+00:00",
+    "record_sha256": "3575a6390135ee77a47f0ca0a6308e27593cfac030df2e00db52c602e07cf091",
+    "cases": [
+      {
+        "id": "official_bleu_comparison",
+        "passed": true
+      },
+      {
+        "id": "bleu_french_table_column",
+        "passed": true
+      },
+      {
+        "id": "bleu_other_model",
+        "passed": true
+      },
+      {
+        "id": "bleu_missing_cell",
+        "passed": true
+      },
+      {
+        "id": "official_architecture_comparison",
+        "passed": true
+      },
+      {
+        "id": "unavailable_comparison_source",
+        "passed": true
+      },
+      {
+        "id": "local_model_cross_paper_facts",
+        "passed": false
+      }
+    ]
+  },
+  "intermediate_unit_error": {
+    "id": "parameters",
+    "answer": "本篇配置段说明使用 12 层 decoder-only Transformer，但该段没有直接报告总参数量；不从层数猜测参数总数。[E1]\n\n本篇参数表列出的模型规模为 117M、345M、762M、1542M，最大为 1542M。[E2]\n\n本篇模型的最大参数量为175亿.[E3]",
+    "semantic_unit_check_passed": false,
+    "issue": "模型将 175 billion 错写为 175 亿，单纯数值检查未发现单位错误；后改为直接读取原表并保留 M/B。"
+  }
+}

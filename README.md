@@ -58,6 +58,8 @@ React 19、TypeScript、Vite、FastAPI、SQLite、pypdf、PyTorch、Transformers
 
 BLEU 问答增加原生表格列坐标核对与明确标注的差值计算；跨篇问题分别取证并检查所选文献引用覆盖。七项真实用例、两篇架构对比及支持范围见 [表格与跨篇问答](docs/COMPARISON_QA.md)。
 
+GPT 系列参数量、LN 位置和上下文比较已验证，支持按指标逐篇召回、有限配置表原单位读数及归纳来源标注，见 [GPT 跨篇验收](docs/GPT_COMPARISON.md)。
+
 当前服务是内部开发实例，公网访问控制与评审部署另行验收。模型权重、PDF、数据库和密钥均不进入 Git。不要将密钥放进前端变量。
 
 ## 开发与验证
