@@ -3967,3 +3967,54 @@ textarea {
     padding: 15px;
   }
 }
+
+/* 阅读原文中的引用导航。 */
+.reading-references {
+  border: 1px solid #dce5d7;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 12px 0;
+  background: #f8faf5;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.reading-references summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.reading-references label {
+  display: block;
+  margin: 12px 0;
+}
+.reading-references select {
+  width: 100%;
+  padding: 8px;
+}
+.reading-references blockquote {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 8px 0;
+}
+.reference-occurrences {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.reference-page-text .inline-reference {
+  display: inline;
+  padding: 0 3px;
+  border: 0;
+  border-radius: 3px;
+  font: inherit;
+  background: #e8f1e2;
+  color: #315b32;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.reference-page-text .inline-reference:focus-visible {
+  outline: 2px solid #52785d;
+}
+.reference-page-text mark {
+  background: #fff0a8;
+  color: inherit;
+}

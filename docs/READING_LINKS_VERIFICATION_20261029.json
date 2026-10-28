@@ -1,0 +1,30 @@
+{
+  "verified_at": "2026-10-28T16:23:23.510224+00:00",
+  "cases": [
+    {
+      "filename": "1706.03762v7.pdf",
+      "document_sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "fingerprint": "392fe427601eefee42f7b545d489773fdac52985cba70c44181caacabb45eeca",
+      "entries": 40,
+      "mentions": 57,
+      "verified_offset_and_hash_intervals": 97
+    },
+    {
+      "filename": "1706.03762v1_img.pdf",
+      "document_sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+      "fingerprint": "36f93db6e55143da82341ca7152c6942089c3ee70df7f70ba346cd50826cd21a",
+      "entries": 28,
+      "mentions": 6,
+      "verified_offset_and_hash_intervals": 34
+    },
+    {
+      "filename": "N19-1423.pdf",
+      "document_sha256": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "fingerprint": "9b0423d99acd7a1ddfd53e9fd528903c9b366bdddaef52ae99167ac728ba42fa",
+      "entries": 0,
+      "mentions": 0,
+      "verified_offset_and_hash_intervals": 0
+    }
+  ],
+  "limitations": "仅核对数字制候选及原文坐标，不代表引用识别召回率。OCR 错字、作者年份制、上标和复杂排版未全面覆盖。浏览器另行实测 [13] 第2页→第11页→返回第2页及原文高亮。无模型推理。"
+}

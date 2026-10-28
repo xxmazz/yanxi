@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "./api";
 import type { ServerDocument, ParsedPage } from "./api";
 import { TranslationReader } from "./translation";
+import { ReadingLinks } from "./reading-links";
 
 type ActionsProps = {
   document: ServerDocument;
@@ -314,6 +315,11 @@ export function ServerReader({
           </div>
           <article className="parsed-text">
             <h3>{page?.method === "ocr" ? "扫描页 · 本地 OCR" : "逐页正文"}</h3>
+            <ReadingLinks
+              documentId={documentId}
+              page={page}
+              jump={setNumber}
+            />
             {error ? (
               <p role="status">{error}</p>
             ) : !page ? (
@@ -327,7 +333,8 @@ export function ServerReader({
                     : "来自 PDF 文本层"}
                 </p>
                 {page.warning && <p role="status">{page.warning}</p>}
-                {page.method === "ocr" ? (
+
+                {page.method === "ocr" &&
                   page.blocks.map((block, i) => (
                     <details className="ocr-block" key={i}>
                       <summary>{block.text}</summary>
@@ -339,10 +346,7 @@ export function ServerReader({
                           .join(" / ")}
                       </small>
                     </details>
-                  ))
-                ) : (
-                  <pre>{page.text || "此页没有正文。"}</pre>
-                )}
+                  ))}
                 {page.method === "ocr" && (
                   <p>
                     OCR 可能误识别公式、符号和阅读顺序，请结合左侧原页核对。

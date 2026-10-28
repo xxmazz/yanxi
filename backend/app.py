@@ -26,6 +26,7 @@ from .graph import build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
+from .reading_links import navigation
 from .translation import TranslationService
 from .writing import prepare as prepare_writing
 from .writing import render_draft
@@ -331,6 +332,11 @@ def parsed_page(doc_id: str, number: int):
     if page is None:
         raise HTTPException(404, "此页尚未解析，请等待完成或重新解析")
     return page_payload(page)
+
+
+@app.get("/api/documents/{doc_id}/reading-links")
+def reading_links(doc_id: str):
+    return document_action(lambda: navigation(store, doc_id))
 
 
 @app.post("/api/documents/{doc_id}/reindex", status_code=202)
