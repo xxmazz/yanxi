@@ -10,7 +10,7 @@ type Anchor = {
   page_sha256: string;
 };
 type Mention = Anchor & { numbers: number[] };
-type Entry = { number: number; evidence: Anchor[] };
+type Entry = { number: number; label?: string; evidence: Anchor[] };
 type Navigation = {
   document_id: string;
   fingerprint: string;
@@ -93,7 +93,7 @@ export function ReadingLinks({
       <button
         key={item.start}
         className="inline-reference"
-        aria-label={`查看参考文献 ${item.numbers.join("、")}`}
+        aria-label={`查看参考文献 ${item.numbers.map((number) => data?.entries.find((entry) => entry.number === number)?.label || number).join("；")}`}
         onClick={() => {
           setOrigin(item);
           setSelected(item.numbers);
@@ -129,8 +129,8 @@ export function ReadingLinks({
           <>
             <p>
               {data.entries.length
-                ? "点击下方正文的引用编号，查看书目并跳到所在物理页。"
-                : "没有识别到可跳转的数字制书目，请用原页核对。"}
+                ? "点击下方正文中的引用，查看书目并跳到所在物理页。"
+                : "没有识别到可跳转的书目，请用原页核对。"}
             </p>
             {origin && (
               <button onClick={() => locate(origin)}>
@@ -151,10 +151,11 @@ export function ReadingLinks({
                   if (entry?.evidence[0]) locate(entry.evidence[0]);
                 }}
               >
-                <option value="">选择编号</option>
+                <option value="">选择书目</option>
                 {data.entries.map((entry) => (
                   <option key={entry.number} value={entry.number}>
-                    [{entry.number}] {entry.evidence[0]?.quote.slice(0, 90)}
+                    {entry.label || `[${entry.number}]`}{" "}
+                    {entry.evidence[0]?.quote.slice(0, 90)}
                   </option>
                 ))}
               </select>
@@ -163,7 +164,7 @@ export function ReadingLinks({
               .filter((entry) => selected.includes(entry.number))
               .map((entry) => (
                 <section key={entry.number}>
-                  <h4>参考文献 [{entry.number}]</h4>
+                  <h4>参考文献 {entry.label || `[${entry.number}]`}</h4>
                   {entry.evidence.map((anchor) => (
                     <div key={`${anchor.page}-${anchor.start}`}>
                       <blockquote>{anchor.quote}</blockquote>

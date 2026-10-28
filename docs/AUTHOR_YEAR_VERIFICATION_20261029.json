@@ -1,0 +1,30 @@
+{
+  "verified_at": "2026-10-28T16:39:35.855245+00:00",
+  "cases": [
+    {
+      "filename": "1706.03762v7.pdf",
+      "document_sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "fingerprint": "6afeb49051a3c8b0b92fc75105e2ec128ecf15048634bc34f24353fb2b31060b",
+      "entries": 40,
+      "mentions": 57,
+      "verified_offset_and_hash_intervals": 97
+    },
+    {
+      "filename": "1706.03762v1_img.pdf",
+      "document_sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+      "fingerprint": "26377ac0ec5a21a296dc220cd2d1dbf0c3ffdd38673f461723238c8ab9920e39",
+      "entries": 28,
+      "mentions": 6,
+      "verified_offset_and_hash_intervals": 34
+    },
+    {
+      "filename": "N19-1423.pdf",
+      "document_sha256": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "fingerprint": "0409a7cb69d8fe4226cbc8121b3a23410921af6406b362e7fcee1c9d426a835c",
+      "entries": 50,
+      "mentions": 74,
+      "verified_offset_and_hash_intervals": 126
+    }
+  ],
+  "limitations": "核对数字制与作者年份制候选原文坐标，不代表召回率。BERT 抽查三个首页引用的书目题名对应，其余候选仅核对位置。复杂姓名、OCR、上标仍未全面覆盖。无模型推理。"
+}

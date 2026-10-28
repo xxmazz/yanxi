@@ -89,5 +89,49 @@ class ReadingLinkTests(unittest.TestCase):
                 navigation(store, doc["id"])
 
 
+class AuthorYearTests(unittest.TestCase):
+    def test_suffix_wrapped_surname_and_two_authors(self):
+        body = "Peters et al., 2018a; Peters et al. (2018b). Peters et al., 2018. Howard and Ruder (2018). Rad-\nford et al., 2018. [1]"
+        result = build_links(
+            "doc",
+            [
+                page(1, body),
+                page(
+                    2,
+                    "References\nMatthew Peters, Mark Neumann, and Kenton Lee. 2018a. First title.\nMatthew Peters, Luke Zettlemoyer, and Wen-tau Yih. 2018b. Second title.\nJeremy Howard and Sebastian Ruder. 2018. Third title.\nAlec Radford, Karthik Narasimhan, and Ilya Sutskever. 2018. Fourth title.",
+                ),
+            ],
+        )
+        self.assertEqual(len(result["entries"]), 4)
+        self.assertEqual([m["numbers"] for m in result["mentions"]], [[1], [2], [3], [4]])
+        for mention in result["mentions"]:
+            self.assertEqual(body[mention["start"] : mention["end"]], mention["quote"])
+
+    def test_ambiguous_same_name_year_and_wrong_coauthor(self):
+        result = build_links(
+            "doc",
+            [
+                page(
+                    1,
+                    "Clark et al., 2018; Howard and Wrong (2018).\nReferences\nChristopher Clark and Matt Gardner. 2018. First title.\nKevin Clark, Other Author, and Quoc Le. 2018. Second title.\nJeremy Howard and Sebastian Ruder. 2018. Third title.",
+                )
+            ],
+        )
+        self.assertEqual(len(result["entries"]), 3)
+        self.assertEqual(result["mentions"], [])
+
+    def test_venue_prefix_and_partial_authors_not_used(self):
+        result = build_links(
+            "doc",
+            [
+                page(
+                    1,
+                    "Radford et al., 2018. Uszkoreit (2016).\nReferences\nIn ACL.\nAlec Radford, Karthik Narasimhan, and Ilya Sutskever. 2018. First title.\nAnkur Parikh, Malformed ¨name, and\nJakob Uszkoreit. 2016. Second title.",
+                )
+            ],
+        )
+        self.assertEqual(result["entries"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

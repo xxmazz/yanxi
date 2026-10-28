@@ -41,7 +41,18 @@ for filename in ["1706.03762v7.pdf", "1706.03762v1_img.pdf", "N19-1423.pdf"]:
         assert entry["evidence"][0]["page"] == 11
         assert "Hochreiter" in entry["evidence"][0]["quote"]
     if filename == "N19-1423.pdf":
-        assert not data["entries"] and not data["mentions"], "作者年份制不可猜成数字编号"
+        assert data["style"] == "author-year"
+        expected = {
+            "Peters et al., 2018a": "Deep contextualized word",
+            "Radford et al., 2018": "Improving language",
+            "Howard and Ruder, 2018": "Universal",
+        }
+        for label, title in expected.items():
+            entry = next(e for e in data["entries"] if e["label"] == label)
+            text = " ".join(s["quote"] for s in entry["evidence"]).replace("-\n", "")
+            assert title.lower() in " ".join(text.split()).lower(), (label, text)
+            assert any(entry["number"] in m["numbers"] and m["page"] == 1 for m in data["mentions"])
+        assert all(not m["quote"].startswith("[") for m in data["mentions"])
     repeat = client.get(f"/api/documents/{doc_id}/reading-links").raise_for_status().json()
     assert data == repeat
     results.append(
@@ -58,7 +69,7 @@ assert client.get("/api/documents/missing/reading-links").status_code == 404
 report = {
     "verified_at": datetime.now(timezone.utc).isoformat(),
     "cases": results,
-    "limitations": "仅核对数字制候选及原文坐标，不代表引用识别召回率。OCR 错字、作者年份制、上标和复杂排版未全面覆盖。浏览器另行实测 [13] 第2页→第11页→返回第2页及原文高亮。无模型推理。",
+    "limitations": "核对数字制与作者年份制候选原文坐标，不代表召回率。BERT 抽查三个首页引用的书目题名对应，其余候选仅核对位置。复杂姓名、OCR、上标仍未全面覆盖。无模型推理。",
 }
 args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
 print(json.dumps(results, ensure_ascii=False))
