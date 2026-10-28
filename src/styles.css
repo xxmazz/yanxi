@@ -3559,8 +3559,44 @@ textarea {
   color: #86927f;
   font-size: 10px;
 }
-.dense-graph .graph-node .light-label {
-  font-size: 18px;
+.real-graph-canvas .graph-node .paper-badge {
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+.real-graph-canvas .graph-node .paper-badge.light-label {
+  fill: #fff;
+}
+.real-graph-canvas .graph-legend {
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #52654e;
+}
+.graph-neighbor-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.graph-incoming-key::before,
+.graph-outgoing-key::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 3px;
+  vertical-align: middle;
+  margin-right: 5px;
+  background: #52785d;
+}
+.graph-outgoing-key::before {
+  background: #b17b3e;
+}
+.graph-focus-caption {
+  padding: 0 18px 16px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #52654e;
 }
 .dense-graph .graph-node .graph-label,
 .dense-graph .graph-node .graph-sub {

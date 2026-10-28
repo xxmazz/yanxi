@@ -86,11 +86,44 @@ function label(title: string) {
     ["ragas:", "Ragas"],
     ["bert:", "BERT"],
     ["dense passage retrieval", "DPR"],
+    ["layer normalization", "LayerNorm"],
+    ["improving language understanding", "GPT-1"],
+    ["language models are unsupervised", "GPT-2"],
+    ["language models are few-shot", "GPT-3"],
+    ["scaling laws for neural", "Scaling Laws"],
+    ["exploring the limits of transfer", "T5"],
+    ["lora:", "LoRA"],
+    ["evaluating large language models trained on code", "Codex"],
+    ["chain-of-thought prompting", "CoT"],
+    ["training language models to follow instructions", "InstructGPT"],
+    ["emergent abilities of", "Emergent Abilities"],
+    ["flashattention", "FlashAttention"],
+    ["bloom:", "BLOOM"],
+    ["llama:", "LLaMA"],
+    ["llama 2:", "Llama 2"],
+    ["qwen2.5", "Qwen2.5"],
+    ["deepseek-v3", "DeepSeek-V3"],
+    ["deepseek-r1", "DeepSeek-R1"],
   ];
   return (
     known.find(([prefix]) => title.toLowerCase().startsWith(prefix))?.[1] ||
     (title.length > 28 ? title.slice(0, 26) + "…" : title)
   );
+}
+
+function badgeLines(title: string) {
+  const name = label(title);
+  const split: Record<string, string[]> = {
+    "Scaling Laws": ["Scaling", "Laws"],
+    "Emergent Abilities": ["Emergent", "Abilities"],
+    FlashAttention: ["Flash", "Attention"],
+    "DeepSeek-V3": ["DeepSeek", "V3"],
+    "DeepSeek-R1": ["DeepSeek", "R1"],
+  };
+  if (split[name]) return split[name];
+  return name.length <= 12
+    ? [name]
+    : [name.slice(0, 11), name.slice(11, 21) + (name.length > 21 ? "…" : "")];
 }
 
 function SourceDisclosure({ source, name }: { source: Source; name: string }) {
@@ -149,6 +182,7 @@ export function CitationGraph({
   const [review, setReview] = useState<Review | null>(null);
   const [reviewBusy, setReviewBusy] = useState(false);
   const [connectedOnly, setConnectedOnly] = useState(false);
+  const [adjacentOnly, setAdjacentOnly] = useState(true);
   const [ranking, setRanking] = useState("pagerank");
   const generation = useRef(0);
   const pendingScope = selected ?? ready.map((doc) => doc.id);
@@ -374,35 +408,49 @@ export function CitationGraph({
                   </marker>
                 </defs>
                 <rect width="800" height="590" fill="url(#real-graph-dots)" />
-                {edges.map((edge) => {
-                  const a = graph.nodes.find((n) => n.id === edge.source)!,
-                    b = graph.nodes.find((n) => n.id === edge.target)!;
-                  const dx = b.x - a.x,
-                    dy = b.y - a.y,
-                    length = Math.max(1, Math.hypot(dx, dy));
-                  const radius = (n: Node) => 20 + 35 * Math.sqrt(n.pagerank);
-                  const focused =
-                    edge.source === focus || edge.target === focus;
-                  return (
-                    <line
-                      key={edge.source + edge.target}
-                      x1={a.x + (dx / length) * (radius(a) + 3)}
-                      y1={a.y + (dy / length) * (radius(a) + 3)}
-                      x2={b.x - (dx / length) * (radius(b) + 5)}
-                      y2={b.y - (dy / length) * (radius(b) + 5)}
-                      stroke={focused ? "#658b70" : "#b7c7bb"}
-                      strokeWidth={focused ? 2.5 : 1.6}
-                      opacity={graph.nodes.length >= 12 && !focused ? 0.2 : 1}
-                      markerEnd="url(#citation-arrow)"
-                    >
-                      <title>
-                        {label(a.title)} 引用 {label(b.title)}
-                      </title>
-                    </line>
-                  );
-                })}
+                {edges
+                  .filter(
+                    (edge) =>
+                      !adjacentOnly ||
+                      edge.source === focus ||
+                      edge.target === focus,
+                  )
+                  .map((edge) => {
+                    const a = graph.nodes.find((n) => n.id === edge.source)!,
+                      b = graph.nodes.find((n) => n.id === edge.target)!;
+                    const dx = b.x - a.x,
+                      dy = b.y - a.y,
+                      length = Math.max(1, Math.hypot(dx, dy));
+                    const radius = (n: Node) => 20 + 35 * Math.sqrt(n.pagerank);
+                    const focused =
+                      edge.source === focus || edge.target === focus;
+                    return (
+                      <line
+                        key={edge.source + edge.target}
+                        x1={a.x + (dx / length) * (radius(a) + 3)}
+                        y1={a.y + (dy / length) * (radius(a) + 3)}
+                        x2={b.x - (dx / length) * (radius(b) + 5)}
+                        y2={b.y - (dy / length) * (radius(b) + 5)}
+                        stroke={
+                          focused
+                            ? edge.target === focus
+                              ? "#52785d"
+                              : "#b17b3e"
+                            : "#b7c7bb"
+                        }
+                        strokeWidth={focused ? 2.5 : 1.6}
+                        opacity={graph.nodes.length >= 12 && !focused ? 0.2 : 1}
+                        markerEnd="url(#citation-arrow)"
+                      >
+                        <title>
+                          {label(a.title)} 引用 {label(b.title)}
+                        </title>
+                      </line>
+                    );
+                  })}
                 {graphNodes.map((item) => {
                   const radius = 20 + 35 * Math.sqrt(item.pagerank);
+                  const lines = badgeLines(item.title);
                   return (
                     <g
                       key={item.id}
@@ -436,14 +484,24 @@ export function CitationGraph({
                         stroke="white"
                         strokeWidth="3"
                       />
-                      <text
-                        x={item.x}
-                        y={item.y + 4}
-                        textAnchor="middle"
-                        className={item.in_degree ? "light-label" : ""}
-                      >
-                        {item.year || "论文"}
-                      </text>
+                      {lines.map((line, index) => (
+                        <text
+                          key={index}
+                          x={item.x}
+                          y={
+                            item.y + (lines.length === 1 ? 4 : -3 + index * 14)
+                          }
+                          textAnchor="middle"
+                          className={`paper-badge ${item.in_degree ? "light-label" : ""}`}
+                          textLength={Math.min(
+                            radius * 2 - 10,
+                            line.length * 6.4,
+                          )}
+                          lengthAdjust="spacingAndGlyphs"
+                        >
+                          {line}
+                        </text>
+                      ))}
                       <text
                         x={graph.nodes.length >= 12 ? 400 : item.x}
                         y={
@@ -474,9 +532,24 @@ export function CitationGraph({
                 </p>
               )}
               <div className="graph-legend">
-                <span>箭头指向被引论文</span>
-                <span>点击或用 Enter 选中节点</span>
+                <label className="graph-neighbor-toggle">
+                  <input
+                    type="checkbox"
+                    checked={adjacentOnly}
+                    onChange={(event) => setAdjacentOnly(event.target.checked)}
+                  />
+                  只看选中论文的引用
+                </label>
+                <span className="graph-incoming-key">引用了它</span>
+                <span className="graph-outgoing-key">它引用了</span>
               </div>
+              {node && (
+                <p className="graph-focus-caption">
+                  <strong>{label(node.title)}</strong> 引用了 {node.out_degree}{" "}
+                  篇；当前所选文献中有 {node.in_degree}{" "}
+                  篇引用它。点击节点可切换，箭头始终指向被引论文。
+                </p>
+              )}
             </section>
             <aside key={focus} className="graph-details real-graph-details">
               {node && (
