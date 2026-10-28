@@ -1,0 +1,3430 @@
+{
+  "verified_at": "2026-10-28T12:18:43.421426+00:00",
+  "model": "Qwen2.5-7B-Instruct",
+  "cases_sha256": "e379ec550a52ebdf28de07a4d7ed8b3ad29f326e84ad56010e611a489bd04512",
+  "pdf_files_and_download_hashes_verified": 20,
+  "physical_pages": 816,
+  "confirmed_positive_pairs_covered": 100,
+  "confusable_negative_pairs_rejected": 2,
+  "source_offsets_and_hashes_verified": 161,
+  "independent_pagerank_and_degrees_verified": true,
+  "determinism_scope_and_stale_rejection_verified": true,
+  "build_seconds": 0.352,
+  "graph": {
+    "fingerprint": "31e1d50ecc41ae275d6b4bda8d2e527ad75b78d62cce252a425268b41bc662a2",
+    "version": "references-v3",
+    "generated_at": "2026-10-28T12:18:25.190414+00:00",
+    "document_ids": [
+      "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+      "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+      "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+      "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+      "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+      "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+      "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+      "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+      "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+      "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+      "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+      "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+      "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+      "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+      "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+      "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+      "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+      "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755"
+    ],
+    "nodes": [
+      {
+        "id": "arxiv:1607.06450",
+        "document_id": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+        "title": "Layer Normalization",
+        "authors": "Jimmy Lei Ba; Jamie Ryan Kiros; Geoffrey E. Hinton",
+        "year": 2016,
+        "documents": [
+          {
+            "id": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+            "title": "Layer Normalization",
+            "version": 1,
+            "ocr_pages": 0,
+            "pages": 14
+          }
+        ],
+        "arxiv_ids": ["1607.06450"],
+        "titles": ["Layer Normalization"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+          "page": 1,
+          "start": 226,
+          "end": 1626,
+          "page_sha256": "da7383cb075ed92c43ffb04a8bf045462bbf89928cd8f7543a7b44c6e21254cc",
+          "method": "native",
+          "url": "/api/documents/c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7/pdf#page=1",
+          "preview_url": "/api/documents/c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7/render/1",
+          "quote_sha256": "1f178ea01196f9a0a8c76a7b1fd45392c2a176d5bb77b6cb5212186a0a0f422f",
+          "quote_characters": 1400
+        },
+        "future_work": [],
+        "reference_pages": [11, 12],
+        "in_degree": 4,
+        "out_degree": 0,
+        "pagerank": 0.20511701,
+        "role": "局部较少被引",
+        "x": 700.0,
+        "y": 290.0
+      },
+      {
+        "id": "arxiv:1706.03762",
+        "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "title": "Attention Is All You Need",
+        "authors": "Ashish Vaswani; Noam Shazeer; Niki Parmar; Jakob Uszkoreit; Llion Jones; Aidan N. Gomez; Łukasz Kaiser; Illia Polosukhin",
+        "year": 2017,
+        "documents": [
+          {
+            "id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "version": 7,
+            "ocr_pages": 0,
+            "pages": 15
+          }
+        ],
+        "arxiv_ids": ["1706.03762"],
+        "titles": ["Attention Is All You Need"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "page": 1,
+          "start": 601,
+          "end": 2001,
+          "page_sha256": "01c0c25f3f61c18bf5ae332fba683e7a62b554375d0956882f48e252bddecfe4",
+          "method": "native",
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "preview_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/1",
+          "quote_sha256": "63d7f913d2375699eed5e18cf873b1ee6108a42c044708199ae52af91f000bb2",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "page": 7,
+            "start": 409,
+            "end": 1280,
+            "page_sha256": "d064d8e2cd883c172466aa42b5b514623ed4f273ceb4a114f8ba9be972703382",
+            "method": "native",
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=7",
+            "preview_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/7",
+            "quote_sha256": "248be6a3cfb739677e5902aacc54e4ce9597a7e87654d9c3e5a789e09790383d",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [10, 11, 12],
+        "in_degree": 14,
+        "out_degree": 1,
+        "pagerank": 0.17269841,
+        "role": "局部基石候选",
+        "x": 685.32,
+        "y": 354.89
+      },
+      {
+        "id": "arxiv:1910.10683",
+        "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+        "title": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer",
+        "authors": "",
+        "year": 2019,
+        "documents": [
+          {
+            "id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "title": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer",
+            "version": 4,
+            "ocr_pages": 0,
+            "pages": 67
+          }
+        ],
+        "arxiv_ids": ["1910.10683"],
+        "titles": [
+          "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+          "page": 1,
+          "start": 537,
+          "end": 1669,
+          "page_sha256": "5d909ca9a01b5ffb98e2981c6304e56c672320d0abf90b1feae879c8a57a1120",
+          "method": "native",
+          "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=1",
+          "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/1",
+          "quote_sha256": "2b16f9706a37b3b26e16f2903b0ecb600df79cb955c1718b9006545628e337fd",
+          "quote_characters": 1132
+        },
+        "future_work": [
+          {
+            "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "page": 1,
+            "start": 1293,
+            "end": 2164,
+            "page_sha256": "5d909ca9a01b5ffb98e2981c6304e56c672320d0abf90b1feae879c8a57a1120",
+            "method": "native",
+            "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=1",
+            "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/1",
+            "quote_sha256": "ffb0d162904028519dbdf6614a7c51571a776c6dd5cff03fea4706c7778dabfb",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "page": 10,
+            "start": 2471,
+            "end": 3342,
+            "page_sha256": "54e6f1b7971a5af7bad56f70f2f606e36ff0804f64e375682cd69ea64084469d",
+            "method": "native",
+            "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=10",
+            "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/10",
+            "quote_sha256": "c0627b20b7c6b5e274c067e4cce48238a9ff3f40fd5ea323c927ca07e3dd2a2e",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [58, 59, 60, 61, 62, 63, 64, 65, 66, 67],
+        "in_degree": 7,
+        "out_degree": 4,
+        "pagerank": 0.05536874,
+        "role": "局部较少被引",
+        "x": 642.71,
+        "y": 413.43
+      },
+      {
+        "id": "arxiv:2001.08361",
+        "document_id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+        "title": "Scaling Laws for Neural Language Models",
+        "authors": "Jared Kaplan; Sam McCandlish; Tom Henighan; Tom B. Brown; Benjamin Chess; Rewon Child; Scott Gray; Alec Radford; Jeffrey Wu; Dario Amodei",
+        "year": 2020,
+        "documents": [
+          {
+            "id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+            "title": "Scaling Laws for Neural Language Models",
+            "version": 1,
+            "ocr_pages": 0,
+            "pages": 30
+          }
+        ],
+        "arxiv_ids": ["2001.08361"],
+        "titles": ["Scaling Laws for Neural Language Models"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+          "page": 1,
+          "start": 446,
+          "end": 1655,
+          "page_sha256": "c6e5950976127fab0f70c5e9a4ccf053e1c9274dad73191e38a1cf74a84defc9",
+          "method": "native",
+          "url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/pdf#page=1",
+          "preview_url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/render/1",
+          "quote_sha256": "b8daee64324c1d1b9d9993392409c79d11d7336232d642dab01d129f7213a43f",
+          "quote_characters": 1209
+        },
+        "future_work": [],
+        "reference_pages": [28, 29, 30],
+        "in_degree": 9,
+        "out_degree": 4,
+        "pagerank": 0.0506327,
+        "role": "局部较少被引",
+        "x": 576.34,
+        "y": 459.89
+      },
+      {
+        "id": "arxiv:2005.14165",
+        "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+        "title": "Language Models are Few-Shot Learners",
+        "authors": "",
+        "year": 2020,
+        "documents": [
+          {
+            "id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "title": "Language Models are Few-Shot Learners",
+            "version": 4,
+            "ocr_pages": 0,
+            "pages": 75
+          }
+        ],
+        "arxiv_ids": ["2005.14165"],
+        "titles": ["Language Models are Few-Shot Learners"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+          "page": 1,
+          "start": 507,
+          "end": 1907,
+          "page_sha256": "440f4bd7e26a605a780ff60f81c0244b169b2d8a462f13a7a98688d052f36d2a",
+          "method": "native",
+          "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=1",
+          "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/1",
+          "quote_sha256": "c456bc6953bd3ef744b3c0588a2da01383b06b82f1f51ef1b2f497ce0670f71e",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 5,
+            "start": 1064,
+            "end": 1935,
+            "page_sha256": "0d5886129c327b8c7c849aa6714c5924ca784c0c071f4095f6cf13d4fd57d54d",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=5",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/5",
+            "quote_sha256": "aba117ea94eeef9880c66870dfa7596939265e991457b8d0cbb018c6f2d91828",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 6,
+            "start": 3251,
+            "end": 4122,
+            "page_sha256": "31f2b47deeb33f291f4936efa2a9a41ca12c231b96ff790d8a15f9f83b0e8332",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=6",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/6",
+            "quote_sha256": "e08ed010ed6a5c83a6d883f6e5adba95fd3e13544add09e9dc0cda7155e4d67c",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 7,
+            "start": 2039,
+            "end": 2408,
+            "page_sha256": "353c186f54202794768d488659631075806859d9294d83ebac8d3f76ca274272",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=7",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/7",
+            "quote_sha256": "ee918a5de533b1c254ed58bc656af410e5fcd27891cc198f5ddb577999b46efe",
+            "quote_characters": 369
+          }
+        ],
+        "reference_pages": [68, 69, 70, 71, 72, 73, 74, 75],
+        "in_degree": 11,
+        "out_degree": 5,
+        "pagerank": 0.06213174,
+        "role": "局部较少被引",
+        "x": 492.71,
+        "y": 489.72
+      },
+      {
+        "id": "arxiv:2106.09685",
+        "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+        "title": "LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS",
+        "authors": "Microsoft Corporation",
+        "year": 2021,
+        "documents": [
+          {
+            "id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "title": "LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 26
+          }
+        ],
+        "arxiv_ids": ["2106.09685"],
+        "titles": ["LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+          "page": 1,
+          "start": 302,
+          "end": 1702,
+          "page_sha256": "804caeb52a9d56200953ff1397429d9e619ea6fbbf55721b9906a52e2a48ef10",
+          "method": "native",
+          "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=1",
+          "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/1",
+          "quote_sha256": "c03f9dca9acb40bb40378ca2c0bedb4eb5ba2e370d17cc155d3a041580b16d07",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 5,
+            "start": 815,
+            "end": 1686,
+            "page_sha256": "5649dadffbee05955cfb1ac5d6aeb3599c4e3d1df99f16a863c3a7e1b07a710e",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=5",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/5",
+            "quote_sha256": "d93ac5b3fce44c0c3f763d0c86d5bfb7a97255993409fbd02a7b608d3fbf4a6b",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 9,
+            "start": 2029,
+            "end": 2900,
+            "page_sha256": "ea426665c088e7b73da11a7d425beeeeec25e8b63dd1a97c0240cebc85c24f63",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=9",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/9",
+            "quote_sha256": "be88f42f771b6545989ac8ae540a8c46f56650d218e2da9f794e2cd94d23c195",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 12,
+            "start": 1959,
+            "end": 2830,
+            "page_sha256": "108f7d51c7a7cc19bb625fce47d151a34d8232f659ed9c5ddb41de37cfd0fc23",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=12",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/12",
+            "quote_sha256": "a635c042dd6dc07ff8b5349a73acee43bc7f9a8ccfc582f2d6752fd7b1b41e47",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [13, 14, 15, 16],
+        "in_degree": 0,
+        "out_degree": 5,
+        "pagerank": 0.01621747,
+        "role": "局部较少被引",
+        "x": 400.0,
+        "y": 500.0
+      },
+      {
+        "id": "arxiv:2107.03374",
+        "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+        "title": "Evaluating Large Language Models Trained on Code",
+        "authors": "Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de Oliveira Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, Alex Ray, Raul Puri, Gretchen Krueger, Michael Petrov, Heidy Khlaaf, Girish Sastry, Pamela Mishkin, Brooke Chan, Scott Gray, Nick Ryder, Mikhail Pavlov, Alethea Power, Lukasz Kaiser, Mohammad Bavarian, Clemens Winter, Philippe Tillet, Felipe Petroski Such, Dave Cummings, Matthias Plappert, Fotios Chantzis, Elizabeth Barnes, Ariel Herbert-Vos",
+        "year": 2021,
+        "documents": [
+          {
+            "id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "title": "Evaluating Large Language Models Trained on Code",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 35
+          }
+        ],
+        "arxiv_ids": ["2107.03374"],
+        "titles": ["Evaluating Large Language Models Trained on Code"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+          "page": 1,
+          "start": 1010,
+          "end": 2353,
+          "page_sha256": "4804cbb840a21cadd788bc82d9b8051f579e7ab2c0424405154c7d8c4542af60",
+          "method": "native",
+          "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=1",
+          "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/1",
+          "quote_sha256": "5ac56ffbc71fc3930f7ff073625bc639e521616390359a049752e5ed077957d3",
+          "quote_characters": 1343
+        },
+        "future_work": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 11,
+            "start": 2676,
+            "end": 3547,
+            "page_sha256": "9efd1d8d287a873f9be27b4bbcec4a30883d387e33efc6b3471f9517fd1ad852",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=11",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/11",
+            "quote_sha256": "2143d55c0ef2c91db293fd76ac7f09738a0859ef02f23104a4fb9f1ec5698ec6",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [15, 16, 17, 18, 19],
+        "in_degree": 9,
+        "out_degree": 6,
+        "pagerank": 0.04922367,
+        "role": "局部较少被引",
+        "x": 307.29,
+        "y": 489.72
+      },
+      {
+        "id": "arxiv:2201.11903",
+        "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+        "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+        "authors": "",
+        "year": 2022,
+        "documents": [
+          {
+            "id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+            "version": 6,
+            "ocr_pages": 0,
+            "pages": 43
+          }
+        ],
+        "arxiv_ids": ["2201.11903"],
+        "titles": [
+          "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+          "page": 1,
+          "start": 245,
+          "end": 1645,
+          "page_sha256": "6bcdd7c6e4c0b2f82c17c385a87e955a8e9ddf00fab8ad3bb9247d042c0ab45b",
+          "method": "native",
+          "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=1",
+          "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/1",
+          "quote_sha256": "9037c0aa6e474cf58d9df9ed575d800d68eed6c2f918a6e4062e79166557612a",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 9,
+            "start": 1798,
+            "end": 2669,
+            "page_sha256": "64e0cdd531d3f97d5bb6833ae77f59621f9341693e8c71301b343d01fae7015c",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=9",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/9",
+            "quote_sha256": "1625a41aef42410598471978b38ae55475581bcfc315c57b9d2e83d3a94f46b2",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [10, 11, 12, 13, 14],
+        "in_degree": 3,
+        "out_degree": 7,
+        "pagerank": 0.02428254,
+        "role": "局部较少被引",
+        "x": 223.66,
+        "y": 459.89
+      },
+      {
+        "id": "arxiv:2203.02155",
+        "document_id": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+        "title": "Training language models to follow instructions with human feedback",
+        "authors": "Jan Leike∗ Ryan Lowe",
+        "year": 2022,
+        "documents": [
+          {
+            "id": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+            "title": "Training language models to follow instructions with human feedback",
+            "version": 1,
+            "ocr_pages": 0,
+            "pages": 68
+          }
+        ],
+        "arxiv_ids": ["2203.02155"],
+        "titles": [
+          "Training language models to follow instructions with human feedback"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+          "page": 1,
+          "start": 361,
+          "end": 1747,
+          "page_sha256": "25697ef9ad04f9e88bb8a9115d7ab88bbc91c1c675ae797e6048ea1213d1ec04",
+          "method": "native",
+          "url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/pdf#page=1",
+          "preview_url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/render/1",
+          "quote_sha256": "ce4cd8e1832c8c923d30f4086c9934d4870ad446c7148029d65017f472c4ee85",
+          "quote_characters": 1386
+        },
+        "future_work": [
+          {
+            "document_id": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+            "page": 8,
+            "start": 0,
+            "end": 784,
+            "page_sha256": "fd8e3f3ee34455b8458ab95e8f998ef199b386b969fded3a0bed11ccc4cf0696",
+            "method": "native",
+            "url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/pdf#page=8",
+            "preview_url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/render/8",
+            "quote_sha256": "1453fd22decbb8944ea1c1bc9cbdb2231687e28bbb813733f71e8d614ab379b7",
+            "quote_characters": 784
+          }
+        ],
+        "reference_pages": [21, 22, 23, 24, 25],
+        "in_degree": 6,
+        "out_degree": 2,
+        "pagerank": 0.03085715,
+        "role": "局部较少被引",
+        "x": 157.29,
+        "y": 413.43
+      },
+      {
+        "id": "arxiv:2205.14135",
+        "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+        "title": "FlashAttention : Fast and Memory-Eﬃcient Exact Attention with IO-Awareness",
+        "authors": "",
+        "year": 2022,
+        "documents": [
+          {
+            "id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+            "title": "FlashAttention : Fast and Memory-Eﬃcient Exact Attention with IO-Awareness",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 34
+          }
+        ],
+        "arxiv_ids": ["2205.14135"],
+        "titles": [
+          "FlashAttention : Fast and Memory-Eﬃcient Exact Attention with IO-Awareness"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+          "page": 1,
+          "start": 393,
+          "end": 1793,
+          "page_sha256": "5b9ee7fe76772f0d2425d28f4470d84b82a92b2cbccec34d2a15909cd1e89a2d",
+          "method": "native",
+          "url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/pdf#page=1",
+          "preview_url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/render/1",
+          "quote_sha256": "ee6e76ab677c9a35d99864a8360aa870570e48aac837a9cb5db9f17bf784715f",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+            "page": 10,
+            "start": 1373,
+            "end": 2311,
+            "page_sha256": "5cfbdb79a266d41a31138c3334ea6380f5c9af08ee3f54999dd2209f3aa82eb3",
+            "method": "native",
+            "url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/pdf#page=10",
+            "preview_url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/render/10",
+            "quote_sha256": "c4d08ff350305b104cda915f82efad9b35b23a953a42738c620575e4e9b35177",
+            "quote_characters": 938
+          },
+          {
+            "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+            "page": 10,
+            "start": 2798,
+            "end": 3669,
+            "page_sha256": "5cfbdb79a266d41a31138c3334ea6380f5c9af08ee3f54999dd2209f3aa82eb3",
+            "method": "native",
+            "url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/pdf#page=10",
+            "preview_url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/render/10",
+            "quote_sha256": "05c32e0c54180b086c54a8be918ccad09f9c8c0b04d9465b36449afc73e0d90f",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [11, 12, 13, 14, 15, 16],
+        "in_degree": 2,
+        "out_degree": 3,
+        "pagerank": 0.02184767,
+        "role": "局部较少被引",
+        "x": 114.68,
+        "y": 354.89
+      },
+      {
+        "id": "arxiv:2206.07682",
+        "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+        "title": "Emergent Abilities of Large Language Models",
+        "authors": "",
+        "year": 2022,
+        "documents": [
+          {
+            "id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "title": "Emergent Abilities of Large Language Models",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 30
+          }
+        ],
+        "arxiv_ids": ["2206.07682"],
+        "titles": ["Emergent Abilities of Large Language Models"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+          "page": 1,
+          "start": 791,
+          "end": 1420,
+          "page_sha256": "1b8ceecf10d70bd582122b3bc56618d4948aa1734dad74cc6d78617e6650654e",
+          "method": "native",
+          "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=1",
+          "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/1",
+          "quote_sha256": "45ef96f6280ab54f014d91ee091315c5696c5d9428b6ee3e8be49ee2e7e11d48",
+          "quote_characters": 629
+        },
+        "future_work": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 2,
+            "start": 809,
+            "end": 1684,
+            "page_sha256": "3cd662f8e6d6f64d1b5f61a912b94fdcd5592d15a7301e1d54a9ad36eccf1db2",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=2",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/2",
+            "quote_sha256": "6cc096fbb914c70a1ecebfd96f039dc6bd1338ea3223dd68e6d79f62a74bcce8",
+            "quote_characters": 875
+          },
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 10,
+            "start": 2347,
+            "end": 3616,
+            "page_sha256": "970800536ad0b33a9726e29b28b722c6fa5f5935825fe4c48a39438c7c9204ba",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=10",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/10",
+            "quote_sha256": "abfab0bdfa38588c56eb3850b1404ce40107423d8db65812ac16f321e5827c7e",
+            "quote_characters": 1269
+          },
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 11,
+            "start": 1701,
+            "end": 2576,
+            "page_sha256": "d50ad11a0275e26affa9f6fb45f2473da93139c62ae7de691c69f89349d4ee98",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=11",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/11",
+            "quote_sha256": "c96535cbd8d0b3bcc750f78515bb73113e150539efd86be00694566a0ea561dc",
+            "quote_characters": 875
+          }
+        ],
+        "reference_pages": [12, 13, 14, 15, 16, 17, 18, 19],
+        "in_degree": 4,
+        "out_degree": 6,
+        "pagerank": 0.02522334,
+        "role": "局部较少被引",
+        "x": 100.0,
+        "y": 290.0
+      },
+      {
+        "id": "arxiv:2211.05100",
+        "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+        "title": "BLOOM: A 176B-Parameter Open-Access Multilingual Language Model",
+        "authors": "BigScience Workshop; Major Contributors; Mitchell, Colin Raffel; Prompt Engineering",
+        "year": 2022,
+        "documents": [
+          {
+            "id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "title": "BLOOM: A 176B-Parameter Open-Access Multilingual Language Model",
+            "version": 4,
+            "ocr_pages": 0,
+            "pages": 73
+          }
+        ],
+        "arxiv_ids": ["2211.05100"],
+        "titles": [
+          "BLOOM: A 176B-Parameter Open-Access Multilingual Language Model"
+        ],
+        "dois": [],
+        "abstract_evidence": null,
+        "future_work": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 3,
+            "start": 2289,
+            "end": 3164,
+            "page_sha256": "451e0299b86ab132dc0a5e23cfddf444ae65cb09ccd2d75960a9edc0ae5131d1",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=3",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/3",
+            "quote_sha256": "1c2985def0d38f7c7e19b29bca39b3a60c7f17a5c7dbf5e648c142a714590ce9",
+            "quote_characters": 875
+          }
+        ],
+        "reference_pages": [
+          45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+          62, 63, 64, 65
+        ],
+        "in_degree": 2,
+        "out_degree": 8,
+        "pagerank": 0.02108049,
+        "role": "局部较少被引",
+        "x": 114.68,
+        "y": 225.11
+      },
+      {
+        "id": "arxiv:2307.09288",
+        "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+        "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+        "authors": "Sergey Edunov Thomas Scialom; GenAI, Meta",
+        "year": 2023,
+        "documents": [
+          {
+            "id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 77
+          }
+        ],
+        "arxiv_ids": ["2307.09288"],
+        "titles": ["Llama 2: Open Foundation and Fine-Tuned Chat Models"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+          "page": 1,
+          "start": 1038,
+          "end": 1892,
+          "page_sha256": "4653df282bdf7c0a20fe4191efd148ea5f71efbb8f15f452f701cbead68f55e5",
+          "method": "native",
+          "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=1",
+          "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/1",
+          "quote_sha256": "41e9a76a2b5a2c4ba4d3af16ae267d8f4d02aeca2a3850c2f33af970a2efe1e5",
+          "quote_characters": 854
+        },
+        "future_work": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 10,
+            "start": 414,
+            "end": 1285,
+            "page_sha256": "de2332338590a9c5d32cc8f748fcfe0c38b13ef8e27a52425e7ba5dd5b3c9277",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=10",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/10",
+            "quote_sha256": "bb5cbfd0b11b9fe271e292c25931121cb40674cb24b5ee0982d22b19f0991d9b",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 14,
+            "start": 1871,
+            "end": 2569,
+            "page_sha256": "7c47ccb06aa4134e5407753f6f7140f66f1547bbc8d254780986793aa23302fe",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=14",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/14",
+            "quote_sha256": "76e0db9efa1031da16ef3dc3c26837cfc7e24f9b82108e7168e6aee545695657",
+            "quote_characters": 698
+          },
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 15,
+            "start": 209,
+            "end": 1084,
+            "page_sha256": "39c6c4f1f9557c376b56cd60e8989525aa0542d40fc3a7850a7cd033f0f1568b",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=15",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/15",
+            "quote_sha256": "8eeb9d76052a35bd9d271c5fd63a86943cd9dacb9dd0460456d65f9df066b50c",
+            "quote_characters": 875
+          }
+        ],
+        "reference_pages": [37, 38, 39, 40, 41, 42, 43, 44, 45],
+        "in_degree": 4,
+        "out_degree": 8,
+        "pagerank": 0.02605796,
+        "role": "局部较少被引",
+        "x": 157.29,
+        "y": 166.57
+      },
+      {
+        "id": "arxiv:2310.06825",
+        "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+        "title": "Mistral 7B",
+        "authors": "William El Sayed",
+        "year": 2023,
+        "documents": [
+          {
+            "id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+            "title": "Mistral 7B",
+            "version": 1,
+            "ocr_pages": 0,
+            "pages": 9
+          }
+        ],
+        "arxiv_ids": ["2310.06825"],
+        "titles": ["Mistral 7B"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+          "page": 1,
+          "start": 338,
+          "end": 1151,
+          "page_sha256": "d1846174f58acf85f8a4f7bd8ca56260ed16f748b6d8af70931320e1626e98a3",
+          "method": "native",
+          "url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/pdf#page=1",
+          "preview_url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/render/1",
+          "quote_sha256": "cf87225f49b8fa4cd3ca919e1e599804713a258c9042d11675baeed6c09e0275",
+          "quote_characters": 813
+        },
+        "future_work": [],
+        "reference_pages": [8, 9],
+        "in_degree": 2,
+        "out_degree": 5,
+        "pagerank": 0.02079902,
+        "role": "局部较少被引",
+        "x": 223.66,
+        "y": 120.11
+      },
+      {
+        "id": "arxiv:2412.15115",
+        "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+        "title": "Qwen2.5 Technical Report",
+        "authors": "Qwen Team",
+        "year": 2024,
+        "documents": [
+          {
+            "id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "title": "Qwen2.5 Technical Report",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 26
+          }
+        ],
+        "arxiv_ids": ["2412.15115"],
+        "titles": ["Qwen2.5 Technical Report"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+          "page": 1,
+          "start": 157,
+          "end": 1557,
+          "page_sha256": "b1158ca64b26345207bf471eb2fed57b1772fcb1b654f0857f74e1ed11a5ac19",
+          "method": "native",
+          "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=1",
+          "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/1",
+          "quote_sha256": "9e87a3df310588d3a2949e4e60e395158ee1323d4e8291f44d03990489ab9a69",
+          "quote_characters": 1400
+        },
+        "future_work": [],
+        "reference_pages": [19, 20, 21, 22, 23, 24, 25, 26],
+        "in_degree": 0,
+        "out_degree": 9,
+        "pagerank": 0.01621747,
+        "role": "局部较少被引",
+        "x": 307.29,
+        "y": 90.28
+      },
+      {
+        "id": "arxiv:2412.19437",
+        "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+        "title": "DeepSeek-V3 Technical Report",
+        "authors": "",
+        "year": 2024,
+        "documents": [
+          {
+            "id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "title": "DeepSeek-V3 Technical Report",
+            "version": 1,
+            "ocr_pages": 0,
+            "pages": 53
+          }
+        ],
+        "arxiv_ids": ["2412.19437"],
+        "titles": ["DeepSeek-V3 Technical Report"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+          "page": 1,
+          "start": 72,
+          "end": 1472,
+          "page_sha256": "d77b6f7503fb89f30016dfe30ab892754b3e68603f65e24b883275d18bda7ae0",
+          "method": "native",
+          "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=1",
+          "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/1",
+          "quote_sha256": "d232b53db0bfacfdbb57cec5d30e472c937831e044ca6e30b3ec47753215c8d2",
+          "quote_characters": 1400
+        },
+        "future_work": [
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 3,
+            "start": 1168,
+            "end": 1715,
+            "page_sha256": "bd4299471fb4294a8011fb347c624e03ba004a3f1373915672a63d057e3b2e01",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=3",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/3",
+            "quote_sha256": "259634eeacfc68fc8c2083e5f38ca96d735613da37815c06886db9e14fdafc6f",
+            "quote_characters": 547
+          },
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 6,
+            "start": 2395,
+            "end": 3270,
+            "page_sha256": "71645762a3423ebc818afb713e78aa815ea2ba11dea0341610f48b40448a7ca4",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=6",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/6",
+            "quote_sha256": "d544e2ad5f90f3846f27c4f1a929ca16e324fc3c4b2c480ec0405c512ef7d745",
+            "quote_characters": 875
+          },
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 17,
+            "start": 230,
+            "end": 1101,
+            "page_sha256": "d9d47c34f29ce6521bc6e3e8abfb4524cd0f779b9718e643d2539349fc92149f",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=17",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/17",
+            "quote_sha256": "a902ee02e99d9c4a8e6c22d5529d428b9f7dcbb158063da307fb09b061c47b03",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [36, 37, 38, 39, 40, 41, 42, 43, 44],
+        "in_degree": 1,
+        "out_degree": 5,
+        "pagerank": 0.01794058,
+        "role": "局部较少被引",
+        "x": 400.0,
+        "y": 80.0
+      },
+      {
+        "id": "arxiv:2501.12948",
+        "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+        "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+        "authors": "DeepSeek-AI; Daya Guo; Dejian Yang; Haowei Zhang; Junxiao Song; Peiyi Wang; Qihao Zhu; Runxin Xu; Ruoyu Zhang; Shirong Ma; Xiao Bi; Xiaokang Zhang; Xingkai Yu; Yu Wu; Z. F. Wu; Zhibin Gou; Zhihong Shao; Zhuoshu Li; Ziyi Gao; Aixin Liu; Bing Xue; Bingxuan Wang; Bochao Wu; Bei Feng; Chengda Lu; Chenggang Zhao; Chengqi Deng; Chenyu Zhang; Chong Ruan; Damai Dai; Deli Chen; Dongjie Ji; Erhang Li; Fangyun Lin; Fucong Dai; Fuli Luo; Guangbo Hao; Guanting Chen; Guowei Li; H. Zhang; Han Bao; Hanwei Xu; H",
+        "year": 2025,
+        "documents": [
+          {
+            "id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "title": "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning",
+            "version": 2,
+            "ocr_pages": 0,
+            "pages": 86
+          }
+        ],
+        "arxiv_ids": ["2501.12948"],
+        "titles": [
+          "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+          "page": 1,
+          "start": 126,
+          "end": 1377,
+          "page_sha256": "d74c4402a04edcf181ebe52cf4997bab5511d1cc2119a2db3b614f7eed1a5de3",
+          "method": "native",
+          "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=1",
+          "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/1",
+          "quote_sha256": "34f0b0d04fbf36fe241183deb54b73154edd2c53ee19a73ed5cab6f179bb0b5e",
+          "quote_characters": 1251
+        },
+        "future_work": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 10,
+            "start": 979,
+            "end": 1850,
+            "page_sha256": "c7043176069edf667d2acead657040c87ce14f005312069aecf8a03253f853dc",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=10",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/10",
+            "quote_sha256": "daf81c363b349702272e81dc105ff5c3199093bd7aa77062cf2a33fa5f10af14",
+            "quote_characters": 871
+          },
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 11,
+            "start": 2117,
+            "end": 2992,
+            "page_sha256": "5aaf1ca2e552d55aa226b0a709960840acf3c64a4c4e33eefab13f8703b5f8eb",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=11",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/11",
+            "quote_sha256": "14a65364c7dc0141f8e6d9217be07afd92f7aa20b6e176201562ac9eed7c0b77",
+            "quote_characters": 875
+          },
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 27,
+            "start": 1545,
+            "end": 2416,
+            "page_sha256": "6b420958b4d715c89fe6dcf19234ac2508d03a1cfb79115bda992240f4ce9a11",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=27",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/27",
+            "quote_sha256": "856a10cb4f93ab4f065544574e7e9610a5fe593f84f1f7be2b81d39fb4c3dfe5",
+            "quote_characters": 871
+          }
+        ],
+        "reference_pages": [79, 80, 81, 82, 83, 84, 85, 86],
+        "in_degree": 0,
+        "out_degree": 8,
+        "pagerank": 0.01621747,
+        "role": "局部较少被引",
+        "x": 492.71,
+        "y": 90.28
+      },
+      {
+        "id": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "title": "LLaMA: Open and Efficient Foundation Language Models",
+        "authors": "Edouard Grave∗, Guillaume Lample; Meta AI",
+        "year": null,
+        "documents": [
+          {
+            "id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "title": "LLaMA: Open and Efficient Foundation Language Models",
+            "version": 0,
+            "ocr_pages": 0,
+            "pages": 27
+          }
+        ],
+        "arxiv_ids": [],
+        "titles": ["LLaMA: Open and Efficient Foundation Language Models"],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+          "page": 1,
+          "start": 300,
+          "end": 819,
+          "page_sha256": "b7b184fc62f894a79555e20e20fc33785db43544212cfd65c673f55122d1ab4c",
+          "method": "native",
+          "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=1",
+          "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/1",
+          "quote_sha256": "40ead9e600bbf1d06bc775598bfb6100f61a9abc84a13b0987065c398bf2e957",
+          "quote_characters": 519
+        },
+        "future_work": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 11,
+            "start": 3945,
+            "end": 4242,
+            "page_sha256": "2ea439cc1e66bf779ea5364edf6febeeb2abe44868e004553cdcbf6d506ca305",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=11",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/11",
+            "quote_sha256": "9a3d911f8d86e311656861a6f70ffd92cc0b957163763b007e2e2338eb8f5157",
+            "quote_characters": 297
+          }
+        ],
+        "reference_pages": [12, 13, 14, 15, 16],
+        "in_degree": 4,
+        "out_degree": 11,
+        "pagerank": 0.02710351,
+        "role": "局部较少被引",
+        "x": 576.34,
+        "y": 120.11
+      },
+      {
+        "id": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "document_id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+        "authors": "Jacob Devlin ; Ming-Wei Chang ; Kenton Lee ; Kristina Toutanova",
+        "year": null,
+        "documents": [
+          {
+            "id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+            "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+            "version": 0,
+            "ocr_pages": 0,
+            "pages": 16
+          }
+        ],
+        "arxiv_ids": [],
+        "titles": [
+          "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+          "page": 1,
+          "start": 370,
+          "end": 1452,
+          "page_sha256": "9ad7faae00767732c0b46e7df60f488c92a6497be2e3d99155a23230a04a1a97",
+          "method": "native",
+          "url": "/api/documents/987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4/pdf#page=1",
+          "preview_url": "/api/documents/987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4/render/1",
+          "quote_sha256": "025c8dbfe4a532bac7f39dffba0237ce256f0ae7748fa1111a9459e284ead971",
+          "quote_characters": 1082
+        },
+        "future_work": [],
+        "reference_pages": [10, 11, 12],
+        "in_degree": 10,
+        "out_degree": 1,
+        "pagerank": 0.07608174,
+        "role": "局部较少被引",
+        "x": 642.71,
+        "y": 166.57
+      },
+      {
+        "id": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "title": "Improving Language Understanding by Generative Pre-Training",
+        "authors": "Alec Radford; Karthik Narasimhan; Tim Salimans; Ilya Sutskever",
+        "year": null,
+        "documents": [
+          {
+            "id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "title": "Improving Language Understanding by Generative Pre-Training",
+            "version": 0,
+            "ocr_pages": 0,
+            "pages": 12
+          }
+        ],
+        "arxiv_ids": [],
+        "titles": [
+          "Improving Language Understanding by Generative Pre-Training"
+        ],
+        "dois": [],
+        "abstract_evidence": {
+          "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+          "page": 1,
+          "start": 226,
+          "end": 1506,
+          "page_sha256": "db394f6fd18efa784408f3cc037bd0541fba44b6733ad8542849498e8425cf87",
+          "method": "native",
+          "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=1",
+          "preview_url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/render/1",
+          "quote_sha256": "916fc213a3eb2c11a2ffd9a9448b7150a9f518ce13c27cabb18f6f572892465c",
+          "quote_characters": 1280
+        },
+        "future_work": [],
+        "reference_pages": [8, 9, 10, 11, 12],
+        "in_degree": 8,
+        "out_degree": 2,
+        "pagerank": 0.06490131,
+        "role": "局部较少被引",
+        "x": 685.32,
+        "y": 225.11
+      }
+    ],
+    "edges": [
+      {
+        "source": "arxiv:1706.03762",
+        "target": "arxiv:1607.06450",
+        "match_method": "arxiv_id",
+        "matched_text": "1607.06450",
+        "evidence": [
+          {
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "page": 10,
+            "start": 2537,
+            "end": 2949,
+            "page_sha256": "49b49450dca7fe1b76914eb12696feb3ffc186decc4df14a424c53e3f904ff95",
+            "method": "native",
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=10",
+            "preview_url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/10",
+            "quote_sha256": "a89c7192fcc4c426eb38f9bedb41cf659fdd2c16067b691ba128451194ac09fc",
+            "quote_characters": 412
+          }
+        ]
+      },
+      {
+        "source": "arxiv:1910.10683",
+        "target": "arxiv:1607.06450",
+        "match_method": "arxiv_id",
+        "matched_text": "1607.06450",
+        "evidence": [
+          {
+            "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "page": 58,
+            "start": 575,
+            "end": 1125,
+            "page_sha256": "992c869f06f45d9800073afd6f1a8469d2edfa324fcec6b22cd4ce55f08cbbb3",
+            "method": "native",
+            "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=58",
+            "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/58",
+            "quote_sha256": "1239cb15544987864bb2b5da67f88908239115993f35dcc8ccf532f4bf5f807a",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:1910.10683",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "page": 66,
+            "start": 1040,
+            "end": 1605,
+            "page_sha256": "3265edbb17300f6120b366c072df352770721700a776a3c4564b96a64d90d24b",
+            "method": "native",
+            "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=66",
+            "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/66",
+            "quote_sha256": "5b00bfb3c57d3d04789a87b3d6be112e3bfd5028ebc98ad9053d4b3fac807e98",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:1910.10683",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "BERT: Pre-\ntraining of deep bidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "page": 59,
+            "start": 1811,
+            "end": 2432,
+            "page_sha256": "a82519545fa37e3efbd9ae4e02e73866fcd449e2729a2ba23b9592d9c399d66c",
+            "method": "native",
+            "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=59",
+            "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/59",
+            "quote_sha256": "ed24f7cc4a13d83a4afdaf0ecd6fcb2bd0e902e3651279042a8b2d5203592854",
+            "quote_characters": 621
+          }
+        ]
+      },
+      {
+        "source": "arxiv:1910.10683",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language\nunderstanding by generative pre-training",
+        "evidence": [
+          {
+            "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+            "page": 64,
+            "start": 903,
+            "end": 1502,
+            "page_sha256": "8495b78159b8eece18a427b03ea591bb7ee2583500facef4e835dfa12a41509b",
+            "method": "native",
+            "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=64",
+            "preview_url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/render/64",
+            "quote_sha256": "fcbd03431c90b8cce637c2cdcf1beeaa06aa1cb0af29f1f13224ecf27430af78",
+            "quote_characters": 599
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2001.08361",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+            "page": 30,
+            "start": 618,
+            "end": 1183,
+            "page_sha256": "ee3f86c1d0a60ac50a8f65ecb7b31ff833f94f7f58a112ea7b2be276801e6c6b",
+            "method": "native",
+            "url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/pdf#page=30",
+            "preview_url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/render/30",
+            "quote_sha256": "e49ed0cb84af559bea319a9de3295b5c90656981626f85831ebaad9816ff1a03",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2001.08361",
+        "target": "arxiv:1910.10683",
+        "match_method": "arxiv_id",
+        "matched_text": "1910.10683",
+        "evidence": [
+          {
+            "document_id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+            "page": 29,
+            "start": 3321,
+            "end": 3871,
+            "page_sha256": "4c169be9a4e11397c8988d982045b80fd06a2e0c5a753745f3f6e9bed4607251",
+            "method": "native",
+            "url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/pdf#page=29",
+            "preview_url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/render/29",
+            "quote_sha256": "985f45dd9fbae18e2c4dfd2fc1b938fc77b4358cadfc543f385a8882ef6e832f",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2001.08361",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "Bert: Pre-training of deep\nbidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+            "page": 28,
+            "start": 1585,
+            "end": 2205,
+            "page_sha256": "2127483859c16dfd816a5ab2da77e96745093477afe0b13a12a861f8c9b14ce3",
+            "method": "native",
+            "url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/pdf#page=28",
+            "preview_url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/render/28",
+            "quote_sha256": "c822986a24bf1836621ec3ad334b6d83868fb3b71b5ed5a2346aea3612a1838f",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2001.08361",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language\nunderstanding by generative pre-training",
+        "evidence": [
+          {
+            "document_id": "a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494",
+            "page": 29,
+            "start": 2540,
+            "end": 3139,
+            "page_sha256": "4c169be9a4e11397c8988d982045b80fd06a2e0c5a753745f3f6e9bed4607251",
+            "method": "native",
+            "url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/pdf#page=29",
+            "preview_url": "/api/documents/a41bd7877fd1a6bcbba096b2619618bd2f90e02488f2365644903eb2f7c6a494/render/29",
+            "quote_sha256": "9c0a23b16d93ffdeeba472b9d046d81259ffaf07ac66751ed0e967a8f973e6cf",
+            "quote_characters": 599
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2005.14165",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 74,
+            "start": 1691,
+            "end": 2256,
+            "page_sha256": "abbe4d454d08f1a3df3145390d113a81ba83f2f111073bd9e1f0031f8d460d79",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=74",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/74",
+            "quote_sha256": "1a02a90a7d15fd4c9e9f8b783813ed4897e15c2c2cd52015c4fe90888520357e",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2005.14165",
+        "target": "arxiv:1910.10683",
+        "match_method": "full_title",
+        "matched_text": "Exploring the limits of transfer learning with a uniﬁed text-to-text\ntransformer",
+        "evidence": [
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 73,
+            "start": 2151,
+            "end": 2771,
+            "page_sha256": "b9a3d8b5e93d175a2d769d65fcc3076a15fe2d2c1e358b55778e8434a9250626",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=73",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/73",
+            "quote_sha256": "fd5d2ca1a2ccfafb528d0178f05dded49435f6a1bf42d1646b33bc9cc052ca9d",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2005.14165",
+        "target": "arxiv:2001.08361",
+        "match_method": "full_title",
+        "matched_text": "Scaling laws for neural language models",
+        "evidence": [
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 70,
+            "start": 2799,
+            "end": 3378,
+            "page_sha256": "b054ed326044b25676cb3760d00c01438a736a2ebcd5f9c1e01957f966492787",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=70",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/70",
+            "quote_sha256": "a39a070ff9ae0cce1e9d33b7eb9bedf3e59b18fe0525965da92788d7fdb4758c",
+            "quote_characters": 579
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2005.14165",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "BERT: Pre-training of deep\nbidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 68,
+            "start": 3260,
+            "end": 3623,
+            "page_sha256": "557165c7d4c68eaabaf3af495bf52403c662ea91a7e9afd90c5d7bfb62921054",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=68",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/68",
+            "quote_sha256": "44ab6967e23618a2fc79f898d56451c5a5b06e944f2d6c41404cfbd8532cb29f",
+            "quote_characters": 363
+          },
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 69,
+            "start": 0,
+            "end": 256,
+            "page_sha256": "648277226dcb42d0a5c944ca719a9223bdb6f98321de09452d9a0e9ff9779acb",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=69",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/69",
+            "quote_sha256": "ce0fd0ecee94c2a4c02f6435048bf1817fee253f199d74291d83186144595118",
+            "quote_characters": 256
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2005.14165",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language understanding\nby generative pre-training",
+        "evidence": [
+          {
+            "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+            "page": 73,
+            "start": 1536,
+            "end": 2135,
+            "page_sha256": "b9a3d8b5e93d175a2d769d65fcc3076a15fe2d2c1e358b55778e8434a9250626",
+            "method": "native",
+            "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=73",
+            "preview_url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/render/73",
+            "quote_sha256": "acca1ead3e9b50475532eda39efe1b0e13afa3d5cb4f4821dcce69a8346da5b4",
+            "quote_characters": 599
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2106.09685",
+        "target": "arxiv:1607.06450",
+        "match_method": "full_title",
+        "matched_text": "Layer normalization",
+        "evidence": [
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 13,
+            "start": 959,
+            "end": 1518,
+            "page_sha256": "1a680d0abcbc9db9c64af002f4bcc2fa2fed3e0b6807a6b0afcf50eba3df6cce",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=13",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/13",
+            "quote_sha256": "b1782b4cf538783a94ffee3a6b9dbf3bcd14ac0e3b035be1767f08106fe232da",
+            "quote_characters": 559
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2106.09685",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 15,
+            "start": 3369,
+            "end": 3483,
+            "page_sha256": "3fd5687a54bd76f1feb5c21cba9f3ae7c8011e8101e995022e5605f980338e9c",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=15",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/15",
+            "quote_sha256": "48791d4583c4f560bd5f7654b798dcae1c55d065f430c741e5b93e1b6c086b8a",
+            "quote_characters": 114
+          },
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 16,
+            "start": 0,
+            "end": 450,
+            "page_sha256": "3091d846ba77082e215222b0329bdb65617c9a77719394fcae8f1d1e1598ed27",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=16",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/16",
+            "quote_sha256": "20ed6711e1e17df156ec65aba5c419c0671921d6ad748649085c56dd47a4a512",
+            "quote_characters": 450
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2106.09685",
+        "target": "arxiv:2005.14165",
+        "match_method": "arxiv_id",
+        "matched_text": "2005.14165",
+        "evidence": [
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 13,
+            "start": 1517,
+            "end": 2067,
+            "page_sha256": "1a680d0abcbc9db9c64af002f4bcc2fa2fed3e0b6807a6b0afcf50eba3df6cce",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=13",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/13",
+            "quote_sha256": "3b66b2d050015d0562878ae2f8d5c0e1d055e1f0d0740166677409379babbac1",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2106.09685",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "Bert: Pre-training of deep\nbidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 13,
+            "start": 2685,
+            "end": 3305,
+            "page_sha256": "1a680d0abcbc9db9c64af002f4bcc2fa2fed3e0b6807a6b0afcf50eba3df6cce",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=13",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/13",
+            "quote_sha256": "010f513e7b6baec7f96c3ffa5995fc29de5214de6ba21f69a3eac2c32b27e676",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2106.09685",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving Language Under-\nstanding by Generative Pre-Training",
+        "evidence": [
+          {
+            "document_id": "e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a",
+            "page": 15,
+            "start": 1537,
+            "end": 2138,
+            "page_sha256": "3fd5687a54bd76f1feb5c21cba9f3ae7c8011e8101e995022e5605f980338e9c",
+            "method": "native",
+            "url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/pdf#page=15",
+            "preview_url": "/api/documents/e9a0d3128767db616085dc0f4e6e455e672e89af823e8ed1282793682787395a/render/15",
+            "quote_sha256": "b14666d3698f52f3447e3173db6ca5a95ce65fc6e0c57e235e82dcefb9153f4b",
+            "quote_characters": 601
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2107.03374",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention\nis all you need",
+        "evidence": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 18,
+            "start": 5077,
+            "end": 5642,
+            "page_sha256": "2fb92ec8a7aec74749cafc9a2d1fea13794159a45a41eedb31b8f809d2c39a26",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=18",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/18",
+            "quote_sha256": "b901dba3e574325db04d7d21ddb5cf8e03f652e2d52d949756d329251f2dea12",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2107.03374",
+        "target": "arxiv:1910.10683",
+        "match_method": "arxiv_id",
+        "matched_text": "1910.10683",
+        "evidence": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 18,
+            "start": 1854,
+            "end": 2404,
+            "page_sha256": "2fb92ec8a7aec74749cafc9a2d1fea13794159a45a41eedb31b8f809d2c39a26",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=18",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/18",
+            "quote_sha256": "ef5a46df0fbce76d9247aa7cf2440711750f63062e80d4a1335112b626e31751",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2107.03374",
+        "target": "arxiv:2001.08361",
+        "match_method": "full_title",
+        "matched_text": "Scaling laws for neural language models",
+        "evidence": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 17,
+            "start": 471,
+            "end": 1050,
+            "page_sha256": "32647cb053ca7db0f24a94388126bef0da929b96a5ce8d08e17eaf62ed63880f",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=17",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/17",
+            "quote_sha256": "72f2e7e6c8b2982155d9331ee08a3ff82981e18765c8d71ca5000624a1561390",
+            "quote_characters": 579
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2107.03374",
+        "target": "arxiv:2005.14165",
+        "match_method": "arxiv_id",
+        "matched_text": "2005.14165",
+        "evidence": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 15,
+            "start": 4677,
+            "end": 5227,
+            "page_sha256": "1c5826f0ee7c2c563e6611e7f40c4e280cdda14a467cacfb6690e542002791b7",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=15",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/15",
+            "quote_sha256": "b9cc69bcc24399706bc2a3f4eb77e2a3122b224a15baaa9af72eb60bc2bb14ea",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2107.03374",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "Bert: Pre-\ntraining of deep bidirectional transformers for language under-\nstanding",
+        "evidence": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 16,
+            "start": 1912,
+            "end": 2535,
+            "page_sha256": "3d333f3a002d8992554c319af08fdc5149a7dae7f0d6c8cb21667ff908c7a2b8",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=16",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/16",
+            "quote_sha256": "1e42d3b5823b41f9479ab0de39961eb424d7a80607d682fdcb764d68597696d2",
+            "quote_characters": 623
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2107.03374",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language understanding by generative pre-training",
+        "evidence": [
+          {
+            "document_id": "ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855",
+            "page": 18,
+            "start": 1214,
+            "end": 1813,
+            "page_sha256": "2fb92ec8a7aec74749cafc9a2d1fea13794159a45a41eedb31b8f809d2c39a26",
+            "method": "native",
+            "url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/pdf#page=18",
+            "preview_url": "/api/documents/ebae72ea0e8a5eb2ecbccdb985aec6cc1254a7c4d29e6d4de7866db1e66c4855/render/18",
+            "quote_sha256": "65ac52d2a789de455a0cc7b542d3c59505f7e7d1577d28710639a540ac5c4d94",
+            "quote_characters": 599
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "arxiv:1910.10683",
+        "match_method": "full_title",
+        "matched_text": "Exploring the limits of transfer learning with a uniﬁed\ntext-to-text transformer",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 12,
+            "start": 2914,
+            "end": 3534,
+            "page_sha256": "e1e93f8431a48d18fd946f6b5279e442e95f355d06ccf0c561e79828d6ffd845",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=12",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/12",
+            "quote_sha256": "b74f8061ec9b85ae133d289906a286feecb10175ddc7443439d4c21f4ff5d49b",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 11,
+            "start": 1838,
+            "end": 2388,
+            "page_sha256": "c66e9acfca3973679a5eb1a52fbd8b0b09dbd6fb657f184df37abd819fee0a16",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=11",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/11",
+            "quote_sha256": "1f16ad835283a133a947356333654997165cb8fc9fb32d0b7465548b27e7531d",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Language models are few-shot learners",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 10,
+            "start": 2073,
+            "end": 2650,
+            "page_sha256": "4c2edda1794b609781029cd9f99b7eba446349eeeded76f4c58a2127c3446a24",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=10",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/10",
+            "quote_sha256": "8f39c8ac0d570171a9e6dc3818a9924446ac2422d781548297f8d58b723bcc24",
+            "quote_characters": 577
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 10,
+            "start": 2761,
+            "end": 3311,
+            "page_sha256": "4c2edda1794b609781029cd9f99b7eba446349eeeded76f4c58a2127c3446a24",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=10",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/10",
+            "quote_sha256": "85d5a9e7145ea7ab740d5659a5a0f2f1cde30f3f52d214a3d62237b691c43882",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "arxiv:2203.02155",
+        "match_method": "arxiv_id",
+        "matched_text": "2203.02155",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 12,
+            "start": 1857,
+            "end": 2407,
+            "page_sha256": "e1e93f8431a48d18fd946f6b5279e442e95f355d06ccf0c561e79828d6ffd845",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=12",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/12",
+            "quote_sha256": "dd13c3af70172ebd9c1074ed6d596828e285dabcc2866f1cd9e557c7ff6068e6",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "arxiv:2206.07682",
+        "match_method": "full_title",
+        "matched_text": "Emergent abilities of large language\nmodels",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 13,
+            "start": 3270,
+            "end": 3354,
+            "page_sha256": "fa7720bdea755f69114640b8db9bf3691e88f76f826f39308713652623dce6a3",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=13",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/13",
+            "quote_sha256": "cd1e1268594d3188ddb435a1ad524045a989659334d38bb03916681cefcee92b",
+            "quote_characters": 84
+          },
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 14,
+            "start": 0,
+            "end": 498,
+            "page_sha256": "bfbab07526c1a738620dab960a5b1d79287a247d48561649f4b6e0f93f8dea68",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=14",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/14",
+            "quote_sha256": "83f2f8faf272f758db1d11178b0798ebb56df290dcd71c76cc8434d9b2250e20",
+            "quote_characters": 498
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2201.11903",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "BERT: Pre-training of\ndeep bidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12",
+            "page": 11,
+            "start": 145,
+            "end": 765,
+            "page_sha256": "c66e9acfca3973679a5eb1a52fbd8b0b09dbd6fb657f184df37abd819fee0a16",
+            "method": "native",
+            "url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/pdf#page=11",
+            "preview_url": "/api/documents/7d9f878c23b460e4566aa4ec9201b1abfb3b8faefb2b1356e411cb90fef72a12/render/11",
+            "quote_sha256": "52091c7e0abc6a95a36168f6cc883d852d64a8204e0849e8aa64cf7188741059",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2203.02155",
+        "target": "arxiv:2005.14165",
+        "match_method": "arxiv_id",
+        "matched_text": "2005.14165",
+        "evidence": [
+          {
+            "document_id": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+            "page": 22,
+            "start": 833,
+            "end": 1383,
+            "page_sha256": "5618a23dc27b7368d3ffab3a4240efa5556d1ee0881c56fb32c3914be434b73f",
+            "method": "native",
+            "url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/pdf#page=22",
+            "preview_url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/render/22",
+            "quote_sha256": "5c34405f80c70b67788ddd008898e4aa937b7f2acbb4c181a3be730ae1165a92",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2203.02155",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98",
+            "page": 22,
+            "start": 1642,
+            "end": 2192,
+            "page_sha256": "5618a23dc27b7368d3ffab3a4240efa5556d1ee0881c56fb32c3914be434b73f",
+            "method": "native",
+            "url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/pdf#page=22",
+            "preview_url": "/api/documents/c1984bb50a5b90fddb895fdc3a0f72e5bc977148c9f63ef6040cbe7a3e1f0d98/render/22",
+            "quote_sha256": "61f3cf31da8615fbcd783b30dee08a3962d04ae39b86fce2abf68deb463bf972",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2205.14135",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+            "page": 15,
+            "start": 2147,
+            "end": 2712,
+            "page_sha256": "d4cb1e5f49a2a89f0e8c5c045541f6ca90122b288544cfdd46e589ff5ecd34b9",
+            "method": "native",
+            "url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/pdf#page=15",
+            "preview_url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/render/15",
+            "quote_sha256": "1298d7537fb798dd29a84785bd9f03d70621243e2a7f8e1d4e74003211f4b16e",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2205.14135",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Language models are few-shot learners",
+        "evidence": [
+          {
+            "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+            "page": 11,
+            "start": 979,
+            "end": 1556,
+            "page_sha256": "904ce517e4c31a46c198fc9da2921a3db7dc9000f5a5f31e06b7c8b2641786ee",
+            "method": "native",
+            "url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/pdf#page=11",
+            "preview_url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/render/11",
+            "quote_sha256": "01493666d08e309b436f387b68553f24070dde9613a32973f0814014ef088691",
+            "quote_characters": 577
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2205.14135",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "BERT: Pre-training of deep\nbidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4",
+            "page": 12,
+            "start": 1435,
+            "end": 2055,
+            "page_sha256": "91506417b93db5e1668caf750a5c4722ce8bd78ca53ec3b75ccbbc0cfd818666",
+            "method": "native",
+            "url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/pdf#page=12",
+            "preview_url": "/api/documents/ca7f9fda10b90fc05dd291a3accc85e9c1a4a860b99b31928dab03ed3fcb14e4/render/12",
+            "quote_sha256": "9bee7ff6b8c1743386093fbd2669a6c0c76746eba2d53fd1d1b31584feaaccd6",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2206.07682",
+        "target": "arxiv:1910.10683",
+        "match_method": "full_title",
+        "matched_text": "Exploring the limits of transfer learning with a uniﬁed text-to-text transformer",
+        "evidence": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 16,
+            "start": 2127,
+            "end": 2747,
+            "page_sha256": "69b107ecc68a505eda394c6f45640ad487674cd57e573800191bd9b7bfceaf3a",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=16",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/16",
+            "quote_sha256": "6afd22c4f7dd2df337ad9f105b34c4283590bd2f968b483e5891efcf95bf394b",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2206.07682",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 15,
+            "start": 28,
+            "end": 578,
+            "page_sha256": "8501de61567a320c1635c094ca3e1bb2eb195ca83dab262b226c6cc0acc74a49",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=15",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/15",
+            "quote_sha256": "b4fe567154aacc7b03efa49b8c88096b0a3d5d75e2d84ed2a3ee0f38f670ca88",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2206.07682",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Language mod-\nels are few-shot learners",
+        "evidence": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 12,
+            "start": 3121,
+            "end": 3511,
+            "page_sha256": "aa6b36f39db21ab9e8913814ea3eb33793571b5167025defbe9cedd772104876",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=12",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/12",
+            "quote_sha256": "3f13ddc461a563a3b87166db5fe195004e450225728ff4c7e9f3995dad4dcc9f",
+            "quote_characters": 390
+          },
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 13,
+            "start": 0,
+            "end": 188,
+            "page_sha256": "a6dc23e7c46686eb6213d3b679a17201a4c86213da528f4b233e2719e7f3a142",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=13",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/13",
+            "quote_sha256": "7cda01cc7ec2e68a421ac13acf910aed210c670e4c4273c0d35014c5a7f81223",
+            "quote_characters": 188
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2206.07682",
+        "target": "arxiv:2201.11903",
+        "match_method": "arxiv_id",
+        "matched_text": "2201.11903",
+        "evidence": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 18,
+            "start": 477,
+            "end": 1027,
+            "page_sha256": "e840953ec4e063fa579945d44f5d64d5792b5bb04e8eec5b1e3f330fc5960a39",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=18",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/18",
+            "quote_sha256": "aaff1308419424415f646cb32bb8bbd10b3e2a9a700d36f0b513ddc561c0643e",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2206.07682",
+        "target": "arxiv:2203.02155",
+        "match_method": "arxiv_id",
+        "matched_text": "2203.02155",
+        "evidence": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 16,
+            "start": 326,
+            "end": 876,
+            "page_sha256": "69b107ecc68a505eda394c6f45640ad487674cd57e573800191bd9b7bfceaf3a",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=16",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/16",
+            "quote_sha256": "1c2f349686a705e43b10428d9962e754b0551633ab2be05e0c0454f8f5b83be0",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2206.07682",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "BERT: Pre-training of deep bidirec-\ntional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755",
+            "page": 13,
+            "start": 2198,
+            "end": 2820,
+            "page_sha256": "a6dc23e7c46686eb6213d3b679a17201a4c86213da528f4b233e2719e7f3a142",
+            "method": "native",
+            "url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/pdf#page=13",
+            "preview_url": "/api/documents/f457f08102eb381f2300e1653bf4c82a9aa5dce0eb8dba8fe744ccc2500c3755/render/13",
+            "quote_sha256": "2358eaad0c9a075df90ba1fe94b1d37ddebe01492a075813f3daeabe89cd16b3",
+            "quote_characters": 622
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 62,
+            "start": 1565,
+            "end": 2130,
+            "page_sha256": "ff07bb865d921fc1d13574f77808ac7e6a02e9d66c2410455cd67e1ed911cf18",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=62",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/62",
+            "quote_sha256": "7ad590c139806734913f25785bd1a9c12b4f6c72bd6af92c3b3fbebee15778dd",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "arxiv:1910.10683",
+        "match_method": "full_title",
+        "matched_text": "Exploring the limits of transfer learning\nwith a unified text-to-text transformer",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 59,
+            "start": 1136,
+            "end": 1757,
+            "page_sha256": "c6f9766d828daded4014977977057406d4930bf9531ac2708d8fd1352260f5b0",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=59",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/59",
+            "quote_sha256": "19d798229e32e8f217e9f1b9132f5a004bc87d678c07d86cbc1f3b44d3de44b4",
+            "quote_characters": 621
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 53,
+            "start": 1673,
+            "end": 2223,
+            "page_sha256": "b3d4b146a788ed52f51c4d2346a0bd25e88a44758314de19852634d52db1aff2",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=53",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/53",
+            "quote_sha256": "06eceffaefd0756e5f6515bc0a72912c75353c01852bbaddda6fcbb7e22d0ffb",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Language models\nare few-shot learners",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 48,
+            "start": 1671,
+            "end": 2248,
+            "page_sha256": "979a96f06adfac8b1a008811c75ae5edba55ff568af584aad753bd45cd172251",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=48",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/48",
+            "quote_sha256": "0bb886b6891fb2a59795f62fa8322031d8c3cf4449d41a4f5446d8e1ee6a9865",
+            "quote_characters": 577
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 48,
+            "start": 3079,
+            "end": 3339,
+            "page_sha256": "979a96f06adfac8b1a008811c75ae5edba55ff568af584aad753bd45cd172251",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=48",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/48",
+            "quote_sha256": "a442b488cd6a43212a236cd041aa50f68b05b047aeb83bdf16efb3c70c1efa7d",
+            "quote_characters": 260
+          },
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 49,
+            "start": 0,
+            "end": 289,
+            "page_sha256": "ac14bb68835b112d7520d60a874e1dee049603bbe3c1771c7c5af70f92bcb772",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=49",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/49",
+            "quote_sha256": "41c80170d705ed61614013e925fe7afd40d85d6fe9e2a7d25bf5ffed21bbed01",
+            "quote_characters": 289
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "arxiv:2206.07682",
+        "match_method": "full_title",
+        "matched_text": "Emergent abilities\nof large language models",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 63,
+            "start": 1752,
+            "end": 2335,
+            "page_sha256": "dd0c4042ee014ec5caddf2eb732f6ac44b4cad13b92f88a9ef9df5cd5a0352db",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=63",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/63",
+            "quote_sha256": "9c8d2362e0d9d6c03f5ade7e4e238f09d4edaa8fb0537f174b8b976449a07ead",
+            "quote_characters": 583
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "BERT: Pre-training\nof deep bidirectional transformers for language understanding",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 50,
+            "start": 606,
+            "end": 1226,
+            "page_sha256": "a4f4cf2d18fcb0fe0897e3d0c1683d025c4ef8289ba07eba60b3e268454a47c9",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=50",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/50",
+            "quote_sha256": "ee77ebab5406e65e54fa57d4d6e110669ebd2c89c396bed2d801b867719ff924",
+            "quote_characters": 620
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2211.05100",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language\nunderstanding by generative pre-training",
+        "evidence": [
+          {
+            "document_id": "8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065",
+            "page": 59,
+            "start": 523,
+            "end": 1122,
+            "page_sha256": "c6f9766d828daded4014977977057406d4930bf9531ac2708d8fd1352260f5b0",
+            "method": "native",
+            "url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/pdf#page=59",
+            "preview_url": "/api/documents/8033c3e611aaa120cb7294085ebd6ee297ffae9ec02393b1c4f1593d7e6ee065/render/59",
+            "quote_sha256": "86e3c8d6aafbc9c995ef61cdc85d593003e4d1d34b6b2c0943b717bfe33d7983",
+            "quote_characters": 599
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 44,
+            "start": 211,
+            "end": 776,
+            "page_sha256": "7928deeeb51c7e313378f15ce296386726eaac3d91747720fb737ef5d2021430",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=44",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/44",
+            "quote_sha256": "3d16b8ecae9b67f5beec7092e9bca7ca2f16e31465057e02ff641c5ef119b243",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 40,
+            "start": 4385,
+            "end": 4421,
+            "page_sha256": "e2f478dd8469e253690e691bdbb90d8fd8b5fb765cdec6abea2b5d8492de4cbe",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=40",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/40",
+            "quote_sha256": "91a1d64fa723c4804c114843b623837ce89d0ca124e43b1cd368b9e4efd3488e",
+            "quote_characters": 36
+          },
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 41,
+            "start": 0,
+            "end": 513,
+            "page_sha256": "0881c0c4a14eab74fd36318dabd33bc0a2a5dccb433299102c12068b411c67fe",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=41",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/41",
+            "quote_sha256": "5b19a5a39395724e3cc759c2408de6089831abf2d8d35ec76cac0ac9b23e29c1",
+            "quote_characters": 513
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Languagemodelsarefew-shotlearners",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 38,
+            "start": 1440,
+            "end": 2013,
+            "page_sha256": "397cfe481ed02f2ad7327f6a5ad814cc817dff617b9266fee33fdd95cd57b8cc",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=38",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/38",
+            "quote_sha256": "eeb2c540d697db4560417fe68365b4310bbfab3d0cf3020f1ae0ace34810e9f1",
+            "quote_characters": 573
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:2107.03374",
+        "match_method": "full_title",
+        "matched_text": "Evaluating large\nlanguage models trained on code",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 38,
+            "start": 2639,
+            "end": 3227,
+            "page_sha256": "397cfe481ed02f2ad7327f6a5ad814cc817dff617b9266fee33fdd95cd57b8cc",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=38",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/38",
+            "quote_sha256": "740414f264f9637a615909792dc6bee1eb2b307308ca656c66f49546aedd5821",
+            "quote_characters": 588
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:2201.11903",
+        "match_method": "full_title",
+        "matched_text": "Chain-of-thought prompting elicits reasoning in large language models",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 44,
+            "start": 1449,
+            "end": 2058,
+            "page_sha256": "7928deeeb51c7e313378f15ce296386726eaac3d91747720fb737ef5d2021430",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=44",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/44",
+            "quote_sha256": "69b02218c26f9c25cc237d4f8302e03c05852a2bc80058320e5829d9f1ea0427",
+            "quote_characters": 609
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:2203.02155",
+        "match_method": "full_title",
+        "matched_text": "Training language models to follow instructions with\nhuman feedback",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 42,
+            "start": 616,
+            "end": 1223,
+            "page_sha256": "1dc42160eac40d3b6918ffe530649567d46c5713d9ccee8abaec674ebf3d9420",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=42",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/42",
+            "quote_sha256": "b62e3fbb6dc9c0e9ad75d37419023992b72d4561ea3a93fa033ce14519ed6985",
+            "quote_characters": 607
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "arxiv:2211.05100",
+        "match_method": "arxiv_id",
+        "matched_text": "2211.05100",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 42,
+            "start": 4035,
+            "end": 4585,
+            "page_sha256": "1dc42160eac40d3b6918ffe530649567d46c5713d9ccee8abaec674ebf3d9420",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=42",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/42",
+            "quote_sha256": "b5b4f4aacbdd9c598c0421a2a92dba6240080a12be9d7402fe6584c42a3e7314",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2307.09288",
+        "target": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "match_method": "full_title",
+        "matched_text": "Llama: Open and efficient foundation language models",
+        "evidence": [
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 43,
+            "start": 4328,
+            "end": 4334,
+            "page_sha256": "6518497713f9e964bcacab12bbae37db307650561ac4c38a834a7811eeb3e90e",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=43",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/43",
+            "quote_sha256": "39505279a0328843d1ba6bd46c1dfa3bcfb84ef527bda2c1332afaf8a6d51e89",
+            "quote_characters": 6
+          },
+          {
+            "document_id": "1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91",
+            "page": 44,
+            "start": 0,
+            "end": 585,
+            "page_sha256": "7928deeeb51c7e313378f15ce296386726eaac3d91747720fb737ef5d2021430",
+            "method": "native",
+            "url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/pdf#page=44",
+            "preview_url": "/api/documents/1df284ce95f783002074bfe8f21d47c646b396ceb1736ea3ec0ea212fc070d91/render/44",
+            "quote_sha256": "be450d298224898b220537b7ccaf27259378d29b790a6f93c4adc00671709d00",
+            "quote_characters": 585
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2310.06825",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+            "page": 9,
+            "start": 2294,
+            "end": 2859,
+            "page_sha256": "9a025db3fec725792cbcd8d57a34acc8321dbbef8295cd8a36df7afc9393bc29",
+            "method": "native",
+            "url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/pdf#page=9",
+            "preview_url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/render/9",
+            "quote_sha256": "231d17df84f154ed04fffba9b0d6420edba893c844627a133f0c1daf754158c2",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2310.06825",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+            "page": 8,
+            "start": 816,
+            "end": 1366,
+            "page_sha256": "7cebea7641c968494d4e0782397616818511eff1ab5485cab867f08e433212fa",
+            "method": "native",
+            "url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/pdf#page=8",
+            "preview_url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/render/8",
+            "quote_sha256": "ce797cb580bb1a74a6dad20877cc0bbbac6e1455da65197d03dabb4dc5169e33",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2310.06825",
+        "target": "arxiv:2205.14135",
+        "match_method": "full_title",
+        "matched_text": "FlashAttention: Fast\nand memory-efficient exact attention with IO-awareness",
+        "evidence": [
+          {
+            "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+            "page": 8,
+            "start": 1955,
+            "end": 2570,
+            "page_sha256": "7cebea7641c968494d4e0782397616818511eff1ab5485cab867f08e433212fa",
+            "method": "native",
+            "url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/pdf#page=8",
+            "preview_url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/render/8",
+            "quote_sha256": "b0e5d22d8134d2f987bf98d75c289290bb3681697586bb25c94372592a1041b8",
+            "quote_characters": 615
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2310.06825",
+        "target": "arxiv:2307.09288",
+        "match_method": "arxiv_id",
+        "matched_text": "2307.09288",
+        "evidence": [
+          {
+            "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+            "page": 9,
+            "start": 2146,
+            "end": 2696,
+            "page_sha256": "9a025db3fec725792cbcd8d57a34acc8321dbbef8295cd8a36df7afc9393bc29",
+            "method": "native",
+            "url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/pdf#page=9",
+            "preview_url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/render/9",
+            "quote_sha256": "ef5441f6448e7ddee2b760822e6d7ccbcc1b17e56311d2d33c1c07d16e3459b1",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2310.06825",
+        "target": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "match_method": "full_title",
+        "matched_text": "Llama: Open\nand efficient foundation language models",
+        "evidence": [
+          {
+            "document_id": "dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae",
+            "page": 9,
+            "start": 1811,
+            "end": 2403,
+            "page_sha256": "9a025db3fec725792cbcd8d57a34acc8321dbbef8295cd8a36df7afc9393bc29",
+            "method": "native",
+            "url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/pdf#page=9",
+            "preview_url": "/api/documents/dfbac4e7035344b305c947481f2e7e8a02f7a24a563917eb6e47f6591d14c5ae/render/9",
+            "quote_sha256": "72b9297b5347ede66d774e8f9587062296995fe5ac75438ab2cd1544ee9bd0e3",
+            "quote_characters": 592
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 24,
+            "start": 3269,
+            "end": 3834,
+            "page_sha256": "13086f777f25fc1c6c730ef0db8bb108b553b0117b20354c2ddbeaf36c555938",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=24",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/24",
+            "quote_sha256": "1e29dc7645e33e7f719e2ff7990f0dd4bb547a502d39628d902e97e79c1f6524",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 22,
+            "start": 3219,
+            "end": 3769,
+            "page_sha256": "2a2e3e3944ad5c74d84153886833bc62a2791ece2cdc1ff36a15daea6fc2302c",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=22",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/22",
+            "quote_sha256": "3ebd6ed2d7bff203c3f3d375dec77e1098e86a4d8b0d96b4ea79e553f0c5c096",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Language models are few-shot learners",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 20,
+            "start": 1855,
+            "end": 2432,
+            "page_sha256": "219384bc914012489d2f3471a1831e0717707e0d40c28b1056b59b6f74c25eba",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=20",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/20",
+            "quote_sha256": "bf23d9e5a65fb686cce8005e4012b990198c05cdda7c92e76635226760f66b5c",
+            "quote_characters": 577
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 20,
+            "start": 3453,
+            "end": 4003,
+            "page_sha256": "219384bc914012489d2f3471a1831e0717707e0d40c28b1056b59b6f74c25eba",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=20",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/20",
+            "quote_sha256": "71105e3416689077940c420be8a7349655ab6c2db78b9c1797833c8f35e0d43c",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:2203.02155",
+        "match_method": "full_title",
+        "matched_text": "Training language models to follow instructions with human feedback",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 23,
+            "start": 2679,
+            "end": 3286,
+            "page_sha256": "54f0df332579fb0bed213e925f08cb10f74fd529c7c342b8595ebbfa2a7fa563",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=23",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/23",
+            "quote_sha256": "d8d8f9b1caa06c14cfa103ac9ee5caa661dc3cc1d5d598e83adc760bfe11f2c3",
+            "quote_characters": 607
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:2307.09288",
+        "match_method": "arxiv_id",
+        "matched_text": "2307.09288",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 24,
+            "start": 3124,
+            "end": 3674,
+            "page_sha256": "13086f777f25fc1c6c730ef0db8bb108b553b0117b20354c2ddbeaf36c555938",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=24",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/24",
+            "quote_sha256": "6787571611ad45e959e66ef2f8c81b6b5dcb2192937204cb98a9a77a53bcecde",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "arxiv:2310.06825",
+        "match_method": "arxiv_id",
+        "matched_text": "2310.06825",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 22,
+            "start": 2028,
+            "end": 2578,
+            "page_sha256": "2a2e3e3944ad5c74d84153886833bc62a2791ece2cdc1ff36a15daea6fc2302c",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=22",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/22",
+            "quote_sha256": "6c8976d9d7e71bda97eaa246ec5460affe14a87c263f4dc1770e41d777b3266c",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "match_method": "full_title",
+        "matched_text": "LLaMA: Open and efficient foundation language models",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 24,
+            "start": 1943,
+            "end": 2535,
+            "page_sha256": "13086f777f25fc1c6c730ef0db8bb108b553b0117b20354c2ddbeaf36c555938",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=24",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/24",
+            "quote_sha256": "6127a83d23c254cdb577f333e7730d501b7d6dbbb815eab5eb24a82ce93aba0d",
+            "quote_characters": 592
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.15115",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language understand-\ning by generative pre-training",
+        "evidence": [
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 23,
+            "start": 3838,
+            "end": 4175,
+            "page_sha256": "54f0df332579fb0bed213e925f08cb10f74fd529c7c342b8595ebbfa2a7fa563",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=23",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/23",
+            "quote_sha256": "102ff21f9bd30910c63eaf6f3695074e55f1b8c46e0ad1d74c659b986fb94f82",
+            "quote_characters": 337
+          },
+          {
+            "document_id": "73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3",
+            "page": 24,
+            "start": 0,
+            "end": 263,
+            "page_sha256": "13086f777f25fc1c6c730ef0db8bb108b553b0117b20354c2ddbeaf36c555938",
+            "method": "native",
+            "url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/pdf#page=24",
+            "preview_url": "/api/documents/73b3292bead3ac8896679d3ac8be87439756faf356566cbda3ccc8a3dc7d79d3/render/24",
+            "quote_sha256": "6f08d7fd088e227ab7a6c05a24da5e1acf1deb426cfdbf65f431465f1d94e823",
+            "quote_characters": 263
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.19437",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 43,
+            "start": 513,
+            "end": 1078,
+            "page_sha256": "61a3f164a22d996b466d096b5df35e7f7b694626a97ee6b45a95297bcb6b1198",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=43",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/43",
+            "quote_sha256": "aa31ca311149a9b916b429724f7e922192df4930bd3fa73b05c69ce82e76e8ed",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.19437",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 37,
+            "start": 301,
+            "end": 851,
+            "page_sha256": "bc0d864e61cb48dff2dfbe74dcec68a77c5e2166eac6d7b6895e1b1b3c1af214",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=37",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/37",
+            "quote_sha256": "277330eb075a3cca017e0cb58294621ef5b98d0595e182023665cac5e42f674a",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.19437",
+        "target": "arxiv:2307.09288",
+        "match_method": "arxiv_id",
+        "matched_text": "2307.09288",
+        "evidence": [
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 43,
+            "start": 310,
+            "end": 860,
+            "page_sha256": "61a3f164a22d996b466d096b5df35e7f7b694626a97ee6b45a95297bcb6b1198",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=43",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/43",
+            "quote_sha256": "88eb4fae37b982348f09dde5ab777edb0cda8c10d756db17e0cf049ff68b564e",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.19437",
+        "target": "arxiv:2310.06825",
+        "match_method": "arxiv_id",
+        "matched_text": "2310.06825",
+        "evidence": [
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 39,
+            "start": 790,
+            "end": 1340,
+            "page_sha256": "28b04b41106ada18c2b4c9c02b5a72e0607cc4b99d0bc1b73f6512ae1241c302",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=39",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/39",
+            "quote_sha256": "a0b1653c311670a78f137d95ba4386e285ea6a5ac0fc2affeb70bff42b81cca4",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2412.19437",
+        "target": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "match_method": "full_title",
+        "matched_text": "LLaMA: Open and efficient foundation language models",
+        "evidence": [
+          {
+            "document_id": "a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5",
+            "page": 42,
+            "start": 2446,
+            "end": 3038,
+            "page_sha256": "08a8c35bce06fcd81529b91f664d6cf9c2aef0657881baeb93faf66d0ec791c1",
+            "method": "native",
+            "url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/pdf#page=42",
+            "preview_url": "/api/documents/a67e18a4ca6e2c81abc030239a3ee53705f656b79efab8ce1d6b5ac25630c2a5/render/42",
+            "quote_sha256": "a66d9c85caf8fa467703ec96c6c4b29747be86bd949b4f622f2758f1ad8555bf",
+            "quote_characters": 592
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 81,
+            "start": 2590,
+            "end": 3120,
+            "page_sha256": "7169a248e3e9c1b3d8a48cda8fb51cc2c7b3b7cc385b2e234b1249218837cea2",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=81",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/81",
+            "quote_sha256": "1a46624fae5cde68b3c78ecd6c98a77527b87df3059b0cdbeef9e3df82aafc21",
+            "quote_characters": 530
+          },
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 82,
+            "start": 0,
+            "end": 19,
+            "page_sha256": "d6ff50b010d6cb267c160b5f076e07eb12a9fc89a7597e49ba483303e9d34a3e",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=82",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/82",
+            "quote_sha256": "acd9ade0da4b2368060485b9bf49f643caa9218caf21a6c84846b79c4292728d",
+            "quote_characters": 19
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Lan-\nguage models are few-shot learners",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 79,
+            "start": 878,
+            "end": 1457,
+            "page_sha256": "2f7697e1f2164c2b3bd8e236f3fe88d99b13444ead37097069ef7abac8991783",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=79",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/79",
+            "quote_sha256": "e5331094caa68fa31327173c9324fbece6d182625c09cf1757475870ce0eb84e",
+            "quote_characters": 579
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2107.03374",
+        "match_method": "arxiv_id",
+        "matched_text": "2107.03374",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 79,
+            "start": 2139,
+            "end": 2689,
+            "page_sha256": "2f7697e1f2164c2b3bd8e236f3fe88d99b13444ead37097069ef7abac8991783",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=79",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/79",
+            "quote_sha256": "83f076e6460d912a7b725273acb990d15240f668151f5aa36fab36b8867307b6",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2201.11903",
+        "match_method": "full_title",
+        "matched_text": "Chain-of-thought prompting elicits reasoning in large language models",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 85,
+            "start": 3149,
+            "end": 3292,
+            "page_sha256": "e23265a101d673efffdcbc660e2708cfe606610286c62874ab50713836870837",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=85",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/85",
+            "quote_sha256": "d93feb56275579fccb224598243a3dec3b625f667fb4dd6c902f4773245f0bab",
+            "quote_characters": 143
+          },
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 86,
+            "start": 0,
+            "end": 465,
+            "page_sha256": "e90ec550263c6abb4cd9d0f60d78a0e56ee7d19d845c793f1255cc8c5818bfdc",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=86",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/86",
+            "quote_sha256": "991176e115632d97d1f8b0f3258837b6608c34acf6512ce29a1cef80aea0c9d3",
+            "quote_characters": 465
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2203.02155",
+        "match_method": "full_title",
+        "matched_text": "Training language models to follow instructions with\nhuman feedback",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 83,
+            "start": 548,
+            "end": 1155,
+            "page_sha256": "5a9bdf0c452d831c4c401e3ec70a5c7b694914d22de0ae0507d724903330561c",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=83",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/83",
+            "quote_sha256": "ee1df11c67c4e84821d84b950a6d223df1f72cc4e9652152a3efbd1a20272002",
+            "quote_characters": 607
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2206.07682",
+        "match_method": "full_title",
+        "matched_text": "Emergent\nabilities of large language models",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 85,
+            "start": 2917,
+            "end": 3292,
+            "page_sha256": "e23265a101d673efffdcbc660e2708cfe606610286c62874ab50713836870837",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=85",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/85",
+            "quote_sha256": "186e0cd2e4f7ce9c94e9afdfe5b63ee4d86676d6fa84d64887a0620694f78f5f",
+            "quote_characters": 375
+          },
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 86,
+            "start": 0,
+            "end": 207,
+            "page_sha256": "e90ec550263c6abb4cd9d0f60d78a0e56ee7d19d845c793f1255cc8c5818bfdc",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=86",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/86",
+            "quote_sha256": "d31df53dbc197b948c3f1097bce8218aa2ef729aef944e162644ba7be28fe622",
+            "quote_characters": 207
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2307.09288",
+        "match_method": "arxiv_id",
+        "matched_text": "2307.09288",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 85,
+            "start": 457,
+            "end": 1007,
+            "page_sha256": "e23265a101d673efffdcbc660e2708cfe606610286c62874ab50713836870837",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=85",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/85",
+            "quote_sha256": "c0b147838f2b9cf668576dd8819a19d4079225ed2f51d120a03a355c1507922e",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "arxiv:2501.12948",
+        "target": "arxiv:2412.19437",
+        "match_method": "arxiv_id",
+        "matched_text": "2412.19437",
+        "evidence": [
+          {
+            "document_id": "b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4",
+            "page": 80,
+            "start": 826,
+            "end": 1376,
+            "page_sha256": "d3d4403e7b443d7c1820f216802645c0983c7c89678d8ee5f24f754fd8c93bed",
+            "method": "native",
+            "url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/pdf#page=80",
+            "preview_url": "/api/documents/b191b0a365a64b4ab2791d117069ed17a2933d03554a662ced58b37df52018f4/render/80",
+            "quote_sha256": "1473429c754afa3598e906143dade371d61d1751dfc06e18d191fc2eeaf46a18",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all\nyou need",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 15,
+            "start": 4158,
+            "end": 4723,
+            "page_sha256": "79344ab7d69f818c8b13de632c853bc4807e89c6036076235bb15d7852e47569",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=15",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/15",
+            "quote_sha256": "ea8051f03871ccbe97e09c5ab9e7ee623fd28d3942fd5ca7bbf883f5a60b00f6",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:1910.10683",
+        "match_method": "full_title",
+        "matched_text": "Exploring the limits\nof transfer learning with a unified text-to-text trans-\nformer",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 15,
+            "start": 404,
+            "end": 1027,
+            "page_sha256": "79344ab7d69f818c8b13de632c853bc4807e89c6036076235bb15d7852e47569",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=15",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/15",
+            "quote_sha256": "5eef0833d800e252c5a0acf8b4a6d344cc436f138f3e2147a2666b3e994b6608",
+            "quote_characters": 623
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2001.08361",
+        "match_method": "arxiv_id",
+        "matched_text": "2001.08361",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 13,
+            "start": 5078,
+            "end": 5107,
+            "page_sha256": "dbf7aa9ffdc63163f3fbac0c083d225823188f3ff15ebd7fcda5714cf202f198",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=13",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/13",
+            "quote_sha256": "68fab71a287cee7530c495160b1883cc936bf1cdba0b6fc2a89aa3934df0e70b",
+            "quote_characters": 29
+          },
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 14,
+            "start": 0,
+            "end": 520,
+            "page_sha256": "35097d100dfe835fa519210431e8d9ee896bb39ecd2b16a204a41de562a75280",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=14",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/14",
+            "quote_sha256": "76782928510ed4b5b4a386147fdae42ab0fd25ab13946be41c75ab463aecf491",
+            "quote_characters": 520
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2005.14165",
+        "match_method": "full_title",
+        "matched_text": "Language models are few-shot learners",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 12,
+            "start": 2462,
+            "end": 3039,
+            "page_sha256": "6a97fec17c56d0070fef1cd1bbe268cdace3fabaf1849bb6b15256417c03778c",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=12",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/12",
+            "quote_sha256": "adc6217a744cf317511ae3fc482bcade9f90e95b3ea77b4e0ee16342463c567a",
+            "quote_characters": 577
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2107.03374",
+        "match_method": "full_title",
+        "matched_text": "Evaluating\nlarge language models trained on code",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 12,
+            "start": 3785,
+            "end": 4373,
+            "page_sha256": "6a97fec17c56d0070fef1cd1bbe268cdace3fabaf1849bb6b15256417c03778c",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=12",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/12",
+            "quote_sha256": "90d2dca4120cbe2c4508811442cd417e21d2d5d681f31034f51a9c0bd1f08488",
+            "quote_characters": 588
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2203.02155",
+        "match_method": "full_title",
+        "matched_text": "Training language models to follow instructions with\nhuman feedback",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 14,
+            "start": 3415,
+            "end": 4022,
+            "page_sha256": "35097d100dfe835fa519210431e8d9ee896bb39ecd2b16a204a41de562a75280",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=14",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/14",
+            "quote_sha256": "cae05c02bc1a5bc16fa5508ea2ecbd304777b712cda456c4ae5227bd31978388",
+            "quote_characters": 607
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2205.14135",
+        "match_method": "arxiv_id",
+        "matched_text": "2205.14135",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 13,
+            "start": 1374,
+            "end": 1924,
+            "page_sha256": "dbf7aa9ffdc63163f3fbac0c083d225823188f3ff15ebd7fcda5714cf202f198",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=13",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/13",
+            "quote_sha256": "2937215b4b72ac86928202cbc8ccce934e24972e299e4d97e788a204fdd366a7",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2206.07682",
+        "match_method": "arxiv_id",
+        "matched_text": "2206.07682",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 15,
+            "start": 4826,
+            "end": 4943,
+            "page_sha256": "79344ab7d69f818c8b13de632c853bc4807e89c6036076235bb15d7852e47569",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=15",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/15",
+            "quote_sha256": "d3a904701bdac1a61b187475ba3f4325c10c67548ed051cd261c4152fae3d24b",
+            "quote_characters": 117
+          },
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 16,
+            "start": 0,
+            "end": 432,
+            "page_sha256": "408cf27f3b77207dc2db582c99f4adb57fbdc0747827ddae35b1610f9caa5be8",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=16",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/16",
+            "quote_sha256": "f6e38ebf62f15fc5e7ed991170c842e5cc32b54a182fdbd65d4912bc59608f79",
+            "quote_characters": 432
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "arxiv:2211.05100",
+        "match_method": "arxiv_id",
+        "matched_text": "2211.05100",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 15,
+            "start": 1496,
+            "end": 2046,
+            "page_sha256": "79344ab7d69f818c8b13de632c853bc4807e89c6036076235bb15d7852e47569",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=15",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/15",
+            "quote_sha256": "df452c821410a8949e138d443b4f211ac9998b630a98ff993b8242d983136a09",
+            "quote_characters": 550
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "match_method": "full_title",
+        "matched_text": "Bert: Pre-training of deep\nbidirectional transformers for language understand-\ning",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 13,
+            "start": 1458,
+            "end": 2080,
+            "page_sha256": "dbf7aa9ffdc63163f3fbac0c083d225823188f3ff15ebd7fcda5714cf202f198",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=13",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/13",
+            "quote_sha256": "ae50fb750edfc97c421f41be754c6a585fe82a16c80eadda7d50d1202f68ef0d",
+            "quote_characters": 622
+          }
+        ]
+      },
+      {
+        "source": "document:775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+        "target": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "match_method": "full_title",
+        "matched_text": "Improving language under-\nstanding by generative pre-training",
+        "evidence": [
+          {
+            "document_id": "775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd",
+            "page": 14,
+            "start": 3731,
+            "end": 4332,
+            "page_sha256": "35097d100dfe835fa519210431e8d9ee896bb39ecd2b16a204a41de562a75280",
+            "method": "native",
+            "url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/pdf#page=14",
+            "preview_url": "/api/documents/775ff8d09b6e5b06314135d87c194ce3535a821eeaee4be9051b331162c5fefd/render/14",
+            "quote_sha256": "0283a09a34a295a11effcb8cb3539194f3f7cbe31a62693c5467dfe86726b2ab",
+            "quote_characters": 601
+          }
+        ]
+      },
+      {
+        "source": "document:987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all\nyou need",
+        "evidence": [
+          {
+            "document_id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+            "page": 11,
+            "start": 4045,
+            "end": 4610,
+            "page_sha256": "fb525fb6d89838105d43d17b0ac6feefa583550f3ff4d5de9b2b78f08b12c982",
+            "method": "native",
+            "url": "/api/documents/987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4/pdf#page=11",
+            "preview_url": "/api/documents/987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4/render/11",
+            "quote_sha256": "836f265ee5eaad6a34cd0e089b905439b286d9d1916c61b215eea10170ce7342",
+            "quote_characters": 565
+          }
+        ]
+      },
+      {
+        "source": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "target": "arxiv:1607.06450",
+        "match_method": "arxiv_id",
+        "matched_text": "1607.06450",
+        "evidence": [
+          {
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "page": 8,
+            "start": 4162,
+            "end": 4267,
+            "page_sha256": "4c021fe900a8848c9cc1e5b98113dfb1298d681b195c4d3a5185816ee0b6dd63",
+            "method": "native",
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=8",
+            "preview_url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/render/8",
+            "quote_sha256": "65bf830933f60b352f281050bbb7c36bc64a98e39d902da7e00b0bb68a6641e0",
+            "quote_characters": 105
+          },
+          {
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "page": 9,
+            "start": 0,
+            "end": 397,
+            "page_sha256": "0313c81c6bad66e51b5b239241f7bc4c440d1289c35682235dce58113ff0c8ea",
+            "method": "native",
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=9",
+            "preview_url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/render/9",
+            "quote_sha256": "063020c97e8837558f8c456200224c4fb45ee5276b1ff40bc88db4784dd7e5c8",
+            "quote_characters": 397
+          }
+        ]
+      },
+      {
+        "source": "document:eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "target": "arxiv:1706.03762",
+        "match_method": "full_title",
+        "matched_text": "Attention is all you need",
+        "evidence": [
+          {
+            "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+            "page": 11,
+            "start": 2707,
+            "end": 3272,
+            "page_sha256": "e6b3627389c8daa02beb955be69245830ab4c3c40f1e19ed457c58d37cd9c4c7",
+            "method": "native",
+            "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=11",
+            "preview_url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/render/11",
+            "quote_sha256": "dcece2f85c8b7a7544880f29898c8a05ac47556200a136e24c80547a50298e7b",
+            "quote_characters": 565
+          }
+        ]
+      }
+    ],
+    "stats": {
+      "documents": 20,
+      "works": 20,
+      "edges": 100,
+      "components": 1,
+      "isolated": 0
+    },
+    "warnings": [],
+    "interpretation": "箭头从引用论文指向被引论文；指标只统计当前已入库范围，不是全球引用量或创新性评价。"
+  },
+  "review": {
+    "fingerprint": "31e1d50ecc41ae275d6b4bda8d2e527ad75b78d62cce252a425268b41bc662a2",
+    "answer": "层归一化通过在单个训练样本上从一层的所有输入计算均值和方差来进行归一化，这种方法适用于循环神经网络，并且在训练和测试时计算相同。[E1]\n\nTransformer模型在英语到德语翻译任务中达到了28.4的BLEU分数，超过了现有最佳结果超过2分。[E2]\n\nBERT通过联合条件左、右上下文进行预训练，可以仅通过添加一层输出层来微调以实现多种自然语言处理任务的最新成果。[E3]\n\n通过生成预训练和针对特定任务的微调，我们的通用模型在12项自然语言理解任务中有9项显著优于专门架构的辨别性训练模型，分别在常识推理、问答和文本蕴含任务上取得了绝对改进。[E4]\n\n通过预训练大型文本语料库并在特定任务上进行微调的方法在许多NLP任务和基准测试上取得了显著进展，但当前的NLP系统仍然难以仅从少量示例或简单说明中完成新的语言任务。[E5]\n\n我们通过引入统一框架将所有基于文本的语言问题转换为文本到文本格式，并通过结合探索见解与大规模训练及新数据集，实现了许多基准测试上的先进结果，涵盖总结、问答、文本分类等任务。[E6]",
+    "citations": [
+      {
+        "id": "E1",
+        "document_id": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+        "title": "Layer Normalization",
+        "page": 1,
+        "url": "/api/documents/c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7/pdf#page=1",
+        "quote_sha256": "1f178ea01196f9a0a8c76a7b1fd45392c2a176d5bb77b6cb5212186a0a0f422f",
+        "quote_characters": 1400
+      },
+      {
+        "id": "E2",
+        "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "title": "Attention Is All You Need",
+        "page": 1,
+        "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+        "quote_sha256": "63d7f913d2375699eed5e18cf873b1ee6108a42c044708199ae52af91f000bb2",
+        "quote_characters": 1400
+      },
+      {
+        "id": "E3",
+        "document_id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+        "page": 1,
+        "url": "/api/documents/987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4/pdf#page=1",
+        "quote_sha256": "025c8dbfe4a532bac7f39dffba0237ce256f0ae7748fa1111a9459e284ead971",
+        "quote_characters": 1082
+      },
+      {
+        "id": "E4",
+        "document_id": "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+        "title": "Improving Language Understanding by Generative Pre-Training",
+        "page": 1,
+        "url": "/api/documents/eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0/pdf#page=1",
+        "quote_sha256": "916fc213a3eb2c11a2ffd9a9448b7150a9f518ce13c27cabb18f6f572892465c",
+        "quote_characters": 1280
+      },
+      {
+        "id": "E5",
+        "document_id": "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+        "title": "Language Models are Few-Shot Learners",
+        "page": 1,
+        "url": "/api/documents/97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83/pdf#page=1",
+        "quote_sha256": "c456bc6953bd3ef744b3c0588a2da01383b06b82f1f51ef1b2f497ce0670f71e",
+        "quote_characters": 1400
+      },
+      {
+        "id": "E6",
+        "document_id": "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f",
+        "title": "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer",
+        "page": 1,
+        "url": "/api/documents/ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f/pdf#page=1",
+        "quote_sha256": "2b16f9706a37b3b26e16f2903b0ecb600df79cb955c1718b9006545628e337fd",
+        "quote_characters": 1132
+      }
+    ],
+    "insufficient_evidence": false,
+    "covered_documents": [
+      "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+      "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "eb81a65e0856bd38e855e1f1de6ee12e7c3eb92ae05c8270d345a475beb631d0",
+      "97fd272f1fdfc18677462d0292f5fbf26ca86b4d1b485c2dba03269b643a0e83",
+      "ad07e47cedf437a4156419ce5d3076e08a3e59bbfd6dac7cc53df1009cdcbe7f"
+    ],
+    "seconds": 16.68
+  },
+  "limitations": "独立限定参考文献页范围，按完整题名或编号查找候选，逐条阅读 102 个候选上下文，确认 100 条引用并排除 2 条 RMSNorm 后缀混淆。不代表盲审所有 380 个有向对或全部引用召回率。 综述最多读取六篇摘要；引用存在不等于语义完全正确，局部排名不等于全球被引量。"
+}

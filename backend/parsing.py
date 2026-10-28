@@ -216,6 +216,51 @@ def extract_page(page, path, number, ocr):
     }
 
 
+def native_title(page):
+    """在首页上半部按字号和基线读取标题，保留短前缀及 small-caps 字形。"""
+    spans = []
+    height = float(page.mediabox.height)
+
+    def visit(part, cm, tm, font, size):
+        clean = " ".join(part.split())
+        # tm 位于局部坐标时应用 cm；过滤侧边 arXiv 标识及正文图形标签。
+        x = tm[4] * cm[0] + tm[5] * cm[2] + cm[4]
+        y = tm[4] * cm[1] + tm[5] * cm[3] + cm[5]
+        if (
+            clean
+            and 0.55 * height < y < height
+            and float(size) >= 12
+            and not re.search(r"arxiv|provided proper attribution", clean, re.I)
+        ):
+            spans.append((float(size), x, y, part))
+
+    page.extract_text(visitor_text=visit)
+    if not spans:
+        return ""
+    top_size = max(s[0] for s in spans)
+    anchors = [s for s in spans if s[0] >= top_size * 0.90]
+    top_y = max(s[2] for s in anchors)
+    lines = []
+    for span in sorted(spans, key=lambda s: (-s[2], s[1])):
+        if span[0] < top_size * 0.75 or span[2] > top_y + 2:
+            continue
+        if lines and abs(lines[-1][0] - span[2]) <= 2:
+            lines[-1][1].append(span)
+        elif not lines or lines[-1][0] - span[2] < top_size * 1.8:
+            lines.append([span[2], [span]])
+        else:
+            break
+    parts = []
+    for _, line in lines:
+        text = ""
+        for size, _, _, part in sorted(line, key=lambda s: s[1]):
+            # 小型大写单词被分为大首字母／小字号后缀，后缀前的空白不代表新词。
+            text += part.lstrip() if size < top_size * 0.9 else part
+        parts.append(" ".join(text.split()))
+    title = re.sub(r"-\s*\n\s*", "", "\n".join(parts)).replace("\n", " ").strip()
+    return title if 8 < len(title) < 300 and re.search(r"\s", title) else ""
+
+
 def metadata(reader, first_page):
     info = reader.metadata or {}
     text = first_page["text"]
@@ -237,9 +282,11 @@ def metadata(reader, first_page):
                 spans.append((float(size), clean))
 
         if first_page["method"] == "native":
-            reader.pages[0].extract_text(visitor_text=visit)
-            top = max((s for s, _ in spans), default=0)
-            title = " ".join(t for s, t in spans if s >= top * 0.95 and s >= 12)
+            title = native_title(reader.pages[0])
+            if not title:
+                reader.pages[0].extract_text(visitor_text=visit)
+                top = max((s for s, _ in spans), default=0)
+                title = " ".join(t for s, t in spans if s >= top * 0.95 and s >= 12)
         else:
             blocks = [
                 b

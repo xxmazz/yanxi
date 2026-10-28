@@ -8,12 +8,15 @@ from datetime import datetime, timezone
 
 import networkx as nx
 
-VERSION = "references-v2"
+VERSION = "references-v3"
 MAX_DOCUMENTS = 30
 HEADING = re.compile(r"(?im)^\s*(?:\d+[.\s]+)?(?:references|bibliography|参考文献)\s*[:：]?\s*$")
 APPENDIX = re.compile(
     r"(?im)^\s*(?:appendix|appendices|supplementary material|附录)\b[^\n]*$|"
-    r"^\s*[A-Z](?:\.\d+)?\s+(?:Prompts?|Additional|Supplementary|Appendix|Implementation|Experimental|Proofs?|Hyperparameters?)\b[^\n]*$"
+    r"^\s*[A-Z](?:\.(?:\d+)?)?\s+(?:Prompts?|Additional|Supplementary|Appendix|Implementation|Experimental|Proofs?|Hyperparameters?|"
+    r"Related Work|Algorithm Details|Question Answering|MMLU|BIG-Bench|Estimating|Random Problems)\b[^\n]*$|"
+    r"(?-i:^[ \t]*[A-Z][ \t]+[A-Z][A-Z -]{8,100}[ \t]*$)|"
+    r"^\s*(?:Checklist|Attention Visualizations)\s*$"
 )
 
 
@@ -98,8 +101,12 @@ def match_reference(section, target):
             continue
         for found in re.finditer(re.escape(title), clean):
             start, end = mapping[found.start()], mapping[found.end() - 1] + 1
+            prefix = text[:start].rstrip()
             if (
                 (start == 0 or not text[start - 1].isalnum())
+                # 标题不能只是另一条更长题名的后缀，如 Root mean square layer
+                # normalization；换行本身不代表标题起点。
+                and (not prefix or prefix[-1] in ".:;]‘’“\"('")
                 and (end == len(text) or not text[end].isalnum())
                 and re.match(r"[^\S\n]*(?:[^\w\s]|\n|$)", text[end:])
             ):
@@ -315,8 +322,12 @@ def build_graph(store, document_ids=()):
     graph.add_nodes_from(n["id"] for n in nodes)
     graph.add_edges_from((e["source"], e["target"]) for e in edges)
     ranks = nx.pagerank(graph, alpha=0.85, tol=1e-10, max_iter=300) if nodes else {}
+    # 密集有向图会被力导向布局挤在一起。大图按已有节点顺序环形摆放，
+    # 保留全部真实连边，避免点击目标相互遮挡；小图继续显示力导向布局。
     positions = (
-        nx.spring_layout(graph, seed=42, iterations=80, scale=1)
+        nx.circular_layout(graph)
+        if len(nodes) >= 12
+        else nx.spring_layout(graph, seed=42, iterations=80, scale=1)
         if len(nodes) > 1
         else {n["id"]: [0, 0] for n in nodes}
     )
@@ -333,7 +344,9 @@ def build_graph(store, document_ids=()):
                 else "局部较少被引"
                 if edges
                 else "关系不足",
-                "x": round(float(positions[node["id"]][0]) * 250 + 400, 2),
+                "x": round(
+                    float(positions[node["id"]][0]) * (300 if len(nodes) >= 12 else 250) + 400, 2
+                ),
                 "y": round(float(positions[node["id"]][1]) * 210 + 290, 2),
             }
         )

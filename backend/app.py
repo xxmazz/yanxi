@@ -741,15 +741,23 @@ async def graph_review(request: GraphReview):
                 "covered_documents": [],
             }
         question = (
-            f"请按顺序为这 {len(evidence)} 个来源各写一条中文结论，概括该论文研究的问题、方法和结论，形成简短领域综述。"
-            f"必须覆盖全部来源：{', '.join(item['label'] for item in evidence)}，不要只描述第一篇论文。"
+            "请为当前这篇论文只写一条简短中文结论，概括摘要中明确陈述的问题、方法或结论。"
             "每条结论只描述所引用的单篇原文，勿补充背景常识、作者未报告的实验或推断方法继承关系。"
             "特别注意否定条件的对象：without ground truth human annotations 应写为不依赖人工标注的标准答案，"
             "不能改写成无需参考文本或无需检索上下文；reference-free evaluation 也不等于无需检索上下文。"
             "不要评价论文创新性，不要声称未来方向尚未被后续研究解决。保留原文对效果的限定条件。"
         )
         try:
-            raw = await asyncio.to_thread(models.answer, question, evidence)
+            # 六篇一起生成时小模型可能漏掉后面的来源；逐篇约束范围，
+            # 每篇先通过原文／数值检查，再合并，任何一篇失败均不展示半份综述。
+            claims = []
+            for item in evidence:
+                part = await asyncio.to_thread(models.answer, question, [item])
+                _, part_labels, part_refused = validate_answer(part, [item])
+                if part_refused or part_labels != [item["label"]] or len(part["claims"]) != 1:
+                    raise ValueError("单篇摘要没有返回唯一且有来源的结论")
+                claims.extend(part["claims"])
+            raw = {"claims": claims, "insufficient_evidence": False}
             answer, labels, refused = validate_answer(raw, evidence)
             if not refused and set(labels) != {item["label"] for item in evidence}:
                 raise ValueError("综述没有覆盖本轮摘要来源")

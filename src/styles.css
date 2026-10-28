@@ -3559,6 +3559,22 @@ textarea {
   color: #86927f;
   font-size: 10px;
 }
+.dense-graph .graph-node .light-label {
+  font-size: 18px;
+}
+.dense-graph .graph-node .graph-label,
+.dense-graph .graph-node .graph-sub {
+  opacity: 0;
+  pointer-events: none;
+}
+.dense-graph .graph-node.focused .graph-label,
+.dense-graph .graph-node.focused .graph-sub {
+  opacity: 1;
+  paint-order: stroke;
+  stroke: #fcfdf9;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
 .graph-empty,
 .graph-empty-note {
   text-align: center;

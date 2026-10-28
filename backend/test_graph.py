@@ -106,9 +106,32 @@ class GraphTests(unittest.TestCase):
         )
 
     def test_appendix_does_not_create_citation(self):
-        for heading in ["Appendix", "A Additional experiments", "Supplementary material"]:
+        for heading in [
+            "Appendix",
+            "A Additional experiments",
+            "Supplementary material",
+            "A Related Work",
+            "A. Estimating pass@k",
+            "A Question Answering",
+            "A L ARGE LANGUAGE MODELS STILL NEED PARAMETER UPDATES",
+            "A BIG-Bench analysis",
+            "Checklist",
+            "Attention Visualizations",
+        ]:
             section = references([page(f"References\nOther paper.\n{heading}\nWe discuss {TITLE}")])
             self.assertIsNone(match_reference(section, target()))
+
+    def test_bibliographic_titles_and_author_initials_do_not_stop_references(self):
+        section = references(
+            [
+                page(
+                    "References\nA framework for sequence learning.\nA simple and language independent method.\nS. On the dangers of parrots.\n"
+                    + TITLE
+                    + "."
+                )
+            ]
+        )
+        self.assertIsNotNone(match_reference(section, target()))
 
     def test_ligatures_and_short_titles(self):
         match = match_reference(
@@ -118,6 +141,18 @@ class GraphTests(unittest.TestCase):
         self.assertEqual(match[2], "full_title")
         self.assertIsNone(
             match_reference({"text": "References: A short title"}, target("A short title"))
+        )
+
+    def test_title_suffix_of_another_work_is_not_an_edge(self):
+        for text in [
+            "Biao Zhang. Root mean square layer normalization. 2019.",
+            "Biao Zhang. 2019. Root mean square\nlayer normalization.",
+        ]:
+            self.assertIsNone(match_reference({"text": text}, target("Layer Normalization")))
+        self.assertIsNotNone(
+            match_reference(
+                {"text": "Jimmy Ba. Layer normalization, 2016."}, target("Layer Normalization")
+            )
         )
 
     def test_versions_merge_and_newest_outgoing_edges_only(self):
@@ -162,7 +197,7 @@ class GraphTests(unittest.TestCase):
     def test_twenty_papers_direction_degree_and_determinism(self):
         titles = [f"Scientific foundational methods number {i:02d}" for i in range(20)]
         for i, title in enumerate(titles):
-            self.add(title, ["References\n" + "\n".join(titles[:i])])
+            self.add(title, ["References\n" + "\n".join(t + "." for t in titles[:i])])
         graph = build_graph(self.store)
         self.assertEqual(graph["stats"]["works"], 20)
         self.assertEqual(graph["stats"]["edges"], 190)
@@ -316,3 +351,33 @@ class GraphTests(unittest.TestCase):
                     },
                 )
             self.assertTrue(response.json()["insufficient_evidence"])
+
+    def test_review_reads_each_abstract_in_isolation_before_merging(self):
+        module = importlib.import_module("backend.app")
+        for index in range(3):
+            self.add(
+                f"Research on reliable source isolation {index}",
+                [
+                    "Abstract\nWe propose attention for translation.\n1 Introduction\nReferences\nnone"
+                ],
+            )
+
+        def summarize(_question, evidence):
+            self.assertEqual(len(evidence), 1)
+            return {
+                "claims": [{"text": "提出用于翻译的注意力方法。", "source": evidence[0]["label"]}]
+            }
+
+        with (
+            patch.object(module, "store", self.store),
+            patch.object(module.models, "llm", object()),
+            patch.object(module.models, "answer", side_effect=summarize) as mocked,
+        ):
+            client = TestClient(module.app)
+            graph = client.post("/api/graph/build", json={}).json()
+            response = client.post("/api/graph/review", json={"fingerprint": graph["fingerprint"]})
+            self.assertEqual(response.status_code, 200)
+            result = response.json()
+            self.assertFalse(result["insufficient_evidence"])
+            self.assertEqual(mocked.call_count, 3)
+            self.assertEqual([c["id"] for c in result["citations"]], ["E1", "E2", "E3"])

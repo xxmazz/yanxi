@@ -336,10 +336,16 @@ export function CitationGraph({
             </details>
           )}
           <div className="real-graph-layout">
-            <section className="graph-canvas real-graph-canvas">
+            <section
+              className={`graph-canvas real-graph-canvas ${graph.nodes.length >= 12 ? "dense-graph" : ""}`}
+            >
               <div className="graph-top">
                 <span>当前文献库的有向引用网络</span>
-                <small>节点大小随局部 PageRank 变化</small>
+                <small>
+                  {graph.nodes.length >= 12
+                    ? "点击节点查看题名与相邻引用"
+                    : "节点大小随局部 PageRank 变化"}
+                </small>
               </div>
               <svg
                 viewBox="0 0 800 590"
@@ -386,6 +392,7 @@ export function CitationGraph({
                       y2={b.y - (dy / length) * (radius(b) + 5)}
                       stroke={focused ? "#658b70" : "#b7c7bb"}
                       strokeWidth={focused ? 2.5 : 1.6}
+                      opacity={graph.nodes.length >= 12 && !focused ? 0.2 : 1}
                       markerEnd="url(#citation-arrow)"
                     >
                       <title>
@@ -438,16 +445,20 @@ export function CitationGraph({
                         {item.year || "论文"}
                       </text>
                       <text
-                        x={item.x}
-                        y={item.y + radius + 23}
+                        x={graph.nodes.length >= 12 ? 400 : item.x}
+                        y={
+                          graph.nodes.length >= 12 ? 280 : item.y + radius + 23
+                        }
                         textAnchor="middle"
                         className="graph-label"
                       >
                         {label(item.title)}
                       </text>
                       <text
-                        x={item.x}
-                        y={item.y + radius + 40}
+                        x={graph.nodes.length >= 12 ? 400 : item.x}
+                        y={
+                          graph.nodes.length >= 12 ? 305 : item.y + radius + 40
+                        }
                         textAnchor="middle"
                         className="graph-sub"
                       >

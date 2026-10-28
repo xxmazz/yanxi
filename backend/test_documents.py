@@ -10,11 +10,37 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 from backend.core import Store, chunks_for_page
-from backend.parsing import extract_page, metadata, native_text, page_payload
+from backend.parsing import extract_page, metadata, native_text, native_title, page_payload
 from backend.similarity import compare_documents, content_profile, identity
 
 
 class DocumentTests(unittest.TestCase):
+    def test_native_title_keeps_short_prefix_and_ignores_large_diagram_labels(self):
+        def extract(visitor_text):
+            for size, x, y, part in [
+                (17, 80, 700, "Nova 2"),
+                (17, 145, 700, ": Open Research Models"),
+                (24, 100, 250, "Pretrained Weights"),
+                (20, 30, 230, "arXiv:2307.12345"),
+            ]:
+                visitor_text(part, [1, 0, 0, 1, 0, 0], [1, 0, 0, 1, x, y], {}, size)
+
+        page = SimpleNamespace(mediabox=SimpleNamespace(height=792), extract_text=extract)
+        self.assertEqual(native_title(page), "Nova 2: Open Research Models")
+
+    def test_native_title_joins_small_caps_and_continued_word(self):
+        def extract(visitor_text):
+            for size, x, y, part in [
+                (17, 80, 700, "A"),
+                (13.6, 92, 700, "STER: L"),
+                (13.6, 180, 700, " OW-RANK LAN-"),
+                (13.6, 80, 680, "GUAGE MODELS"),
+            ]:
+                visitor_text(part, [1, 0, 0, 1, 0, 0], [1, 0, 0, 1, x, y], {}, size)
+
+        page = SimpleNamespace(mediabox=SimpleNamespace(height=792), extract_text=extract)
+        self.assertEqual(native_title(page), "ASTER: LOW-RANK LANGUAGE MODELS")
+
     def test_parser_limit_warning_survives_page_storage(self):
         def extract():
             logging.getLogger("pypdf._page").warning(
