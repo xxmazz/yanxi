@@ -1,4 +1,4 @@
-"""只读核对官方 PDF 的数字制书目导航；报告不公开全文摘录。"""
+"""只读核对官方 PDF 的引用、书目和显式编号目录导航；报告不公开全文摘录。"""
 
 import argparse
 import hashlib
@@ -20,7 +20,11 @@ for filename in ["1706.03762v7.pdf", "1706.03762v1_img.pdf", "N19-1423.pdf"]:
     data = client.get(f"/api/documents/{doc_id}/reading-links").raise_for_status().json()
     pages = {}
     count = 0
-    for source in [*data["mentions"], *(s for e in data["entries"] for s in e["evidence"])]:
+    for source in [
+        *data["mentions"],
+        *(s for e in data["entries"] for s in e["evidence"]),
+        *data.get("outline", []),
+    ]:
         number = source["page"]
         if number not in pages:
             pages[number] = (
@@ -32,6 +36,22 @@ for filename in ["1706.03762v7.pdf", "1706.03762v1_img.pdf", "N19-1423.pdf"]:
         assert text[source["start"] : source["end"]] == source["quote"]
         assert hashlib.sha256(text.encode()).hexdigest() == source["page_sha256"]
         count += 1
+    if filename == "1706.03762v7.pdf":
+        assert any(
+            i["path"] == "3.2.1" and i["page"] == 4 and "Scaled Dot-Product" in i["title"]
+            for i in data["outline"]
+        )
+        assert any(
+            i["path"] == "5.2" and i["page"] == 7 and "Hardware" in i["title"]
+            for i in data["outline"]
+        )
+    if filename == "N19-1423.pdf":
+        assert any(
+            i["path"] == "3.1" and i["page"] == 4 and "Pre-training BERT" in i["title"]
+            for i in data["outline"]
+        )
+    for item in data["outline"]:
+        assert 1 <= item["level"] <= 3
     lookup = {entry["number"] for entry in data["entries"]}
     assert all(set(m["numbers"]) <= lookup for m in data["mentions"])
     if filename == "1706.03762v7.pdf":
@@ -61,6 +81,7 @@ for filename in ["1706.03762v7.pdf", "1706.03762v1_img.pdf", "N19-1423.pdf"]:
             "document_sha256": doc_id,
             "fingerprint": data["fingerprint"],
             "entries": len(data["entries"]),
+            "outline_items": len(data["outline"]),
             "mentions": len(data["mentions"]),
             "verified_offset_and_hash_intervals": count,
         }
@@ -69,7 +90,7 @@ assert client.get("/api/documents/missing/reading-links").status_code == 404
 report = {
     "verified_at": datetime.now(timezone.utc).isoformat(),
     "cases": results,
-    "limitations": "核对数字制与作者年份制候选原文坐标，不代表召回率。BERT 抽查三个首页引用的书目题名对应，其余候选仅核对位置。复杂姓名、OCR、上标仍未全面覆盖。无模型推理。",
+    "limitations": "核对目录、数字制与作者年份制候选原文坐标，不代表召回率。BERT 抽查三个首页引用的书目题名对应，其余候选仅核对位置。复杂姓名、OCR、上标仍未全面覆盖。无模型推理。",
 }
 args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
 print(json.dumps(results, ensure_ascii=False))

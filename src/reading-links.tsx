@@ -16,6 +16,7 @@ type Navigation = {
   fingerprint: string;
   entries: Entry[];
   mentions: Mention[];
+  outline?: (Anchor & { path: string; title: string; level: number })[];
   limitations: string;
 };
 
@@ -113,6 +114,34 @@ export function ReadingLinks({
   );
   return (
     <>
+      {!!data?.outline?.length && (
+        <details className="reading-outline">
+          <summary>章节目录 · {data.outline.length} 个定位项</summary>
+          <p>
+            根据解析正文的显式编号识别，点击定位；未识别的章节可用物理页码访问。
+          </p>
+          <nav aria-label="章节目录">
+            <ol>
+              {data.outline.map((item) => (
+                <li
+                  key={`${item.page}-${item.start}`}
+                  style={{ paddingLeft: (item.level - 1) * 16 }}
+                >
+                  <button
+                    onClick={() => locate(item)}
+                    aria-label={`跳到章节 ${item.path} ${item.title}`}
+                  >
+                    <span>
+                      {item.path} {item.title}
+                    </span>
+                    <small>第 {item.page} 页</small>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </details>
+      )}
       <details
         className="reading-references"
         open={selected.length > 0 || undefined}

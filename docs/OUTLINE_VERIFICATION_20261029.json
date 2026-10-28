@@ -1,0 +1,33 @@
+{
+  "verified_at": "2026-10-28T22:25:42.118677+00:00",
+  "cases": [
+    {
+      "filename": "1706.03762v7.pdf",
+      "document_sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "fingerprint": "d5cc512a625bef5b3bc455f5d93184f4122ee27ac9da228c61ad19128e1c6ddb",
+      "entries": 40,
+      "outline_items": 24,
+      "mentions": 57,
+      "verified_offset_and_hash_intervals": 121
+    },
+    {
+      "filename": "1706.03762v1_img.pdf",
+      "document_sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+      "fingerprint": "bb7428bc24f28b33c4d39947207c04656f1e5795869f1aa3755f14422c8a481d",
+      "entries": 28,
+      "outline_items": 2,
+      "mentions": 6,
+      "verified_offset_and_hash_intervals": 36
+    },
+    {
+      "filename": "N19-1423.pdf",
+      "document_sha256": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "fingerprint": "3cdd9f94451b6c0a214e0260df7a5a732c5b35a545901308344f28a85e2722de",
+      "entries": 50,
+      "outline_items": 20,
+      "mentions": 74,
+      "verified_offset_and_hash_intervals": 146
+    }
+  ],
+  "limitations": "核对目录、数字制与作者年份制候选原文坐标，不代表召回率。BERT 抽查三个首页引用的书目题名对应，其余候选仅核对位置。复杂姓名、OCR、上标仍未全面覆盖。无模型推理。"
+}

@@ -4018,3 +4018,50 @@ textarea {
   background: #fff0a8;
   color: inherit;
 }
+
+.reading-outline {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #dce5d7;
+  border-radius: 8px;
+  background: #f8faf5;
+  font-size: 12px;
+}
+.reading-outline summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.reading-outline p {
+  line-height: 1.8;
+  color: #63725e;
+}
+.reading-outline nav {
+  max-height: 300px;
+  overflow: auto;
+}
+.reading-outline ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.reading-outline button {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px;
+  color: #315b32;
+  background: transparent;
+  cursor: pointer;
+}
+.reading-outline button:hover,
+.reading-outline button:focus-visible {
+  background: #e8f1e2;
+}
+.reading-outline small {
+  flex-shrink: 0;
+  color: #6c7e66;
+}

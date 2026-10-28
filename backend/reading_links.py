@@ -4,6 +4,7 @@ import hashlib
 import re
 
 from .graph import excerpt, references
+from .outline import outline
 
 ENTRY = re.compile(r"(?m)^[ \t]*\[(\d{1,4})\][ \t]+(?=\S)")
 MENTION = re.compile(r"\[(\d{1,4}(?:\s*(?:[,，;；]|[-–−])\s*\d{1,4})*)\]")
@@ -177,12 +178,13 @@ def build_links(doc_id, pages):
         "document_id": doc_id,
         "fingerprint": hashlib.sha256(
             (
-                "reading-links-v2\n"
+                "reading-links-v3\n"
                 + "\n".join(f"{p['page']}:{p['method']}:{p['text']}" for p in pages)
             ).encode()
         ).hexdigest(),
         "offset_encoding": "unicode-code-points",
         "style": style,
+        "outline": outline(doc_id, pages),
         "entries": list(entries.values()),
         "mentions": mentions,
         "limitations": "支持独立行 [数字] 书目，以及可识别的英文作者列表＋年份书目。作者年份同姓同年冲突不自动链接；脚注、上标、特殊姓名及 OCR 错字可能无法跳转，仍需核对原页。",

@@ -24,3 +24,5 @@ Transformer BLEU 列与差值、Transformer／BERT 架构双来源及通用逐�
 2026-10-29 已实现解析正文中的数字制引用与书目双向定位，真实原件及扫描件候选验收见 [引用导航](READING_LINKS.md)。PDF 图像上的交互覆盖层和作者年份制仍待实现。
 
 同日补充有限英文作者年份制，BERT 三个首页来源抽查及浏览器双向跳转通过；复杂姓名、跨页正文引用及其他格式仍需扩展，见 [补充验收](AUTHOR_YEAR_VERIFICATION_20261029.json)。
+
+同日补充显式编号三级目录导航，Transformer/BERT 标题原文定位已验证；扫描件目录识别有限、附录及复杂标题尚待扩展，见 [章节导航](CHAPTER_NAVIGATION.md)。
