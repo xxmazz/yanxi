@@ -1,0 +1,455 @@
+{
+  "verified_at": "2026-10-28T11:02:54.191091+00:00",
+  "fixtures": [
+    {
+      "filename": "1706.03762v7.pdf",
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "pages": 15,
+      "bytes": 2215244
+    },
+    {
+      "filename": "N19-1423.pdf",
+      "sha256": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "pages": 16,
+      "bytes": 786279
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "cases": [
+    {
+      "case": {
+        "id": "official_bleu_comparison",
+        "question": "Transformer (big) 模型在 English-to-German 任务上的 BLEU 分数是多少？当时的 State-of-the-art 模型是多少？提升了多少？",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+        ],
+        "terms": ["28.4", "ConvS2S Ensemble", "26.36", "2.04"],
+        "page": 8,
+        "calculation": "2.04"
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "physical_page": true,
+        "calculation": true
+      },
+      "response": {
+        "answer": "按原文表格，Transformer (big) 在 EN-DE 的 BLEU 为 28.4。[E1]\n\n该表列出的其他模型系列（包含集成模型）中，最高为 ConvS2S Ensemble，BLEU 为 26.36。[E1]\n\n据这两项表格数值计算：28.4 − 26.36 = 2.04 BLEU 点。此差值为程序计算，并非原文直接报告。[E1]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 8,
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+            "page_sha256": "7e1c0ae386692f6f2bb86fbe4d533347e58018da49426e96a4e6ae62ef993298",
+            "quote_sha256": "4cf40a606514fc511db22e1ebb68f562af2d55e1873d193c1791da2462ff94f3"
+          }
+        ],
+        "calculation": {
+          "operation": "subtract",
+          "left": "28.4",
+          "right": "26.36",
+          "result": "2.04",
+          "column": "EN-DE",
+          "metric": "BLEU"
+        },
+        "insufficient_evidence": false,
+        "steps": [
+          "检查文献范围",
+          "定位表格原页",
+          "按坐标核对 BLEU 列与模型行",
+          "计算并标注来源数值差值"
+        ]
+      },
+      "passed": true,
+      "seconds": 2.13
+    },
+    {
+      "case": {
+        "id": "bleu_french_table_column",
+        "question": "按表格，Transformer (big) 在 English-to-French 的 BLEU 分数是多少？",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+        ],
+        "terms": ["41.8", "EN-FR"],
+        "page": 8
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "physical_page": true
+      },
+      "response": {
+        "answer": "按原文表格，Transformer (big) 在 EN-FR 的 BLEU 为 41.8。[E1]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 8,
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+            "page_sha256": "7e1c0ae386692f6f2bb86fbe4d533347e58018da49426e96a4e6ae62ef993298",
+            "quote_sha256": "4cf40a606514fc511db22e1ebb68f562af2d55e1873d193c1791da2462ff94f3"
+          }
+        ],
+        "calculation": null,
+        "insufficient_evidence": false,
+        "steps": [
+          "检查文献范围",
+          "定位表格原页",
+          "按坐标核对 BLEU 列与模型行",
+          "计算并标注来源数值差值"
+        ]
+      },
+      "passed": true,
+      "seconds": 0.47
+    },
+    {
+      "case": {
+        "id": "bleu_other_model",
+        "question": "Transformer (base model) 在 EN-DE 的 BLEU 分数是多少？",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+        ],
+        "terms": ["27.3"],
+        "page": 8
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "physical_page": true
+      },
+      "response": {
+        "answer": "按原文表格，Transformer (base model) 在 EN-DE 的 BLEU 为 27.3。[E1]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 8,
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+            "page_sha256": "7e1c0ae386692f6f2bb86fbe4d533347e58018da49426e96a4e6ae62ef993298",
+            "quote_sha256": "4cf40a606514fc511db22e1ebb68f562af2d55e1873d193c1791da2462ff94f3"
+          }
+        ],
+        "calculation": null,
+        "insufficient_evidence": false,
+        "steps": [
+          "检查文献范围",
+          "定位表格原页",
+          "按坐标核对 BLEU 列与模型行",
+          "计算并标注来源数值差值"
+        ]
+      },
+      "passed": true,
+      "seconds": 0.43
+    },
+    {
+      "case": {
+        "id": "bleu_missing_cell",
+        "question": "Deep-Att + PosUnk Ensemble 在 EN-DE 的 BLEU 分数是多少？",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+        ],
+        "terms": ["单元格为空"],
+        "page": 8,
+        "refused": true
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "physical_page": true
+      },
+      "response": {
+        "answer": "该表中 Deep-Att + PosUnk Ensemble 的 EN-DE BLEU 单元格为空，不能从其他语言列补值。[E1]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 8,
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+            "page_sha256": "7e1c0ae386692f6f2bb86fbe4d533347e58018da49426e96a4e6ae62ef993298",
+            "quote_sha256": "4cf40a606514fc511db22e1ebb68f562af2d55e1873d193c1791da2462ff94f3"
+          }
+        ],
+        "calculation": null,
+        "insufficient_evidence": true,
+        "steps": [
+          "检查文献范围",
+          "定位表格原页",
+          "按坐标核对 BLEU 列与模型行",
+          "计算并标注来源数值差值"
+        ]
+      },
+      "passed": true,
+      "seconds": 0.6
+    },
+    {
+      "case": {
+        "id": "official_architecture_comparison",
+        "question": "根据 Attention Is All You Need 和 BERT，BERT 的架构和原始 Transformer 的 Encoder 有什么承袭关系？BERT 丢弃了原始 Transformer 的哪个部分？",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4"
+        ],
+        "terms": ["BERT", "Transformer", "未采用", "解码器", "归纳"],
+        "page": 3,
+        "both": true
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "physical_page": true,
+        "both_papers_actually_cited": true
+      },
+      "response": {
+        "answer": "Transformer 的架构同时包含编码器和解码器。[E1]\n\nBERT 的原文架构描述为多层 双向 Transformer 编码器。[E2]\n\n据这两篇架构描述对比，BERT 采用编码器结构，未采用 Transformer 的解码器部分。这里是对架构构成的归纳，不表示原文描述了实际删除代码的过程。[E1][E2]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 3,
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=3",
+            "page_sha256": "9b24bab192e99d05f5541c573ab811511750c43baedffa5788ca9fdf95299047",
+            "quote_sha256": "3964899ca4809bf1987262d21674f08fa3b8c544502a45ef059a1707c85d225b"
+          },
+          {
+            "id": "E2",
+            "document_id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+            "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+            "page": 3,
+            "url": "/api/documents/987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4/pdf#page=3",
+            "page_sha256": "073ac987c7617a9e11395f261cc85e91f34496a10f16393aa11d9da48ade4fe5",
+            "quote_sha256": "816f73968508fcb6cf1a7c0ab14c5d9c124d8e842bdad1669a26255211ba0e99"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查两篇文献范围",
+          "补召回架构段落",
+          "核对架构主语及组成",
+          "标注跨篇归纳与原页来源"
+        ]
+      },
+      "passed": true,
+      "seconds": 0.24
+    },
+    {
+      "case": {
+        "id": "unavailable_comparison_source",
+        "question": "比较两篇论文的架构",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "terms": ["已就绪"],
+        "refused": true
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "no_citations_when_scope_invalid": true
+      },
+      "response": {
+        "answer": "对比需要选择不超过六篇已就绪的有效文献，请检查归档、解析状态及所选范围。",
+        "citations": [],
+        "insufficient_evidence": true,
+        "steps": ["检查对比文献范围"]
+      },
+      "passed": true,
+      "seconds": 0.01
+    },
+    {
+      "case": {
+        "id": "local_model_cross_paper_facts",
+        "question": "Transformer 如何处理序列，RAG 如何结合参数记忆与外部知识？请分别依据两篇论文概括主要机制。",
+        "scope": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233"
+        ],
+        "terms": ["注意力", "参数"],
+        "both": true
+      },
+      "checks": {
+        "refusal_matches": true,
+        "expected_content": true,
+        "both_papers_actually_cited": true
+      },
+      "response": {
+        "answer": "Transformer 使用自注意力机制处理序列输入和输出。[E1]\n\nRAG模型结合了预训练的参数记忆和非参数记忆，通过检索外部知识来增强生成过程。[E2]",
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 2,
+            "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=2",
+            "page_sha256": "3abfc126f1874b8004e944a5ab8fa7d951c0f9735fcf6fa6481e1fda1ba2cc69",
+            "quote_sha256": "d6172307bcf8755ddeb486db20f635f29f7b466cc4f3a500b004196f7781c139"
+          },
+          {
+            "id": "E2",
+            "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+            "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+            "page": 2,
+            "url": "/api/documents/23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233/pdf#page=2",
+            "page_sha256": "b10691a15a6ae7b77d0eefbc68781d4869547da974441d38ead4c34e632ee60b",
+            "quote_sha256": "3b99e37b0973fe494c3023b89eabf37845ea5aa84c859ef80e1855cc0f3d5ce7"
+          }
+        ],
+        "insufficient_evidence": false,
+        "steps": [
+          "检查文献范围",
+          "生成中英检索词",
+          "混合检索",
+          "本地模型阅读证据",
+          "校验原文摘录与数值"
+        ]
+      },
+      "passed": true,
+      "seconds": 3.86
+    }
+  ],
+  "limits": "固定问答与逐字来源核对不是通用语义正确率；BLEU 仅支持已确认的原生双列布局。架构归纳依赖明确谓词，通用比较逐篇核对事实，不保证回答总问题的全部子项。",
+  "before_fix": {
+    "bleu": {
+      "answer": "本次模型回答未通过格式或引用校验，暂不展示。请换一种问法，或直接核对下方原文。",
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 8,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+          "quote_sha256": "bd381d48066608a5bf552590ec609b3fd165a3ca06c83d941aa29a45fa03e332"
+        },
+        {
+          "id": "E2",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "56f13d3f02c21095f7ffff2ddbe45c91b7a0bbc329a993087910107b8ae7dc78"
+        },
+        {
+          "id": "E3",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 8,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+          "quote_sha256": "d403e18f9a8e9387fa21a97ce0d69e3d7034e0d6bc01412a961ced2124b7c890"
+        },
+        {
+          "id": "E4",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 8,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=8",
+          "quote_sha256": "56ea044ff076a6ed14d5cfbb9fc3f7ba607af9d64941b528144a7ecb189c6aac"
+        },
+        {
+          "id": "E5",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 9,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=9",
+          "quote_sha256": "ec30ea8423e13b21884f68f7edc55285acf9fca3db9b2da9151246f9c82183c8"
+        },
+        {
+          "id": "E6",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 9,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=9",
+          "quote_sha256": "aec595ddd9359f8271464a50e40360dd91ce221e5960949b5514a3117b2c4857"
+        }
+      ],
+      "insufficient_evidence": true,
+      "steps": [
+        "检查文献范围",
+        "生成中英检索词",
+        "混合检索",
+        "本地模型阅读证据",
+        "校验原文摘录与数值"
+      ],
+      "validation_error": "结论包含原文摘录未支持的数值"
+    },
+    "cross_paper": {
+      "answer": "BERT 的架构承袭自原始 Transformer 的 Encoder，它是一个多层双向 Transformer 编码器，而原始 Transformer 使用的是单向自注意力机制，BERT 则使用了双向自注意力机制。[E2]\n\nBERT 丢弃了原始 Transformer 中的循环层和卷积层。[E1]",
+      "citations": [
+        {
+          "id": "E1",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 1,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=1",
+          "quote_sha256": "6f62fbad7c74733205bea17a1a0ce63a235d831f5c5a209573334d6622403b01"
+        },
+        {
+          "id": "E2",
+          "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "title": "Attention Is All You Need",
+          "page": 10,
+          "url": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf#page=10",
+          "quote_sha256": "15f00559b0dbbacb380cb778364f89ade596435428f2ce56a38f781ab78e6691"
+        }
+      ],
+      "insufficient_evidence": false,
+      "steps": [
+        "检查文献范围",
+        "生成中英检索词",
+        "混合检索",
+        "本地模型阅读证据",
+        "校验原文摘录与数值"
+      ]
+    }
+  },
+  "backend_tests_passed": 90,
+  "visual_review": {
+    "native_table_page8": true,
+    "bert_architecture_page3": true
+  },
+  "previous_official_recheck": {
+    "verified_at": "2026-10-28T11:04:23.120287+00:00",
+    "record_sha256": "d5293ce01f00af805c9993dcf010335b641d9cac2ff67f69b4fc12f64dd8fda8",
+    "cases": [
+      {
+        "id": "official_scan_ffn",
+        "passed": true
+      },
+      {
+        "id": "official_author",
+        "passed": true
+      },
+      {
+        "id": "official_adam",
+        "passed": true
+      },
+      {
+        "id": "official_hardware",
+        "passed": true
+      },
+      {
+        "id": "official_layernorm_reference",
+        "passed": true
+      }
+    ]
+  },
+  "implementation": {
+    "base_commit": "5f59b637d282540214adba886ee4158cbac2e64c",
+    "new_models": false,
+    "new_python_dependencies": false,
+    "system_dependency": "Poppler pdftotext",
+    "database_migration": false
+  }
+}

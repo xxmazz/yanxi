@@ -205,6 +205,89 @@ class ApiTests(unittest.TestCase):
             self.assertEqual(rejected["citations"], [])
             model.assert_not_called()
 
+    def test_comparison_refuses_missing_scope_and_one_sided_claims(self):
+        ids = []
+        for marker, text in [
+            (b"a", "The encoder uses attention."),
+            (b"b", "The decoder generates tokens."),
+        ]:
+            doc, _ = self.module.store.create(b"%PDF-compare-" + marker, "paper.pdf")
+            self.module.store.finish(doc["id"], 1, [{"page": 1, "offset": 0, "text": text}])
+            ids.append(doc["id"])
+        with (
+            patch.object(self.module.models, "llm", object()),
+            patch.object(self.module.models, "encode", return_value=None),
+            patch.object(self.module.models, "search_query", return_value="encoder decoder"),
+            patch.object(
+                self.module.models,
+                "comparison_facts",
+                return_value={
+                    "claims": [{"text": "编码器使用注意力。", "source": "E1"}],
+                    "insufficient_evidence": False,
+                },
+            ) as model,
+        ):
+            missing = self.client.post(
+                "/api/chat", json={"question": "比较两篇论文", "document_ids": [ids[0], "missing"]}
+            ).json()
+            self.assertTrue(missing["insufficient_evidence"])
+            model.assert_not_called()
+            one_sided = self.client.post(
+                "/api/chat", json={"question": "比较两篇论文", "document_ids": ids}
+            ).json()
+            self.assertTrue(one_sided["insufficient_evidence"])
+            self.assertIn("检索结果之外", one_sided["validation_error"])
+            model.side_effect = [
+                {
+                    "claims": [{"text": "编码器使用注意力。", "source": "E1"}],
+                    "insufficient_evidence": False,
+                },
+                {
+                    "claims": [{"text": "解码器生成序列。", "source": "E2"}],
+                    "insufficient_evidence": False,
+                },
+            ]
+            both = self.client.post(
+                "/api/chat", json={"question": "比较两篇论文", "document_ids": ids}
+            ).json()
+            self.assertFalse(both["insufficient_evidence"])
+            self.assertEqual({c["document_id"] for c in both["citations"]}, set(ids))
+            self.assertEqual({e["document_id"] for e in model.call_args_list[-2].args[1]}, {ids[0]})
+            self.assertEqual({e["document_id"] for e in model.call_args_list[-1].args[1]}, {ids[1]})
+
+    def test_metric_calculation_is_returned_with_original_table_not_an_unchecked_model_number(self):
+        doc, _ = self.module.store.create(b"%PDF-metric", "paper.pdf")
+        quote = "Table 1: Atlas outperforms previous systems.\nModel BLEU\nPrior 21.15\nAtlas 24.7"
+        self.module.store.save_page(
+            doc["id"],
+            1,
+            {"text": quote, "method": "native", "width": 100, "height": 200, "blocks": []},
+        )
+        self.module.store.finish(doc["id"], 1, [{"page": 1, "offset": 0, "text": quote}])
+        table = {
+            "caption": "Atlas outperforms previous systems",
+            "quote": quote,
+            "rows": [
+                {"model": "Atlas", "values": {"EN-DE": "24.7"}},
+                {"model": "Prior", "values": {"EN-DE": "21.15"}},
+            ],
+        }
+        with (
+            patch.object(self.module.models, "llm", object()),
+            patch.object(self.module.models, "encode", return_value=None),
+            patch.object(self.module.models, "search_query", return_value="BLEU"),
+            patch.object(self.module, "read_bleu_table", return_value=table),
+            patch.object(self.module.models, "answer") as model,
+        ):
+            result = self.client.post(
+                "/api/chat",
+                json={"question": "Atlas 的英德 BLEU 提升多少？", "document_ids": [doc["id"]]},
+            ).json()
+        self.assertFalse(result["insufficient_evidence"])
+        self.assertEqual(result["calculation"]["result"], "3.55")
+        self.assertEqual(result["citations"][0]["quote"], quote)
+        model.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

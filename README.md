@@ -56,6 +56,8 @@ React 19、TypeScript、Vite、FastAPI、SQLite、pypdf、PyTorch、Transformers
 
 官方问答抽查发现的作者顺序与训练硬件问题已修复，署名区直接核对顺序及机构脚注，GPU 问题补召回训练配置段。五问与八项边界检查见 [问答改进](docs/QA_RELIABILITY.md)。
 
+BLEU 问答增加原生表格列坐标核对与明确标注的差值计算；跨篇问题分别取证并检查所选文献引用覆盖。七项真实用例、两篇架构对比及支持范围见 [表格与跨篇问答](docs/COMPARISON_QA.md)。
+
 当前服务是内部开发实例，公网访问控制与评审部署另行验收。模型权重、PDF、数据库和密钥均不进入 Git。不要将密钥放进前端变量。
 
 ## 开发与验证

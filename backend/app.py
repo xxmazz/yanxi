@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import re
 import subprocess
 import tempfile
 import threading
@@ -16,10 +17,12 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
 
+from .architecture import architecture_comparison
 from .bibliography import author_ordinal, ordered_author
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, valid_id
 from .graph import build_graph
+from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 from .translation import TranslationService
@@ -448,6 +451,19 @@ async def chat(request: Question):
             }
         if models.llm is None:
             raise HTTPException(503, "本地模型未就绪，请检查服务器模型配置")
+        coverage_ids = None
+        if len(set(request.document_ids)) > 1 and re.search(
+            r"对比|比较|承袭|区别|变化|分别|compare|versus", request.question, re.I
+        ):
+            coverage_ids = list(dict.fromkeys(request.document_ids))
+            available = {row["document_id"] for row in rows}
+            if len(coverage_ids) > 6 or not set(coverage_ids) <= available:
+                return {
+                    "answer": "对比需要选择不超过六篇已就绪的有效文献，请检查归档、解析状态及所选范围。",
+                    "citations": [],
+                    "insufficient_evidence": True,
+                    "steps": ["检查对比文献范围"],
+                }
         search_question = await asyncio.to_thread(models.search_query, request.question)
         vectors = await asyncio.to_thread(models.encode, [search_question], True)
         results = retrieve(
@@ -455,6 +471,7 @@ async def chat(request: Question):
             search_question,
             vectors[0] if vectors else None,
             anchor_question=request.question,
+            coverage_ids=coverage_ids,
         )
         evidence = [dict(r, label=f"E{i}") for i, r in enumerate(results, 1)]
         steps = [
@@ -471,9 +488,80 @@ async def chat(request: Question):
                 "insufficient_evidence": True,
                 "steps": steps[:2],
             }
+        structural = (
+            architecture_comparison(request.question, evidence)
+            if coverage_ids and len(coverage_ids) == 2
+            else None
+        )
+        if structural:
+            return {
+                "answer": structural["answer"],
+                "citations": [citation(e) for e in structural["sources"]],
+                "insufficient_evidence": False,
+                "steps": [
+                    "检查两篇文献范围",
+                    "补召回架构段落",
+                    "核对架构主语及组成",
+                    "标注跨篇归纳与原页来源",
+                ],
+            }
+        if bleu_column(request.question) and len({row["document_id"] for row in rows}) == 1:
+            seen, answers = set(), []
+            for item in evidence:
+                if item["page"] in seen:
+                    continue
+                seen.add(item["page"])
+                page = await asyncio.to_thread(store.page, item["document_id"], item["page"])
+                if (
+                    not page
+                    or page["method"] != "native"
+                    or "BLEU" not in page["text"]
+                    or "Table" not in page["text"]
+                ):
+                    continue
+                table = await asyncio.to_thread(
+                    read_bleu_table,
+                    store.root / (item["document_id"] + ".pdf"),
+                    item["page"],
+                    page["text"],
+                )
+                result = table_answer(request.question, table) if table else None
+                if result:
+                    answers.append((item, table, result))
+            if len(answers) == 1:
+                item, table, result = answers[0]
+                return {
+                    "answer": result["answer"],
+                    "citations": [citation(dict(item, label="E1"), table["quote"])],
+                    "calculation": result["calculation"],
+                    "insufficient_evidence": result.get("insufficient_evidence", False),
+                    "steps": [
+                        "检查文献范围",
+                        "定位表格原页",
+                        "按坐标核对 BLEU 列与模型行",
+                        "计算并标注来源数值差值",
+                    ],
+                }
         try:
-            raw = await asyncio.to_thread(models.answer, request.question, evidence)
+            if coverage_ids:
+                claims = []
+                for doc_id in coverage_ids:
+                    subset = [e for e in evidence if e["document_id"] == doc_id]
+                    single = await asyncio.to_thread(
+                        models.comparison_facts, request.question, subset
+                    )
+                    _, _, single_refused = validate_answer(single, subset)
+                    if single_refused or len(single["claims"]) != 1:
+                        raise ValueError("一篇所选文献未提供可核对的相关事实")
+                    claims.extend(single["claims"])
+                raw = {"claims": claims, "insufficient_evidence": False}
+            else:
+                raw = await asyncio.to_thread(models.answer, request.question, evidence)
             answer, labels, refused = validate_answer(raw, evidence)
+            if coverage_ids and not refused:
+                cited_docs = {e["document_id"] for e in evidence if e["label"] in labels}
+                if not set(coverage_ids) <= cited_docs:
+                    raise ValueError("对比回答没有覆盖全部所选文献来源")
         except (ValueError, RuntimeError) as exc:
             log.warning("Answer rejected: %s", exc)
             return {

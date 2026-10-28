@@ -122,6 +122,23 @@ class EvidenceTests(unittest.TestCase):
             [r["score"] for r in result], sorted((r["score"] for r in result), reverse=True)
         )
 
+    def test_explicit_comparison_covers_each_document_within_evidence_budget(self):
+        rows = [
+            {"id": i, "document_id": "a", "text": "encoder decoder architecture " * 10}
+            for i in range(60)
+        ]
+        rows += [{"id": 60, "document_id": "b", "text": "A bidirectional representation."}]
+        result = retrieve(rows, "encoder decoder architecture", coverage_ids=["a", "b"])
+        self.assertEqual({r["document_id"] for r in result}, {"a", "b"})
+        self.assertEqual(len(result), 6)
+        self.assertEqual(len({r["id"] for r in result}), 6)
+
+    def test_architecture_questions_recover_structural_sections(self):
+        rows = [{"id": i, "text": "encoder decoder architecture results " * 10} for i in range(50)]
+        rows += [{"id": 50, "text": "3.1 Encoder and Decoder Stacks\nA structural description."}]
+        result = retrieve(rows, "encoder decoder", anchor_question="比较模型的架构")
+        self.assertEqual(result[0]["id"], 50)
+
 
 if __name__ == "__main__":
     unittest.main()

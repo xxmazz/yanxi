@@ -312,7 +312,7 @@ class Store:
             return [dict(r) for r in db.execute(sql, args)]
 
 
-def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None):
+def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None, coverage_ids=None):
     """BM25 与本地 E5 向量以 RRF 合并；不把检索分数当事实置信度。"""
     if not rows:
         return []
@@ -386,7 +386,31 @@ def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None):
         hardware += [
             i for i, row in enumerate(rows) if i not in hardware and heading.search(row["text"])
         ]
-    order = list(dict.fromkeys(anchored + hardware[:2] + ranked))[:limit]
+    architecture = []
+    if re.search(r"架构|编码器|解码器|\bencoder\b|\bdecoder\b|\barchitecture\b", original, re.I):
+        heading = re.compile(
+            r"^\s*(?:\d+(?:\.\d+)*\s+)?(?:Model Architecture\b|Encoder and Decoder Stacks\b|模型架构|编码器与解码器)",
+            re.I | re.M,
+        )
+        architecture = [i for i in ranked if heading.search(rows[i]["text"])]
+        architecture += [
+            i for i, row in enumerate(rows) if i not in architecture and heading.search(row["text"])
+        ]
+    order = list(dict.fromkeys(anchored + hardware[:2] + architecture + ranked))
+    if coverage_ids:
+        covered = []
+        for doc_id in dict.fromkeys(coverage_ids):
+            candidates = [i for i in order if rows[i].get("document_id") == doc_id]
+            if not candidates:
+                candidates = sorted(
+                    (i for i, row in enumerate(rows) if row.get("document_id") == doc_id),
+                    key=lambda i: (ranks.get(i, 0), scores[i]),
+                    reverse=True,
+                )
+            if candidates:
+                covered.append(candidates[0])
+        order = list(dict.fromkeys(covered + order))
+    order = order[:limit]
     return [dict(rows[i], score=ranks.get(i, 0)) for i in order]
 
 
