@@ -458,7 +458,11 @@ async def chat(request: Question):
             "citations": [
                 citation(
                     e,
-                    "\n".join(c["quote"] for c in raw["claims"] if c["source"] == e["label"]),
+                    # 多条结论可能共用一段证据；展示连续原段，避免重复或拼接
+                    # 不相邻的摘录，导致界面引文无法在原页逐字定位。
+                    next(c["quote"] for c in raw["claims"] if c["source"] == e["label"])
+                    if sum(c["source"] == e["label"] for c in raw["claims"]) == 1
+                    else e["text"],
                 )
                 for e in evidence
                 if e["label"] in labels

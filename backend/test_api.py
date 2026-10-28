@@ -142,6 +142,39 @@ class ApiTests(unittest.TestCase):
             ).json()
             self.assertTrue(denied["insufficient_evidence"])
 
+    def test_multiple_claims_keep_one_contiguous_source_quote(self):
+        doc, _ = self.module.store.create(b"%PDF-multiple-claims", "test.pdf")
+        source = "The learning rate is 0.0003. Intervening text. The batch size is 32."
+        self.module.store.finish(doc["id"], 1, [{"page": 1, "offset": 0, "text": source}])
+        with (
+            patch.object(self.module.models, "llm", object()),
+            patch.object(self.module.models, "encode", return_value=None),
+            patch.object(self.module.models, "search_query", return_value="learning rate batch"),
+            patch.object(
+                self.module.models,
+                "answer",
+                return_value={
+                    "claims": [
+                        {
+                            "text": "学习率为0.0003",
+                            "source": "E1",
+                            "quote": "The learning rate is 0.0003.",
+                        },
+                        {"text": "批量大小为32", "source": "E1", "quote": "The batch size is 32."},
+                    ],
+                    "insufficient_evidence": False,
+                },
+            ),
+        ):
+            result = self.client.post(
+                "/api/chat", json={"question": "learning rate batch", "document_ids": [doc["id"]]}
+            ).json()
+        self.assertFalse(result["insufficient_evidence"])
+        self.assertEqual(len(result["citations"]), 1)
+        self.assertEqual(result["citations"][0]["quote"], source)
+        self.assertIn("0.0003", result["answer"])
+        self.assertIn("32", result["answer"])
+
 
 if __name__ == "__main__":
     unittest.main()
