@@ -3541,6 +3541,7 @@ textarea {
   align-items: start;
 }
 .real-graph-details {
+  display: block;
   min-width: 0;
   max-height: 760px;
   overflow: auto;
@@ -3571,6 +3572,10 @@ textarea {
   flex-wrap: wrap;
   font-size: 11px;
   color: #52654e;
+}
+.real-graph-canvas .graph-legend > span:last-child {
+  display: flex;
+  margin-left: 0;
 }
 .graph-neighbor-toggle {
   display: inline-flex;
