@@ -1,0 +1,887 @@
+{
+  "base_commit": "50231705d9ed1807f186b38818682fb557517705",
+  "isolation": {
+    "new_source_archive": true,
+    "new_virtual_environment": true,
+    "old_venv_copied": false,
+    "old_site_packages_in_sys_path": false,
+    "production_env_loaded": false,
+    "production_library_used": false,
+    "external_models_reused": true,
+    "api_only_service": true
+  },
+  "environment": {
+    "python": "3.12.14 (main, Sep 29 2026, 15:01:18) [Clang 22.1.3 ]",
+    "torch": "2.13.0+cu130",
+    "cuda_runtime": "13.0",
+    "devices": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 2080 Ti",
+        "capability": [7, 5]
+      },
+      {
+        "index": 1,
+        "name": "NVIDIA GeForce RTX 2080 Ti",
+        "capability": [7, 5]
+      },
+      {
+        "index": 2,
+        "name": "NVIDIA GeForce RTX 2080 Ti",
+        "capability": [7, 5]
+      },
+      {
+        "index": 3,
+        "name": "NVIDIA GeForce RTX 2080 Ti",
+        "capability": [7, 5]
+      }
+    ],
+    "packages": {
+      "accelerate": "1.15.0",
+      "annotated-doc": "0.0.5",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "certifi": "2022.12.7",
+      "cffi": "2.1.1",
+      "charset-normalizer": "2.1.1",
+      "click": "8.5.0",
+      "cryptography": "50.0.2",
+      "cuda-bindings": "13.3.1",
+      "cuda-pathfinder": "1.6.0",
+      "cuda-toolkit": "13.0.3.0",
+      "easyocr": "1.7.2",
+      "fastapi": "0.162.0",
+      "filelock": "3.32.3",
+      "fonttools": "4.67.0",
+      "fsspec": "2026.7.0",
+      "h11": "0.16.0",
+      "hf-xet": "1.7.0",
+      "httpcore": "1.0.9",
+      "httpx": "0.28.1",
+      "huggingface_hub": "1.33.0",
+      "idna": "3.4",
+      "imageio": "2.38.1",
+      "iniconfig": "2.3.1",
+      "jinja2": "3.1.6",
+      "lazy-loader": "0.6",
+      "markdown-it-py": "4.2.0",
+      "markupsafe": "3.0.3",
+      "mdurl": "0.1.2",
+      "modelscope-hub": "0.5.1",
+      "modelscope": "1.40.2",
+      "mpmath": "1.3.0",
+      "networkx": "3.6.1",
+      "ninja": "1.13.2",
+      "numpy": "2.5.2",
+      "nvidia-cublas": "13.1.1.3",
+      "nvidia-cuda-cupti": "13.0.85",
+      "nvidia-cuda-nvrtc": "13.0.88",
+      "nvidia-cuda-runtime": "13.0.96",
+      "nvidia-cudnn-cu13": "9.20.0.48",
+      "nvidia-cufft": "12.0.0.61",
+      "nvidia-cufile": "1.15.1.6",
+      "nvidia-curand": "10.4.0.35",
+      "nvidia-cusolver": "12.0.4.66",
+      "nvidia-cusparse": "12.6.3.3",
+      "nvidia-cusparselt-cu13": "0.8.1",
+      "nvidia-nccl-cu13": "2.29.7",
+      "nvidia-nvjitlink": "13.3.33",
+      "nvidia-nvshmem-cu13": "3.4.5",
+      "nvidia-nvtx": "13.0.85",
+      "opencv-python-headless": "5.0.0.93",
+      "opentelemetry-api": "1.45.1",
+      "packaging": "24.1",
+      "pillow": "12.3.0",
+      "pluggy": "1.7.0",
+      "psutil": "7.2.2",
+      "pyclipper": "1.4.0",
+      "pycparser": "3.12",
+      "pydantic": "2.14.1",
+      "pydantic_core": "2.50.1",
+      "pygments": "2.21.0",
+      "pypdf": "6.21.2",
+      "pytest": "9.1.1",
+      "python-bidi": "0.6.12",
+      "python-multipart": "0.0.32",
+      "pyyaml": "6.0.3",
+      "regex": "2026.9.29",
+      "requests": "2.28.1",
+      "rich": "15.0.0",
+      "safetensors": "0.8.0",
+      "scikit-image": "0.26.0",
+      "scipy": "1.18.1",
+      "setuptools": "78.1.0",
+      "shapely": "2.2.0",
+      "shellingham": "1.5.4",
+      "starlette": "1.10.0",
+      "sympy": "1.14.0",
+      "tifffile": "2026.10.15",
+      "tokenizers": "0.23.3",
+      "torch": "2.13.0+cu130",
+      "torchvision": "0.28.0+cu130",
+      "tqdm": "4.66.5",
+      "transformers": "5.17.0",
+      "triton": "3.7.1",
+      "typer": "0.27.3",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "urllib3": "1.26.13",
+      "uvicorn": "0.54.0"
+    },
+    "all_90_versions_match_lock": true
+  },
+  "dependency_install": {
+    "method": "在官方注册表既有缓存中选择兼容版本，按原RECORD校验并重建本地Wheelhouse，再通过uv正常安装锁定依赖；没有复制既有虚拟环境。",
+    "wheels": 90,
+    "record_hashes_verified": 27403,
+    "source_file_permissions_preserved": true,
+    "network_note": "首次离线解析缺少cuda-bindings索引元数据；联网解析成功，但两包下载较慢，终止该次下载后改用已存在的兼容缓存。不是公网冷缓存或全新操作系统验证。"
+  },
+  "model_files": {
+    "files_verified": 28,
+    "all_hashes_match": true,
+    "manifests": [
+      {
+        "file": "docs/MODELS_20261027.json",
+        "sha256": "80387ac44e904ba45874e59f0ab64db7f069f587bd70322161bd1e795506613c"
+      },
+      {
+        "file": "docs/OCR_MODELS_20261027.json",
+        "sha256": "ef095d1a6edfbdd130aa17f7ac4e95248810be56905aeac3814cd771c43284f2"
+      }
+    ]
+  },
+  "gpu_samples": [
+    {
+      "at": "2026-10-29T15:48:32.618464+00:00",
+      "gpus": [
+        {
+          "index": 0,
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_mib": 7912,
+          "utilization_percent": 0
+        },
+        {
+          "index": 1,
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_mib": 9690,
+          "utilization_percent": 0
+        },
+        {
+          "index": 2,
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_mib": 872,
+          "utilization_percent": 0
+        },
+        {
+          "index": 3,
+          "name": "NVIDIA GeForce RTX 2080 Ti",
+          "memory_mib": 2980,
+          "utilization_percent": 21
+        }
+      ]
+    }
+  ],
+  "final_gpu_snapshot": [
+    {
+      "index": 0,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_mib": 7914,
+      "utilization_percent": 0
+    },
+    {
+      "index": 1,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_mib": 9690,
+      "utilization_percent": 0
+    },
+    {
+      "index": 2,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_mib": 950,
+      "utilization_percent": 0
+    },
+    {
+      "index": 3,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memory_mib": 2980,
+      "utilization_percent": 0
+    }
+  ],
+  "database_vector_audit": [
+    {
+      "id": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+      "title": "Attention Is All You Need",
+      "status": "ready",
+      "pages": 15,
+      "ocr_pages": 15,
+      "chunks": 43,
+      "vector_chunks": 43,
+      "vector_bytes_min": 1536,
+      "vector_bytes_max": 1536
+    },
+    {
+      "id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "status": "ready",
+      "pages": 16,
+      "ocr_pages": 0,
+      "chunks": 72,
+      "vector_chunks": 72,
+      "vector_bytes_min": 1536,
+      "vector_bytes_max": 1536
+    },
+    {
+      "id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "title": "Attention Is All You Need",
+      "status": "ready",
+      "pages": 15,
+      "ocr_pages": 0,
+      "chunks": 47,
+      "vector_chunks": 47,
+      "vector_bytes_min": 1536,
+      "vector_bytes_max": 1536
+    }
+  ],
+  "api_verification": {
+    "verified_at": "2026-10-29T15:47:56.746070+00:00",
+    "base_url": "http://127.0.0.1:18476",
+    "isolated_library_asserted": true,
+    "script_sha256": "1e9932a190531c053175521ad55cba54ef790997a22cc03b06e1a8e3193ae911",
+    "fixtures": [
+      {
+        "filename": "1706.03762v7.pdf",
+        "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "bytes": 2215244,
+        "pages": 15,
+        "final_status": "ready",
+        "processed_pages": 15,
+        "ocr_pages": 0,
+        "warnings": [],
+        "upload_to_ready_seconds": 2.184,
+        "page_records": [
+          {
+            "page": 1,
+            "method": "native",
+            "text_sha256": "01c0c25f3f61c18bf5ae332fba683e7a62b554375d0956882f48e252bddecfe4",
+            "blocks": 0
+          },
+          {
+            "page": 2,
+            "method": "native",
+            "text_sha256": "3abfc126f1874b8004e944a5ab8fa7d951c0f9735fcf6fa6481e1fda1ba2cc69",
+            "blocks": 0
+          },
+          {
+            "page": 3,
+            "method": "native",
+            "text_sha256": "9b24bab192e99d05f5541c573ab811511750c43baedffa5788ca9fdf95299047",
+            "blocks": 0
+          },
+          {
+            "page": 4,
+            "method": "native",
+            "text_sha256": "90a6b8a4ac91e568b256fef9e66df1d61f7031a1b8251d3f4bf289b5dc7836c3",
+            "blocks": 0
+          },
+          {
+            "page": 5,
+            "method": "native",
+            "text_sha256": "4c2bb47d88c410c07389683ae4459c7bc22397ce6c1bee955953aff658b7fa95",
+            "blocks": 0
+          },
+          {
+            "page": 6,
+            "method": "native",
+            "text_sha256": "27693fd8f1925d2c34cb1644b4e45ee256c089b4ef460ee0c97f4c52f019b312",
+            "blocks": 0
+          },
+          {
+            "page": 7,
+            "method": "native",
+            "text_sha256": "d064d8e2cd883c172466aa42b5b514623ed4f273ceb4a114f8ba9be972703382",
+            "blocks": 0
+          },
+          {
+            "page": 8,
+            "method": "native",
+            "text_sha256": "7e1c0ae386692f6f2bb86fbe4d533347e58018da49426e96a4e6ae62ef993298",
+            "blocks": 0
+          },
+          {
+            "page": 9,
+            "method": "native",
+            "text_sha256": "986821770b5cd35f6a498eb9286e9f21e6339c43f31bc0f9b411dff8fd84be09",
+            "blocks": 0
+          },
+          {
+            "page": 10,
+            "method": "native",
+            "text_sha256": "49b49450dca7fe1b76914eb12696feb3ffc186decc4df14a424c53e3f904ff95",
+            "blocks": 0
+          },
+          {
+            "page": 11,
+            "method": "native",
+            "text_sha256": "fe16b9ca966ea9e5bb40d3af698939b9fa19d133535bf4672d75b59d77abe1a7",
+            "blocks": 0
+          },
+          {
+            "page": 12,
+            "method": "native",
+            "text_sha256": "50c6926baf656dedb1c24fab5d7a75343bdd7ecb7ee54a10fe6e159f7c2251c2",
+            "blocks": 0
+          },
+          {
+            "page": 13,
+            "method": "native",
+            "text_sha256": "610b6a22cc60c7dee0a21feb06388eb479aa9f65c8a85d270e778adb45fac79e",
+            "blocks": 0
+          },
+          {
+            "page": 14,
+            "method": "native",
+            "text_sha256": "8fe49f1cdfcbfc710427c95fb11c775b720c8caf06ea9402a64f7efc02104097",
+            "blocks": 0
+          },
+          {
+            "page": 15,
+            "method": "native",
+            "text_sha256": "2112726c5e9f9d1773ea9a53716dda2878be75e39389994d63a468828ad29e89",
+            "blocks": 0
+          }
+        ]
+      },
+      {
+        "filename": "1706.03762v1_img.pdf",
+        "sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+        "bytes": 4672118,
+        "pages": 15,
+        "native_text_absent_on_all_pages": true,
+        "final_status": "ready",
+        "processed_pages": 15,
+        "ocr_pages": 15,
+        "warnings": [],
+        "upload_to_ready_seconds": 93.086,
+        "page_records": [
+          {
+            "page": 1,
+            "method": "ocr",
+            "text_sha256": "a678784f672e1303d194378bf789831ea03589dd73750c97c245c6e0d0697a87",
+            "blocks": 101
+          },
+          {
+            "page": 2,
+            "method": "ocr",
+            "text_sha256": "467badd2e49313e63898e66f4c10fbfc2d2ae698f45b743f5deae5e6007cd58f",
+            "blocks": 105
+          },
+          {
+            "page": 3,
+            "method": "ocr",
+            "text_sha256": "20d87f7ef7e50d54c44a5528cf5cab74051dcd75720ac9795272aa1c49de61cf",
+            "blocks": 74
+          },
+          {
+            "page": 4,
+            "method": "ocr",
+            "text_sha256": "e772369b5e6f162ac3fce9f2373b7010d73f6b373bfa0e615bf0aa6189c049ce",
+            "blocks": 97
+          },
+          {
+            "page": 5,
+            "method": "ocr",
+            "text_sha256": "2a0c1ad0cb38678cbdb65d0291f01941414c3b19e71a1790599c7127c159e546",
+            "blocks": 92
+          },
+          {
+            "page": 6,
+            "method": "ocr",
+            "text_sha256": "bf793531f20f73a1d957e72d3867083e9d0ad0e97b30d616bd78148f51a2143f",
+            "blocks": 116
+          },
+          {
+            "page": 7,
+            "method": "ocr",
+            "text_sha256": "cca76149e80b847caed331ed84e726ab9aaa5219769c6f8baa9e0bd236653913",
+            "blocks": 100
+          },
+          {
+            "page": 8,
+            "method": "ocr",
+            "text_sha256": "00daa0e4a01f77829abf7cf85477f6a1c2f9043524e1d904e246aed5797cbdc7",
+            "blocks": 145
+          },
+          {
+            "page": 9,
+            "method": "ocr",
+            "text_sha256": "c03338bde49b28e03af8441dfbc3d641340cba3111dc71b7310866ddc8edd6a4",
+            "blocks": 201
+          },
+          {
+            "page": 10,
+            "method": "ocr",
+            "text_sha256": "f52f2724aade9ebfc490acb64834f037d45c89110645fb72427e174b338cbfe0",
+            "blocks": 98
+          },
+          {
+            "page": 11,
+            "method": "ocr",
+            "text_sha256": "1623690477fc38bdd93afc946795ba4ba7cbbfb522e739dfe2d184d8ea6b119d",
+            "blocks": 87
+          },
+          {
+            "page": 12,
+            "method": "ocr",
+            "text_sha256": "ed3e6dcfb9059ab9a3c1e985246fc2a2114f433775eec4e55bf53f45f13b8147",
+            "blocks": 27
+          },
+          {
+            "page": 13,
+            "method": "ocr",
+            "text_sha256": "55cdd6091ec5c24779f972e17cbb10342500ed6e3d2a00da65c90577a7ba4f35",
+            "blocks": 36
+          },
+          {
+            "page": 14,
+            "method": "ocr",
+            "text_sha256": "c1c38f7bda72f098c09757a7d710550bc8b8e1cc2dda0898585aca0b40176879",
+            "blocks": 76
+          },
+          {
+            "page": 15,
+            "method": "ocr",
+            "text_sha256": "db1afa5adb3893ee5d3b23b92e3c667556d64be6f1cc09f27431b4164fe25a32",
+            "blocks": 78
+          }
+        ]
+      },
+      {
+        "filename": "N19-1423.pdf",
+        "sha256": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "bytes": 786279,
+        "pages": 16,
+        "final_status": "ready",
+        "processed_pages": 16,
+        "ocr_pages": 0,
+        "warnings": [],
+        "upload_to_ready_seconds": 2.08,
+        "page_records": [
+          {
+            "page": 1,
+            "method": "native",
+            "text_sha256": "9ad7faae00767732c0b46e7df60f488c92a6497be2e3d99155a23230a04a1a97",
+            "blocks": 0
+          },
+          {
+            "page": 2,
+            "method": "native",
+            "text_sha256": "d7264ffb9d75eb7c256f4694208de48b566a116a2aa3f5cf3fa18b7e4f52da17",
+            "blocks": 0
+          },
+          {
+            "page": 3,
+            "method": "native",
+            "text_sha256": "073ac987c7617a9e11395f261cc85e91f34496a10f16393aa11d9da48ade4fe5",
+            "blocks": 0
+          },
+          {
+            "page": 4,
+            "method": "native",
+            "text_sha256": "d3f20fd1bcef776de8b56a3d5c2d1af8dea8f8d464a839d324b3de76e4f196b4",
+            "blocks": 0
+          },
+          {
+            "page": 5,
+            "method": "native",
+            "text_sha256": "8e56841aa5c367938e2c055599d53a046f13c5b30dff398eca15da67339df6ac",
+            "blocks": 0
+          },
+          {
+            "page": 6,
+            "method": "native",
+            "text_sha256": "7ae64bf7bc2a1420f4b500c753388d300a2c0965d6dcecb4c4c6ca55195b6750",
+            "blocks": 0
+          },
+          {
+            "page": 7,
+            "method": "native",
+            "text_sha256": "8abe1d7a0b2dc25edad94d316e24acf61b672b191f768cf92d60f54201ec1891",
+            "blocks": 0
+          },
+          {
+            "page": 8,
+            "method": "native",
+            "text_sha256": "7ba187b18c73d16ec2250b28f8937dcf15449131038d8b3f2459e948c67358cc",
+            "blocks": 0
+          },
+          {
+            "page": 9,
+            "method": "native",
+            "text_sha256": "953b7b712e9de9ba2edf29485afdcddbe5dc41b8c48015322fdccb02fb4fdf02",
+            "blocks": 0
+          },
+          {
+            "page": 10,
+            "method": "native",
+            "text_sha256": "3f5a96e97b6366533e7d9cee426b6e9e3e468fc22acffdb682f5a623257ee1b6",
+            "blocks": 0
+          },
+          {
+            "page": 11,
+            "method": "native",
+            "text_sha256": "fb525fb6d89838105d43d17b0ac6feefa583550f3ff4d5de9b2b78f08b12c982",
+            "blocks": 0
+          },
+          {
+            "page": 12,
+            "method": "native",
+            "text_sha256": "2ea79828c2a812b62ab4c052cc481119c6ea9b1cb0ae5b65a57f960d61719610",
+            "blocks": 0
+          },
+          {
+            "page": 13,
+            "method": "native",
+            "text_sha256": "2cbbd84d42b40e612a1606794e1e00078ee52518a069120a45e0025b4bc409d8",
+            "blocks": 0
+          },
+          {
+            "page": 14,
+            "method": "native",
+            "text_sha256": "48c95066070a5a7fdb04031dd0b7dd26e3d2a461d615b7c01fd4e8b28717a565",
+            "blocks": 0
+          },
+          {
+            "page": 15,
+            "method": "native",
+            "text_sha256": "12ddbb26029dea066448ca666673ec7be066e8db98e27722a8d5fa64aabfa91c",
+            "blocks": 0
+          },
+          {
+            "page": 16,
+            "method": "native",
+            "text_sha256": "1c42658d50ebf33295dc40cb541eaddd39da3487135a7b8469d31d99d4f623c1",
+            "blocks": 0
+          }
+        ]
+      }
+    ],
+    "checks": [
+      {
+        "name": "isolated_library_initially_empty",
+        "passed": true
+      },
+      {
+        "name": "all_three_local_model_components_ready",
+        "passed": true
+      },
+      {
+        "name": "uploaded_pdf_identity",
+        "passed": true,
+        "filename": "1706.03762v7.pdf"
+      },
+      {
+        "name": "uploaded_document_ready_and_active",
+        "passed": true,
+        "filename": "1706.03762v7.pdf",
+        "status": "ready",
+        "note": ""
+      },
+      {
+        "name": "native_pdf_did_not_require_ocr",
+        "passed": true,
+        "filename": "1706.03762v7.pdf"
+      },
+      {
+        "name": "downloaded_pdf_sha256_matches",
+        "passed": true,
+        "filename": "1706.03762v7.pdf"
+      },
+      {
+        "name": "official_scan_has_no_native_text",
+        "passed": true
+      },
+      {
+        "name": "uploaded_pdf_identity",
+        "passed": true,
+        "filename": "1706.03762v1_img.pdf"
+      },
+      {
+        "name": "uploaded_document_ready_and_active",
+        "passed": true,
+        "filename": "1706.03762v1_img.pdf",
+        "status": "ready",
+        "note": "扫描件若处于review，需显式--keep-scan才可保留两版"
+      },
+      {
+        "name": "all_scan_pages_used_ocr",
+        "passed": true
+      },
+      {
+        "name": "downloaded_pdf_sha256_matches",
+        "passed": true,
+        "filename": "1706.03762v1_img.pdf"
+      },
+      {
+        "name": "uploaded_pdf_identity",
+        "passed": true,
+        "filename": "N19-1423.pdf"
+      },
+      {
+        "name": "uploaded_document_ready_and_active",
+        "passed": true,
+        "filename": "N19-1423.pdf",
+        "status": "ready",
+        "note": ""
+      },
+      {
+        "name": "native_pdf_did_not_require_ocr",
+        "passed": true,
+        "filename": "N19-1423.pdf"
+      },
+      {
+        "name": "downloaded_pdf_sha256_matches",
+        "passed": true,
+        "filename": "N19-1423.pdf"
+      },
+      {
+        "name": "all_uploaded_documents_remain_ready_and_active",
+        "passed": true
+      }
+    ],
+    "question_cases": [
+      {
+        "name": "native_ffn_dimension",
+        "question": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是多少？",
+        "document_ids": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+        ],
+        "expected_terms": ["2048"],
+        "expected_physical_page": 5,
+        "requires_qwen_answer_path": true,
+        "answer": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是 2048[E1]",
+        "insufficient_evidence": false,
+        "validation_error": null,
+        "steps": [
+          "检查文献范围",
+          "生成中英检索词",
+          "混合检索",
+          "本地模型阅读证据",
+          "校验原文摘录与数值"
+        ],
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 5,
+            "method": "native",
+            "start": 1880,
+            "end": 2980,
+            "match": "exact",
+            "page_sha256": "4c2bb47d88c410c07389683ae4459c7bc22397ce6c1bee955953aff658b7fa95",
+            "quote_sha256": "9475144d08c4a252c208f5e05dd66689ddcc7d7b8c011c7bd2fa01081f89b443",
+            "raw_interval_sha256": "9475144d08c4a252c208f5e05dd66689ddcc7d7b8c011c7bd2fa01081f89b443"
+          }
+        ],
+        "checks": {
+          "not_refused": true,
+          "expected_terms": true,
+          "all_scope_documents_cited": true,
+          "expected_physical_page": true,
+          "citation_labels_known": true,
+          "qwen_answer_path": true,
+          "e5_mixed_retrieval_path": true,
+          "ocr_source": true
+        },
+        "automated_checks_passed": true,
+        "seconds": 4.28,
+        "semantic_review_required": true
+      },
+      {
+        "name": "official_scan_ffn_dimension",
+        "question": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是多少？",
+        "document_ids": [
+          "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d"
+        ],
+        "expected_terms": ["2048"],
+        "expected_physical_page": 5,
+        "requires_qwen_answer_path": true,
+        "answer": "Position-wise Feed-Forward Networks 的 inner-layer dimension 是 2048[E1]",
+        "insufficient_evidence": false,
+        "validation_error": null,
+        "steps": [
+          "检查文献范围",
+          "生成中英检索词",
+          "混合检索",
+          "本地模型阅读证据",
+          "校验原文摘录与数值"
+        ],
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+            "title": "Attention Is All You Need",
+            "page": 5,
+            "method": "ocr",
+            "start": 940,
+            "end": 2040,
+            "match": "exact",
+            "page_sha256": "2a0c1ad0cb38678cbdb65d0291f01941414c3b19e71a1790599c7127c159e546",
+            "quote_sha256": "934ce5438aeec7ed72ce3b26ffb9f5360d3023c671b838d2c8e17732dd14ca18",
+            "raw_interval_sha256": "934ce5438aeec7ed72ce3b26ffb9f5360d3023c671b838d2c8e17732dd14ca18"
+          }
+        ],
+        "checks": {
+          "not_refused": true,
+          "expected_terms": true,
+          "all_scope_documents_cited": true,
+          "expected_physical_page": true,
+          "citation_labels_known": true,
+          "qwen_answer_path": true,
+          "e5_mixed_retrieval_path": true,
+          "ocr_source": true
+        },
+        "automated_checks_passed": true,
+        "seconds": 2.767,
+        "semantic_review_required": true
+      },
+      {
+        "name": "transformer_bert_architecture",
+        "question": "根据 Attention Is All You Need 和 BERT，BERT 的架构和原始 Transformer 的 Encoder 有什么承袭关系？BERT 丢弃了原始 Transformer 的哪个部分？",
+        "document_ids": [
+          "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4"
+        ],
+        "expected_terms": ["BERT", "Transformer", "未采用", "解码器", "归纳"],
+        "expected_physical_page": 3,
+        "requires_qwen_answer_path": false,
+        "answer": "Transformer 的架构同时包含编码器和解码器。[E1]\n\nBERT 的原文架构描述为多层 双向 Transformer 编码器。[E2]\n\n据这两篇架构描述对比，BERT 采用编码器结构，未采用 Transformer 的解码器部分。这里是对架构构成的归纳，不表示原文描述了实际删除代码的过程。[E1][E2]",
+        "insufficient_evidence": false,
+        "validation_error": null,
+        "steps": [
+          "检查两篇文献范围",
+          "补召回架构段落",
+          "核对架构主语及组成",
+          "标注跨篇归纳与原页来源"
+        ],
+        "citations": [
+          {
+            "id": "E1",
+            "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+            "title": "Attention Is All You Need",
+            "page": 3,
+            "method": "native",
+            "start": 0,
+            "end": 1100,
+            "match": "exact",
+            "page_sha256": "9b24bab192e99d05f5541c573ab811511750c43baedffa5788ca9fdf95299047",
+            "quote_sha256": "3964899ca4809bf1987262d21674f08fa3b8c544502a45ef059a1707c85d225b",
+            "raw_interval_sha256": "3964899ca4809bf1987262d21674f08fa3b8c544502a45ef059a1707c85d225b"
+          },
+          {
+            "id": "E2",
+            "document_id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+            "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+            "page": 3,
+            "method": "native",
+            "start": 1884,
+            "end": 2984,
+            "match": "exact",
+            "page_sha256": "073ac987c7617a9e11395f261cc85e91f34496a10f16393aa11d9da48ade4fe5",
+            "quote_sha256": "816f73968508fcb6cf1a7c0ab14c5d9c124d8e842bdad1669a26255211ba0e99",
+            "raw_interval_sha256": "816f73968508fcb6cf1a7c0ab14c5d9c124d8e842bdad1669a26255211ba0e99"
+          }
+        ],
+        "checks": {
+          "not_refused": true,
+          "expected_terms": true,
+          "all_scope_documents_cited": true,
+          "expected_physical_page": true,
+          "citation_labels_known": true,
+          "qwen_answer_path": true,
+          "e5_mixed_retrieval_path": true,
+          "ocr_source": true
+        },
+        "automated_checks_passed": true,
+        "seconds": 0.27,
+        "semantic_review_required": true,
+        "execution_note": "架构问题可能走服务端确定性事实处理器，不能把这条单独当成Qwen生成验证；原生与OCR的FFN用例要求Qwen回答路径。"
+      }
+    ],
+    "scan_version_choices": [
+      {
+        "document_id": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+        "existing_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "action": "keep_both"
+      }
+    ],
+    "service_started_or_stopped_by_script": false,
+    "model_download_or_cloud_api_requested": false,
+    "vector_row_counts_verified_via_api": false,
+    "limits": [
+      "本脚本仅验证显式指定的隔离服务；不会启动或停止服务，也不删除文献。运行者须负责服务和GPU清理。",
+      "模型ready和真实问答不能单独证明GPU设备分配；运行者还须核对模型设备映射、nvidia-smi及显存占用。",
+      "E5已加载、混合检索步骤不等于每段向量都已入库；API不暴露向量行数，须由运行者只读核对隔离数据库。",
+      "引用逐字位置、预期数值及来源覆盖检查不等于完整语义蕴含或OCR准确率；中文结论仍需人工核对。",
+      "只覆盖指定原生PDF、官方扫描件和可选BERT，不代表所有官方样本、全新操作系统或公网浏览器验收。"
+    ],
+    "initial_document_count": 0,
+    "health": {
+      "status": "ok",
+      "model_ready": true,
+      "embedding_ready": true,
+      "model": "Qwen2.5-7B-Instruct",
+      "retrieval": "bm25+e5-rrf",
+      "ocr_ready": true
+    },
+    "final_documents": [
+      {
+        "id": "987545ffb087f1ece898142c403a516baeabeb70ce19089397fac6f7db12c3d4",
+        "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+        "pages": 16,
+        "status": "ready",
+        "ocr_pages": 0,
+        "is_active": 1,
+        "trashed_at": null
+      },
+      {
+        "id": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+        "title": "Attention Is All You Need",
+        "pages": 15,
+        "status": "ready",
+        "ocr_pages": 15,
+        "is_active": 1,
+        "trashed_at": null
+      },
+      {
+        "id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+        "title": "Attention Is All You Need",
+        "pages": 15,
+        "status": "ready",
+        "ocr_pages": 0,
+        "is_active": 1,
+        "trashed_at": null
+      }
+    ],
+    "all_automated_checks_passed": true,
+    "finished_at": "2026-10-29T15:49:42.521723+00:00"
+  },
+  "semantic_review": {
+    "reviewed": true,
+    "native_and_scan_ffn": "两条Qwen答案均为2048，分别引用原生文本及OCR正文的物理第5页；数值和语义与所引维度定义一致。",
+    "architecture": "两篇各自第3页支持编码器/解码器构成；结论明确为架构归纳，此用例走确定性事实处理器，不计作Qwen生成验证。"
+  },
+  "limitations": [
+    "基础OS、NVIDIA驱动及Python解释器复用现有主机；新建的是代码目录、包环境及数据目录。",
+    "依赖使用经过校验的机器缓存，模型权重是先前下载并匹配清单的外置文件；未从零重新下载全部依赖或模型。",
+    "只验收三份指定PDF、15页官方扫描件和三道问题；不代表所有官方样本、OCR精度或零幻觉保证。",
+    "此轮仅回环API验收，不覆盖浏览器交互、公网部署或本轮未调用的翻译与研究任务工作流。"
+  ],
+  "cleanup": {
+    "temporary_model_service_stopped": true,
+    "temporary_ssh_tunnel_closed": true,
+    "production_service_left_stopped": true,
+    "gpu_memory_after_mib": [1, 1, 1, 1]
+  }
+}

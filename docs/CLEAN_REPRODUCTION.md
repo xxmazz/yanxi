@@ -1,5 +1,7 @@
 # 独立环境基础复现
 
+本页是基础安装检查记录，不是系统的CPU替代版本。正式方案采用四卡GPU；后续完整Qwen、E5及OCR的新环境实测见[四卡GPU复现](GPU_REPRODUCTION.md)。
+
 2026-10-29，从固定提交f2a9eafd78adf66c44c9abd04281989ae276681b用git archive创建新目录，重新建立Python3.12虚拟环境并安装backend/requirements.txt，以npm ci安装前端并构建。不复制既有node_modules、.venv、runtime或.env；依赖工具可使用正常下载缓存，因此不算全新操作系统或完全离线复现。
 
 ```sh
