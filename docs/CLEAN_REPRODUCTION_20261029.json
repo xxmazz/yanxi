@@ -1,0 +1,222 @@
+{
+  "repository": "<repository>",
+  "source_commit": "f2a9eafd78adf66c44c9abd04281989ae276681b",
+  "temporary_checkout": "<isolated-checkout>",
+  "copied_existing_dependency_or_runtime_dirs": false,
+  "official_fixture": "<official-fixture-dir>/1706.03762v7.pdf",
+  "verified_at": "2026-10-29T15:04:18.443059+00:00",
+  "platform": "darwin",
+  "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]",
+  "node": "v24.21.0",
+  "npm": "11.19.0",
+  "python_install": [
+    {
+      "name": "python_environment",
+      "command": ["uv", "venv", "--python", "3.12", ".venv"],
+      "seconds": 0.076,
+      "exit_code": 0
+    },
+    {
+      "name": "python_dependencies",
+      "command": [
+        "uv",
+        "pip",
+        "install",
+        "--python",
+        ".venv/bin/python",
+        "-r",
+        "backend/requirements.txt"
+      ],
+      "seconds": 3.04,
+      "exit_code": 0
+    }
+  ],
+  "npm_install": [
+    {
+      "name": "npm_clean_install",
+      "command": ["npm", "ci"],
+      "seconds": 5.325,
+      "exit_code": 0
+    },
+    {
+      "name": "frontend_build",
+      "command": ["npm", "run", "build"],
+      "seconds": 5.556,
+      "exit_code": 0
+    }
+  ],
+  "packages": {
+    "fastapi": "0.162.0",
+    "starlette": "1.10.0",
+    "uvicorn": "0.54.0",
+    "python-multipart": "0.0.32",
+    "pypdf": "6.21.2",
+    "fonttools": "4.67.0",
+    "numpy": "2.5.2",
+    "httpx": "0.28.1",
+    "networkx": "3.6.1",
+    "scipy": "1.18.1"
+  },
+  "gpu_or_model_service_started": false,
+  "torch_installed": false,
+  "env_file_used": false,
+  "runtime_data_directory": "<isolated-checkout>/runtime-cpu-smoke",
+  "launch_command": [
+    "<isolated-checkout>/.venv/bin/python",
+    "-m",
+    "uvicorn",
+    "backend.app:app",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "54764"
+  ],
+  "launch_environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "YANXI_DATA_DIR": "<isolated-checkout>/runtime-cpu-smoke",
+    "YANXI_DIST_DIR": "<isolated-checkout>/dist",
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1"
+  },
+  "fixture": {
+    "filename": "1706.03762v7.pdf",
+    "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+    "bytes": 2215244,
+    "type": "user-provided official fixture copy"
+  },
+  "checks": [
+    {
+      "name": "cpu_health_no_models",
+      "passed": true,
+      "status": "ok",
+      "model_ready": false,
+      "embedding_ready": false,
+      "model": null,
+      "retrieval": "bm25",
+      "ocr_ready": false
+    },
+    {
+      "name": "fresh_frontend_build_served",
+      "passed": true,
+      "assets_requested": [
+        "/assets/index-BnuqEe5x.js",
+        "/assets/index-CT0S0NtA.css"
+      ],
+      "status": 200
+    },
+    {
+      "name": "invalid_upload_rejected",
+      "passed": true,
+      "status": 400
+    },
+    {
+      "name": "official_text_pdf_upload_and_parse",
+      "passed": true,
+      "upload_status": 202,
+      "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "title": "Attention Is All You Need",
+      "physical_pages": 15,
+      "processed_pages": 15,
+      "ocr_pages": 0,
+      "index_seconds_after_upload_response": 2.18,
+      "warnings": []
+    },
+    {
+      "name": "pdf_download_byte_identity",
+      "passed": true,
+      "bytes": 2215244,
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+    },
+    {
+      "name": "local_upload_source_api",
+      "passed": true,
+      "source_record_count": 0,
+      "note": "本地上传不伪造arXiv下载来源记录；原PDF身份已单独核对。"
+    },
+    {
+      "name": "reading_links_outline_and_source_offsets",
+      "passed": true,
+      "entries": 40,
+      "mentions": 57,
+      "outline_items": 24,
+      "verified_intervals": 121,
+      "fingerprint": "d5cc512a625bef5b3bc455f5d93184f4122ee27ac9da228c61ad19128e1c6ddb"
+    },
+    {
+      "name": "renamed_duplicate_keeps_same_document",
+      "passed": true,
+      "status": 202,
+      "document_count": 1
+    },
+    {
+      "name": "unavailable_model_returns_explicit_503",
+      "passed": true,
+      "status": 503,
+      "detail": "本地模型未就绪，请检查服务器模型配置",
+      "generated_answer": false
+    },
+    {
+      "name": "original_page_png",
+      "passed": true,
+      "status": 200,
+      "bytes": 313815
+    },
+    {
+      "name": "restart_keeps_library_pdf_navigation",
+      "passed": true,
+      "documents": 1,
+      "full_document_payload_equal": true,
+      "reading_links_payload_equal": true,
+      "pdf_sha256_equal": true
+    },
+    {
+      "name": "fresh_backend_test_suite",
+      "passed": true,
+      "count": 133,
+      "exit_code": 0,
+      "seconds": 9.607
+    }
+  ],
+  "server_runs": [
+    {
+      "label": "first",
+      "pid": 4184,
+      "startup_seconds": 2.942,
+      "health": {
+        "status": "ok",
+        "model_ready": false,
+        "embedding_ready": false,
+        "model": null,
+        "retrieval": "bm25",
+        "ocr_ready": false
+      },
+      "exit_code": -15
+    },
+    {
+      "label": "restart",
+      "pid": 4194,
+      "startup_seconds": 0.322,
+      "health": {
+        "status": "ok",
+        "model_ready": false,
+        "embedding_ready": false,
+        "model": null,
+        "retrieval": "bm25",
+        "ocr_ready": false
+      },
+      "exit_code": -15
+    }
+  ],
+  "limitations": [
+    "CPU基础复现；不安装或加载PyTorch、Qwen、E5、EasyOCR权重，未验证GPU完整环境、实际模型回答或OCR。",
+    "本次从固定Git提交归档创建新目录和新虚拟环境；依赖安装允许使用工具正常下载缓存，不是全新操作系统或离线冷缓存验证。",
+    "只用一份15页官方文本PDF验证上传、解析、索引、来源和导航；不代表全部官方用例或复杂排版召回率。",
+    "临时服务仅监听Mac回环地址，未访问生产服务器或改动生产数据；未验证公网HTTPS和认证。",
+    "构建和静态资源请求不等于浏览器交互与视觉验收。"
+  ],
+  "system_poppler": "<available-poppler>/pdftoppm",
+  "core_cpu_reproduction_passed": true,
+  "all_checks_passed": true,
+  "temporary_listener_stopped": true,
+  "finished_at": "2026-10-29T15:04:38.658182+00:00"
+}

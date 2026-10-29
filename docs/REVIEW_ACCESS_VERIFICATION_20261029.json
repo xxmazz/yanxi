@@ -1,0 +1,543 @@
+{
+  "verified_at": "2026-10-29T15:13:22.443577+00:00",
+  "base_commit": "f2a9eafd78adf66c44c9abd04281989ae276681b",
+  "source_sha256": {
+    "backend/access.py": "fc24225c3e1ddd3a918e506a7ebe7ffcb72bb0f5733e781ec4b5c80d3dd2e9f1",
+    "backend/app.py": "cdf3380952f026d4b2032a7900f4569466e7bfc3934dc83b7a61ed4bf9163a63",
+    "src/api.ts": "0b7d254f021313ee7d9a81db5d524f1de362b34dc399fa875f54cdd06475e524",
+    "scripts/verify_review_access.py": "eda2ce5a7df09fb29024b107b09f66ce13922525f61e19627a539b3c0688d7d6",
+    "backend/requirements.txt": "62adc7b3010afb07467c126dd8510de9cebc7c27365bd4a18714bb49c7af42ee"
+  },
+  "git_working_tree_had_changes": true,
+  "checks": [
+    {
+      "name": "tls_verification_enabled",
+      "passed": true,
+      "hostname_check": true,
+      "certificate_required": true,
+      "temporary_certificate_sha256": "88d90a9b932f6b92392532d18ec9574a990afe233c8b3210bfbdff43cdd04f8c"
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/health",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/health",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/health",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/documents",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/documents",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/documents",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/research/tasks",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/research/tasks",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/research/tasks",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/docs",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/docs",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/docs",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/redoc",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/redoc",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/redoc",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/openapi.json",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/openapi.json",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/assets/unknown.js",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/assets/unknown.js",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/assets/unknown.js",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/documents/private/pdf",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/documents/private/pdf",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/documents/private/pdf",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/documents/private/render/1",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/documents/private/render/1",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/documents/private/render/1",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/documents/private/translation/export",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/documents/private/translation/export",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/documents/private/translation/export",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/api/export/unknown",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/api/export/unknown",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/api/export/unknown",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "GET",
+      "path": "/unknown/private-path",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "HEAD",
+      "path": "/unknown/private-path",
+      "status": 401
+    },
+    {
+      "name": "anonymous_route_denied",
+      "passed": true,
+      "method": "POST",
+      "path": "/unknown/private-path",
+      "status": 401
+    },
+    {
+      "name": "authorized_homepage",
+      "passed": true,
+      "status": 200
+    },
+    {
+      "name": "authorized_static_asset",
+      "passed": true,
+      "path": "/assets/index-R6taBxwM.js",
+      "status": 200
+    },
+    {
+      "name": "authorized_static_asset",
+      "passed": true,
+      "path": "/assets/index-CT0S0NtA.css",
+      "status": 200
+    },
+    {
+      "name": "authorized_cpu_health",
+      "passed": true,
+      "status": 200,
+      "health": {
+        "status": "ok",
+        "model_ready": false,
+        "embedding_ready": false,
+        "model": null,
+        "retrieval": "bm25",
+        "ocr_ready": false
+      }
+    },
+    {
+      "name": "wrong_password_denied",
+      "passed": true,
+      "status": 401
+    },
+    {
+      "name": "private_response_headers",
+      "passed": true,
+      "path": "/",
+      "status": 200
+    },
+    {
+      "name": "private_response_headers",
+      "passed": true,
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "name": "private_response_headers",
+      "passed": true,
+      "path": "/docs",
+      "status": 200
+    },
+    {
+      "name": "private_response_headers",
+      "passed": true,
+      "path": "/redoc",
+      "status": 200
+    },
+    {
+      "name": "private_response_headers",
+      "passed": true,
+      "path": "/openapi.json",
+      "status": 200
+    },
+    {
+      "name": "isolated_library_initially_empty",
+      "passed": true
+    },
+    {
+      "name": "unsafe_upload_refused",
+      "passed": true,
+      "case": "missing_marker",
+      "status": 403,
+      "library_still_empty": true
+    },
+    {
+      "name": "unsafe_upload_refused",
+      "passed": true,
+      "case": "wrong_origin",
+      "status": 403,
+      "library_still_empty": true
+    },
+    {
+      "name": "unsafe_upload_refused",
+      "passed": true,
+      "case": "cross_site",
+      "status": 403,
+      "library_still_empty": true
+    },
+    {
+      "name": "unsafe_upload_refused",
+      "passed": true,
+      "case": "same_site",
+      "status": 403,
+      "library_still_empty": true
+    },
+    {
+      "name": "search_without_marker_refused_before_network",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "cross_site_subresource_refused",
+      "passed": true,
+      "status": 403
+    },
+    {
+      "name": "same_origin_marked_upload",
+      "passed": true,
+      "status": 202,
+      "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697"
+    },
+    {
+      "name": "uploaded_document_ready",
+      "passed": true,
+      "status": "ready",
+      "physical_pages": 15,
+      "parse_seconds": 0.589
+    },
+    {
+      "name": "real_document_unauthenticated_denied",
+      "passed": true,
+      "path": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/pdf",
+      "status": 401
+    },
+    {
+      "name": "real_document_unauthenticated_denied",
+      "passed": true,
+      "path": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/render/1",
+      "status": 401
+    },
+    {
+      "name": "real_document_unauthenticated_denied",
+      "passed": true,
+      "path": "/api/documents/bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697/translation/export",
+      "status": 401
+    },
+    {
+      "name": "authorized_pdf_identity",
+      "passed": true,
+      "status": 200,
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "bytes": 2215244
+    },
+    {
+      "name": "authorized_pdf_byte_range",
+      "passed": true,
+      "status": 206,
+      "content_range": "bytes 0-31/2215244"
+    },
+    {
+      "name": "authorized_pdf_head",
+      "passed": true,
+      "status": 200,
+      "body_bytes": 0,
+      "content_length": "2215244"
+    },
+    {
+      "name": "authorized_graph_build",
+      "passed": true,
+      "status": 200,
+      "stats": {
+        "documents": 1,
+        "works": 1,
+        "edges": 0,
+        "components": 1,
+        "isolated": 1
+      },
+      "fingerprint": "dc2ea0e5f7fc779c27964fdbe8e3658ef1e88034ae7a933c626bd067cd2dadbd"
+    },
+    {
+      "name": "cpu_question_explicit_model_unavailable",
+      "passed": true,
+      "status": 503,
+      "generated_answer": false
+    },
+    {
+      "name": "authorized_original_page_png",
+      "passed": true,
+      "status": 200,
+      "bytes": 313815
+    },
+    {
+      "name": "plain_http_cannot_reach_https_configuration",
+      "passed": true,
+      "case": "anonymous",
+      "status": 426,
+      "no_basic_challenge": true
+    },
+    {
+      "name": "plain_http_cannot_reach_https_configuration",
+      "passed": true,
+      "case": "correct_credentials",
+      "status": 426,
+      "no_basic_challenge": true
+    },
+    {
+      "name": "plain_http_cannot_reach_https_configuration",
+      "passed": true,
+      "case": "spoofed_forwarded_proto",
+      "status": 426,
+      "no_basic_challenge": true
+    },
+    {
+      "name": "source_stable_during_verification",
+      "passed": true
+    }
+  ],
+  "services": [
+    {
+      "label": "https",
+      "port": 55390,
+      "listen_host": "127.0.0.1",
+      "pid": 4579,
+      "startup_seconds": 0.413,
+      "exit_code": -15,
+      "listener_stopped": true
+    },
+    {
+      "label": "http-rejection",
+      "port": 55399,
+      "listen_host": "127.0.0.1",
+      "pid": 4614,
+      "startup_seconds": 0.314,
+      "exit_code": -15,
+      "listener_stopped": true
+    }
+  ],
+  "gpu_or_cloud_model_used": false,
+  "production_server_or_library_used": false,
+  "env_file_loaded": false,
+  "limitations": [
+    "真实回环HTTPS和HTTP进程、一次性自签证书及单份PDF的隔离验收，不等于公网HTTPS或反向代理部署验收。",
+    "只为本次客户端显式信任临时localhost证书；未修改系统信任库，也未关闭证书或主机名验证。",
+    "客户端通过HTTPX发送请求；未验证浏览器登录弹窗、缓存凭据、前端交互或视觉布局。",
+    "只验证共享账号边界，不代表多用户数据隔离、专业渗透测试、限速或长期负载验收。",
+    "所有模型环境配置清空，没有GPU/OCR/向量推理；已入库范围问答应明确503，而非生成答案。"
+  ],
+  "fixture": {
+    "filename": "1706.03762v7.pdf",
+    "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+    "bytes": 2215244
+  },
+  "openssl": "LibreSSL 3.3.6",
+  "anonymous_requests_denied": 39,
+  "all_checks_passed": true,
+  "temporary_credentials_and_certificate_files_removed": true,
+  "all_temporary_listeners_stopped": true,
+  "finished_at": "2026-10-29T15:13:26.558495+00:00"
+}

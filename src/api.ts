@@ -50,8 +50,11 @@ export type Health = {
 };
 
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
+  const headers = new Headers(init?.headers);
+  headers.set("X-Yanxi-Request", "1");
   const response = await fetch(path, {
     ...init,
+    headers,
     signal: AbortSignal.timeout(180_000),
   });
   if (!response.ok) {

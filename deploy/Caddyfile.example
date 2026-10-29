@@ -1,0 +1,8 @@
+# 将域名替换为实际评审域名，DNS指向服务器后再启用。
+# .env中YANXI_AUTH_ORIGIN须与此域名一致，后端监听127.0.0.1:18474。
+review.example.com {
+    reverse_proxy 127.0.0.1:18474 {
+        # 显式保留评审域名，应用不依赖任意X-Forwarded-Host。
+        header_up Host {http.request.host}
+    }
+}

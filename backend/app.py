@@ -17,6 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from pypdf import PdfReader
 
+from .access import AccessSettings, ReviewAccess
 from .architecture import architecture_comparison
 from .bibliography import author_ordinal, ordered_author
 from .comparison import explicit_configuration_facts
@@ -33,6 +34,7 @@ from .writing import prepare as prepare_writing
 from .writing import render_draft
 
 log = logging.getLogger("yanxi")
+access_settings = AccessSettings.from_env()
 store = Store(Path(os.getenv("YANXI_DATA_DIR", "runtime/library")))
 models = LocalModels()
 ocr = LocalOCR()
@@ -114,6 +116,7 @@ async def lifespan(app):
 
 
 app = FastAPI(title="研析本地科研助手 API", lifespan=lifespan)
+app.add_middleware(ReviewAccess, settings=access_settings)
 
 
 @app.get("/api/health")
@@ -316,6 +319,7 @@ def upload(file: UploadFile = File(...)):
 
 
 @app.get("/api/documents/{doc_id}/pdf")
+@app.head("/api/documents/{doc_id}/pdf", include_in_schema=False)
 def pdf(doc_id: str):
     doc = store.document(doc_id)
     if not doc:
