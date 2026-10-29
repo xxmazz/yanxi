@@ -80,3 +80,7 @@ GPT 系列参数量、LN 位置和上下文比较已验证，支持按指标逐�
 ## 团队与协作
 
 参赛负责人：xxmazz（GitHub 账号）。正式姓名、学校及评审所需团队信息在最终提交前由参赛者补齐。AI 辅助开发过程见 [协作说明](docs/AI_COLLABORATION.md)。
+
+## 技术说明与演示准备
+
+[技术文档初稿](output/pdf/yanxi-technical-draft.pdf)包含系统架构、四卡本地模型方案、实现与测试依据，团队信息待补。源稿与重建方式见[文档构建](docs/REPORT_BUILD.md)，视频按[七分钟脚本](docs/DEMO_SCRIPT.md)准备，尚未录制发布。工程和材料的剩余事项见[交付清单](docs/DELIVERY_PLAN.md)。

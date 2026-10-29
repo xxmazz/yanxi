@@ -14,3 +14,7 @@ __pycache__/
 runtime/
 models/
 .pytest_cache/
+
+# 文档渲染中间图片，最终 PDF 保留在 output/pdf
+tmp/pdfs/
+.venv-docs/

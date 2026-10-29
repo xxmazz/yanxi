@@ -1,0 +1,86 @@
+{
+  "document_date": "2026-10-30",
+  "engineering_baseline": "306ef6ff79869bc549205167df802a5f161d660b",
+  "pdf_path": "output/pdf/yanxi-technical-draft.pdf",
+  "pdf_sha256": "ca1459b51eb3dc2f14f4b1ae78f31e5524fbfd602b31a1b01796668f4d006bf8",
+  "source_sha256": "151c06057cf8d7253f691cd961f92842b07d67feb0c2d8481843464f372a8c56",
+  "builder_sha256": "5150e249b969a91b0a68106d232148ecaf74c08b64139bba2a6f4b459067c503",
+  "pages": 9,
+  "page_limit": 30,
+  "encrypted": false,
+  "javascript_present": false,
+  "chinese_text_and_required_sections_verified": true,
+  "embedded_chinese_font_subsets": {
+    "/AAAAAA+STHeitiTC-Light-0": true,
+    "/AAAAAB+STHeitiTC-Light-0": true,
+    "/AAAAAC+STHeitiTC-Light-0": true,
+    "/AAAAAA+STHeitiTC-Medium-0": true
+  },
+  "outline_destinations": [
+    {
+      "title": "摘要",
+      "page": 3
+    },
+    {
+      "title": "1. 需求与设计目标",
+      "page": 3
+    },
+    {
+      "title": "2. 系统架构与数据流",
+      "page": 3
+    },
+    {
+      "title": "3. AI 技术选型、集成与优化",
+      "page": 4
+    },
+    {
+      "title": "4. 六个业务模块实现",
+      "page": 5
+    },
+    {
+      "title": "5. 有界研究任务",
+      "page": 6
+    },
+    {
+      "title": "6. 技术与应用创新设计",
+      "page": 6
+    },
+    {
+      "title": "7. 测试方法与实际结果",
+      "page": 6
+    },
+    {
+      "title": "8. 部署、访问控制与复现",
+      "page": 7
+    },
+    {
+      "title": "9. 限制与后续工作",
+      "page": 8
+    },
+    {
+      "title": "10. 团队、贡献与资料管理",
+      "page": 8
+    },
+    {
+      "title": "11. 仓库证据索引",
+      "page": 8
+    },
+    {
+      "title": "12. 主要开源来源与许可",
+      "page": 9
+    }
+  ],
+  "unique_external_links": 45,
+  "local_source_links_and_baseline_evidence_targets_verified": true,
+  "visual_review": {
+    "renderer": "Poppler pdftoppm",
+    "rendered_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "contact_sheets_reviewed": 3,
+    "detail_pages_reviewed": [3, 7, 9],
+    "outcome": "中文可读，架构图与跨页表格无截断重叠，目录及页眉页脚对应。"
+  },
+  "team_information": "信息待补",
+  "video_status": "仅七分钟脚本，未录制或公开发布",
+  "public_deployment": "待正式域名与外网浏览器验收",
+  "scope": "本轮只生成和检查技术材料，不重跑历史模型测试，不启动GPU；上游许可仅作主要来源索引。"
+}
