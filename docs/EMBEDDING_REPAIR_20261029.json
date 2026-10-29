@@ -1,0 +1,17 @@
+{
+  "verified_at": "2026-10-29T15:59:16.491379+00:00",
+  "document_id": "9a042fdcc4a22848cffde37e9c5257e423443980172bab7367dffb4e779aac37",
+  "title": "HellaSwag: Can a Machine Really Finish Your Sentence?",
+  "method": "现有GPU服务通过正常reindex API重新解析与E5索引",
+  "before_missing_vectors": 63,
+  "after": {
+    "chunks": 63,
+    "vector_chunks": 63,
+    "minimum_bytes": 1536,
+    "maximum_bytes": 1536
+  },
+  "pdf_sha256_unchanged": true,
+  "all_14_page_text_hashes_unchanged": true,
+  "all_33_document_states_and_version_choices_unchanged": true,
+  "active_ready_documents_with_missing_vectors_after": []
+}
