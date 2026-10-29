@@ -1,0 +1,22 @@
+{
+  "verified_at": "2026-10-29T14:47:32.516240+00:00",
+  "cases_sha256": "e379ec550a52ebdf28de07a4d7ed8b3ad29f326e84ad56010e611a489bd04512",
+  "pdf_files_and_download_hashes_verified": 20,
+  "physical_pages": 816,
+  "confirmed_positive_pairs_covered": 100,
+  "confusable_negative_pairs_rejected": 2,
+  "source_offsets_and_hashes_verified": 162,
+  "independent_pagerank_and_degrees_verified": true,
+  "determinism_scope_and_stale_rejection_verified": true,
+  "graph_version": "references-v4",
+  "fingerprint": "7dc6fdb7f4c0e9f93b6aa2545de805e929eb76d1edbfc7ca13fd2c20da869f6e",
+  "stats": {
+    "documents": 20,
+    "works": 20,
+    "edges": 100,
+    "components": 1,
+    "isolated": 0
+  },
+  "model_review_repeated": false,
+  "limitations": "只读复核已有20篇固定候选及原文位置，不代表全体引用召回率。本轮未重复六篇本地模型综述。"
+}

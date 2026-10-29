@@ -21,7 +21,7 @@ from .architecture import architecture_comparison
 from .bibliography import author_ordinal, ordered_author
 from .comparison import explicit_configuration_facts
 from .core import Store, chunks_for_page, retrieve, validate_answer
-from .discovery import ArxivDiscovery, DiscoveryError, valid_id
+from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, valid_id
 from .graph import build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
@@ -77,6 +77,8 @@ def index_document(doc_id):
         sources = discovery.sources(doc_id)
         if sources:
             source = sources[0]
+            if source.get("title", "").strip():
+                info["title"] = source["title"].strip()[:300]
             info["authors"] = "; ".join(source["authors"])[:1000]
             info["abstract"] = info["abstract"] or source["abstract"][:1800]
         analysis = store.analyze(doc_id, "\n".join(texts), chunks, info)
@@ -756,6 +758,9 @@ async def graph_review(request: GraphReview):
             "特别注意否定条件的对象：without ground truth human annotations 应写为不依赖人工标注的标准答案，"
             "不能改写成无需参考文本或无需检索上下文；reference-free evaluation 也不等于无需检索上下文。"
             "不要评价论文创新性，不要声称未来方向尚未被后续研究解决。保留原文对效果的限定条件。"
+            "使用第三人称，不要把论文的工作写成‘我们’的工作。"
+            "涉及最佳或优于的比较，必须同时保留原文的比较范围、数据集及指标；"
+            "无法简短保留限定条件时，改为描述论文方法，不写排名结论。"
         )
         try:
             # 六篇一起生成时小模型可能漏掉后面的来源；逐篇约束范围，
@@ -852,7 +857,22 @@ class ResearchTaskRequest(BaseModel):
 
 
 async def task_search(query):
-    return await search_papers(q=query, start=0, sort="relevance")
+    response = await search_papers(q=query, start=0, sort="relevance")
+    response["selection_method"] = "official_relevance"
+    if response["items"] and models.encoder is not None:
+        query_vectors = await asyncio.to_thread(
+            models.encode, [response["search_query"]], query=True
+        )
+        vectors = await asyncio.to_thread(
+            models.encode,
+            [item["title"] + " " + item["abstract"][:1800] for item in response["items"]],
+        )
+        if query_vectors is None or vectors is None:
+            raise ValueError("本地主题重排未返回向量，请重试")
+        response["items"] = rank_topic_candidates(response["items"], query_vectors[0], vectors)
+        response["selection_method"] = "e5_topic"
+        response["steps"].append("本地 E5 按本次主题重排当前页候选")
+    return response
 
 
 async def task_import(arxiv_id):

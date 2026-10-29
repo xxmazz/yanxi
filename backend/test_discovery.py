@@ -4,6 +4,7 @@ import importlib
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import httpx
@@ -96,6 +97,62 @@ class DiscoveryTests(unittest.TestCase):
         ):
             with self.subTest(response=response.status_code), self.assertRaises(DiscoveryError):
                 self.service(lambda request: response).download(item)
+
+    def test_slow_download_has_a_bounded_five_minute_budget(self):
+        item = parse_feed(FEED)["items"][0]
+        service = self.service(lambda request: httpx.Response(200, content=b"%PDF-original"))
+        with patch("backend.discovery.time.monotonic", side_effect=[0, 200]):
+            self.assertEqual(service.download(item), b"%PDF-original")
+        with patch("backend.discovery.time.monotonic", side_effect=[0, 301]):
+            with self.assertRaisesRegex(DiscoveryError, "下载超时"):
+                service.download(item)
+
+    def test_import_index_uses_official_title_but_local_upload_keeps_parsed_title(self):
+        module = importlib.import_module("backend.app")
+        service = self.service(lambda request: httpx.Response(200, content=FEED))
+        item = parse_feed(FEED)["items"][0]
+        for official in (True, False):
+            with self.subTest(official=official):
+                doc, _ = self.store.create(f"%PDF-{official}".encode(), "paper.pdf")
+                if official:
+                    service.source(doc["id"], item)
+                with (
+                    patch.object(module, "store", self.store),
+                    patch.object(module, "discovery", service),
+                    patch.object(
+                        module,
+                        "PdfReader",
+                        return_value=SimpleNamespace(pages=[object()], is_encrypted=False),
+                    ),
+                    patch.object(
+                        module,
+                        "extract_page",
+                        return_value={
+                            "text": "Original scientific text with sufficient characters for indexing.",
+                            "method": "native",
+                            "width": 600,
+                            "height": 800,
+                            "blocks": [],
+                        },
+                    ),
+                    patch.object(
+                        module,
+                        "metadata",
+                        return_value={
+                            "title": "Parsed sidebar title",
+                            "authors": "",
+                            "abstract": "",
+                        },
+                    ),
+                    patch.object(module.models, "encode", return_value=None),
+                ):
+                    module.pending.acquire()
+                    module.index_document(doc["id"])
+                saved = self.store.document(doc["id"])
+                self.assertEqual(saved["status"], "ready", saved["error"])
+                self.assertEqual(
+                    saved["title"], item["title"] if official else "Parsed sidebar title"
+                )
 
     def test_source_preserved_and_archived_state_visible(self):
         service = self.service(lambda request: httpx.Response(200, content=FEED))

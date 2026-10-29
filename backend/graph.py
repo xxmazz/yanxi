@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 import networkx as nx
 
-VERSION = "references-v3"
+VERSION = "references-v4"
 MAX_DOCUMENTS = 30
 HEADING = re.compile(r"(?im)^\s*(?:\d+[.\s]+)?(?:references|bibliography|参考文献)\s*[:：]?\s*$")
 APPENDIX = re.compile(
@@ -79,6 +79,27 @@ def excerpt(doc_id, page, start, end):
         "url": f"/api/documents/{doc_id}/pdf#page={page['page']}",
         "preview_url": f"/api/documents/{doc_id}/render/{page['page']}",
     }
+
+
+def abstract_excerpt(doc_id, pages):
+    # 报告可能在封面、版权页和目录之后才有摘要；不从元数据补造正文出处。
+    heading = re.compile(
+        r"(?im)^[ \t]*(?:(?:\d{1,2}|[IVX]{1,4})[.)]?[ \t]+)?(?:abstract|摘要)"
+        r"(?:[ \t]*(?:[:：—–-]|\.(?=[ \t]+\w))[ \t]*|[ \t]*\n)"
+    )
+    ending = re.compile(
+        r"(?im)^[ \t]*(?:(?:\d+|[IVX]+)[.)]?[ \t]+)?i[ \t]*ntroduction\b|"
+        r"^[ \t]*(?:\d+(?:\.\d+)+[ \t]+[A-Z]|keywords\b|index terms\b|关键词)"
+    )
+    for page in pages[:8]:
+        found = heading.search(page["text"])
+        if found:
+            start = found.end()
+            stop = ending.search(page["text"], start)
+            end = min(stop.start() if stop else len(page["text"]), start + 1400)
+            if len(page["text"][start:end].strip()) >= 15:
+                return excerpt(doc_id, page, start, end)
+    return None
 
 
 def match_reference(section, target):
@@ -217,18 +238,7 @@ def groups(documents, pages, sources):
         }
         raw_pages = pages[doc_id]
         if raw_pages:
-            first = raw_pages[0]
-            abstract = re.search(
-                r"(?im)^[ \t]*(?:abstract|摘要)(?:[ \t]*[:：.—–-][ \t]*|[ \t]*\n)",
-                first["text"],
-            )
-            if abstract:
-                start = abstract.end()
-                ending = re.search(
-                    r"(?im)^\s*(?:1[.\s]+)?introduction\b|^\s*关键词", first["text"][start:]
-                )
-                end = start + ending.start() if ending else len(first["text"])
-                node["abstract_evidence"] = excerpt(doc_id, first, start, min(end, start + 1400))
+            node["abstract_evidence"] = abstract_excerpt(doc_id, raw_pages)
             for page in raw_pages:
                 ref_header = HEADING.search(page["text"])
                 body = page["text"][: ref_header.start()] if ref_header else page["text"]

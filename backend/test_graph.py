@@ -9,7 +9,14 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from backend.core import Store, chunks_for_page
-from backend.graph import build_graph, match_evidence, match_reference, references, sha
+from backend.graph import (
+    abstract_excerpt,
+    build_graph,
+    match_evidence,
+    match_reference,
+    references,
+    sha,
+)
 
 TITLE = "Attention Is All You Need"
 
@@ -29,6 +36,65 @@ class GraphTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_report_abstract_after_cover_and_contents_uses_real_page(self):
+        pages = [
+            page("Report cover", 1),
+            page("Copyright", 2),
+            page("Table of Contents\n1 Abstract ........... 1\n2 Introduction .......... 3", 3),
+            page("List of Figures", 4),
+            page(
+                "1 Abstract\nThis report evaluates a retrieval pipeline using actual health documents.\n1.1 Authors' contributions\nPrivate attribution details.",
+                5,
+            ),
+        ]
+        result = abstract_excerpt("report", pages)
+        self.assertEqual(result["page"], 5)
+        self.assertEqual(
+            result["quote"].strip(),
+            "This report evaluates a retrieval pipeline using actual health documents.",
+        )
+        self.assertEqual(pages[4]["text"][result["start"] : result["end"]], result["quote"])
+        self.assertEqual(result["page_sha256"], sha(pages[4]["text"]))
+
+    def test_abstract_avoids_contents_and_body_mentions_and_bounds_front_pages(self):
+        self.assertIsNone(
+            abstract_excerpt(
+                "doc",
+                [
+                    page(
+                        "Table of Contents\nAbstract ......... 3\n1 Introduction ......... 4\nWe discuss abstract reasoning here."
+                    )
+                ],
+            )
+        )
+        self.assertIsNone(
+            abstract_excerpt(
+                "doc",
+                [page("Cover", n) for n in range(1, 9)]
+                + [page("Abstract\nA body section unrelated to the front abstract.", 9)],
+            )
+        )
+
+    def test_abstract_stops_at_roman_intro_and_keywords(self):
+        for ending in [
+            "I. INTRODUCTION",
+            "I. I NTRODUCTION",
+            "Keywords: retrieval",
+            "Index Terms—retrieval",
+        ]:
+            with self.subTest(ending=ending):
+                result = abstract_excerpt(
+                    "doc",
+                    [
+                        page(
+                            "Abstract—We evaluate a local retrieval pipeline.\n"
+                            + ending
+                            + "\nUnrelated body."
+                        )
+                    ],
+                )
+                self.assertEqual(result["quote"], "We evaluate a local retrieval pipeline.\n")
 
     def add(self, title, texts, **metadata):
         doc, _ = self.store.create(

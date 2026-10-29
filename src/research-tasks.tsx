@@ -8,6 +8,9 @@ type Task = {
   stage: string;
   error: string;
   attempt: number;
+  search_query?: string;
+  selection_method?: string;
+  search_steps?: string[];
   events: { stage: string; message: string; time: number }[];
   selected: {
     title: string;
@@ -37,7 +40,8 @@ type Task = {
 const statuses: Record<string, string> = {
   queued: "排队中",
   running: "执行中",
-  complete: "来源汇总完成",
+  complete: "来源与摘要综述完成",
+  needs_summary: "来源就绪，待生成综述",
   error: "需要重试",
   needs_review: "等待版本确认",
   interrupted: "任务已中断",
@@ -155,9 +159,35 @@ export function ResearchTasks({
           }}
         >
           <summary>
-            {task.query} · {statuses[task.status] || task.status} · 第{" "}
-            {task.attempt} 次运行
+            {task.query} ·{" "}
+            {task.status === "complete" && task.summary?.insufficient_evidence
+              ? statuses.needs_summary
+              : statuses[task.status] || task.status}{" "}
+            · 第 {task.attempt} 次运行
           </summary>
+          {task.search_query && (
+            <p>
+              实际检索词：{task.search_query} · 候选顺序：
+              {task.selection_method === "e5_topic"
+                ? "本地 E5 按本次主题重排"
+                : "arXiv 官方相关性"}
+            </p>
+          )}
+          {task.selection_method === "e5_topic" && (
+            <small>
+              相似度仅用于当前页最多八篇候选的主题排序，不表示论文质量或相关概率。
+            </small>
+          )}
+          {task.search_steps && (
+            <details>
+              <summary>检索过程</summary>
+              <ol>
+                {task.search_steps.map((step, i) => (
+                  <li key={i}>{step}</li>
+                ))}
+              </ol>
+            </details>
+          )}
           <ol>
             {task.events.map((event, i) => (
               <li key={i}>{event.message}</li>
@@ -175,12 +205,23 @@ export function ResearchTasks({
                 取消后续步骤
               </button>
             )}
-            {["error", "interrupted", "needs_review"].includes(task.status) && (
+            {([
+              "error",
+              "interrupted",
+              "needs_review",
+              "needs_summary",
+            ].includes(task.status) ||
+              (task.status === "complete" &&
+                task.summary?.insufficient_evidence)) && (
               <button
                 disabled={pending}
                 onClick={() => void act(`/api/research/tasks/${task.id}/retry`)}
               >
-                从检查点继续
+                {task.status === "needs_summary" ||
+                (task.status === "complete" &&
+                  task.summary?.insufficient_evidence)
+                  ? "重试摘要综述"
+                  : "从检查点继续"}
               </button>
             )}
           </div>
@@ -214,6 +255,9 @@ export function ResearchTasks({
                   ? "综述状态"
                   : "有来源的摘要综述"}
               </h3>
+              {!task.summary.insufficient_evidence && (
+                <small>按来源分别概括论文作者的研究工作，仅基于摘要。</small>
+              )}
               <p className="task-answer">{task.summary.answer}</p>
               {task.summary.citations.map((item) => (
                 <details key={item.id}>

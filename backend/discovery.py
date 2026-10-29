@@ -1,6 +1,7 @@
 """arXiv 官方 Atom 检索、受限 PDF 下载与本地库相关性排序。"""
 
 import json
+import math
 import re
 import threading
 import time
@@ -18,6 +19,46 @@ NAMESPACES = {
     "arxiv": "http://arxiv.org/schemas/atom",
 }
 CACHE_SECONDS = 6 * 3600
+DOWNLOAD_SECONDS = 300
+
+
+def rank_topic_candidates(items, query_vector, vectors):
+    """只重排本页候选，余弦相似度不是论文质量或相关概率。"""
+    if len(items) != len(vectors):
+        raise ValueError("候选与主题向量数量不一致")
+
+    def unit(vector):
+        values = [float(v) for v in vector]
+        if not values or not all(math.isfinite(v) for v in values):
+            raise ValueError("主题向量无效")
+        norm = math.sqrt(sum(v * v for v in values))
+        if not norm:
+            raise ValueError("主题向量为空")
+        return [v / norm for v in values]
+
+    query = unit(query_vector)
+    ranked = []
+    for index, (item, vector) in enumerate(zip(items, vectors), 1):
+        passage = unit(vector)
+        if len(passage) != len(query):
+            raise ValueError("主题向量维度不一致")
+        score = sum(q * p for q, p in zip(query, passage))
+        ranked.append(
+            (
+                score,
+                {
+                    **item,
+                    "official_rank": index,
+                    "topic_similarity": round(score, 6),
+                    "selection_reason": (
+                        f"本地 E5 按本次主题重排（相似度 {score:.3f}）；"
+                        f"官方本页原序号 {index}；同作品去重"
+                    ),
+                },
+            )
+        )
+    ranked.sort(key=lambda pair: -pair[0])
+    return [item for _, item in ranked]
 
 
 class DiscoveryError(Exception):
@@ -316,7 +357,7 @@ class ArxivDiscovery:
                         data.extend(part)
                         if len(data) > 100 * 1024 * 1024:
                             raise DiscoveryError("论文 PDF 超过 100 MB", 413)
-                        if time.monotonic() - started > 120:
+                        if time.monotonic() - started > DOWNLOAD_SECONDS:
                             raise DiscoveryError("论文下载超时，请稍后重试", 504)
                     if b"%PDF-" not in data[:1024]:
                         raise DiscoveryError("arXiv 未返回有效 PDF，可能是访问限制，请稍后重试")

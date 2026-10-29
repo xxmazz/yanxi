@@ -1,0 +1,101 @@
+{
+  "verified_at": "2026-10-29T14:47:27.688958+00:00",
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "cases": [
+    {
+      "task_id": "aa41f4e331394c628397fd50d2dca3d1",
+      "query": "检索增强生成的自动评估",
+      "search_query": "retrieval augmented generation automatic evaluation",
+      "selection_method": "e5_topic",
+      "attempt": 1,
+      "status": "complete",
+      "search_steps": [
+        "读取检索主题",
+        "将中文主题转换为英文检索词",
+        "读取 arXiv 查询缓存",
+        "本地 E5 比较候选摘要与文献库主题",
+        "本地 E5 按本次主题重排当前页候选"
+      ],
+      "results": [
+        {
+          "arxiv_id": "2505.04680v1",
+          "document_id": "42270649c46e2dba4478cac140401ca2f9c0856910419c6c2c4ab5b5900217a3",
+          "official_rank": 4,
+          "topic_similarity": 0.901605,
+          "title": "Retrieval Augmented Generation Evaluation for Health Documents",
+          "pages": 45
+        },
+        {
+          "arxiv_id": "2403.00820v1",
+          "document_id": "4bf482c238ab8deeee83e3b4d131e69c7e28493f2a4c9c25eec11cda66293a79",
+          "official_rank": 6,
+          "topic_similarity": 0.898439,
+          "title": "Retrieval Augmented Generation Systems: Automatic Dataset Creation, Evaluation and Boolean Agent Setup",
+          "pages": 7
+        }
+      ],
+      "answer": "本文提出了一种严格的数据集创建和评估工作流程，用于定量比较不同的RAG策略。[E1]\n\n开发了一种名为RAGEv的检索增强生成评估管道，并构建了相应的评估工具和基准数据集以验证结果准确性。[E2]",
+      "fingerprint": "009f5bb0e9e6565db66db06f40ea6cf80f7dcb04b946abb324cbd7fa490efcfd",
+      "verified_sources": [
+        {
+          "id": "E1",
+          "document_id": "4bf482c238ab8deeee83e3b4d131e69c7e28493f2a4c9c25eec11cda66293a79",
+          "page": 1,
+          "start": 464,
+          "end": 1327,
+          "page_sha256": "8600fea49574f6cae0e315557daf1a9785bcda4a580d8ebdf43a6289971cd674",
+          "quote_sha256": "4438a8051b93d612b2706e33e5f5d3f75bded3d757aaef8352e73c8b30761566"
+        },
+        {
+          "id": "E2",
+          "document_id": "42270649c46e2dba4478cac140401ca2f9c0856910419c6c2c4ab5b5900217a3",
+          "page": 5,
+          "start": 17,
+          "end": 1417,
+          "page_sha256": "d2501e4c2c75ec47de50c9c63b9e3af8ba149d812894418f3550bb372eeec648",
+          "quote_sha256": "0ad50ec66ac2f63644598a9bf87f0c56f051a47dc1182953f86024134ac759fb"
+        }
+      ]
+    },
+    {
+      "task_id": "ea5acce9cbd045bdb2003bad96461c03",
+      "query": "2005.11401v4",
+      "search_query": "2005.11401v4",
+      "selection_method": "official_relevance",
+      "attempt": 2,
+      "status": "complete",
+      "search_steps": [],
+      "results": [
+        {
+          "arxiv_id": "2005.11401v4",
+          "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+          "official_rank": null,
+          "topic_similarity": null,
+          "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+          "pages": 19
+        }
+      ],
+      "answer": "我们探索了一种用于检索增强生成（RAG）的一般微调配方，该配方结合了预训练参数化和非参数化记忆以进行语言生成。[E1]",
+      "fingerprint": "c9cefd6d102cff8605550958b221e7def03241d39177f1c69bfb0c4f35ef5b5a",
+      "verified_sources": [
+        {
+          "id": "E1",
+          "document_id": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+          "page": 1,
+          "start": 359,
+          "end": 1759,
+          "page_sha256": "1fa9e1a97c1c5202313b155c4c0ea25ef6be6be0343cc72cd87b99807c05bcb3",
+          "quote_sha256": "22cf320f63e4b2dbc855aaa8403b7695dfb7e6c7cb7d66ed141002fe30c3fa3c"
+        }
+      ]
+    }
+  ],
+  "limitations": "核对真实任务、PDF身份、摘要来源位置、范围覆盖及快照一致性；结构检查不等于语义蕴含判断，中文结论另行人工核对。只概括所选摘要，未做全文综述；E5仅重排官方首批最多八篇候选，不代表全库召回率、论文质量或主题相关概率。"
+}

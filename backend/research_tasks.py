@@ -6,7 +6,7 @@ import time
 import uuid
 
 ACTIVE = {"queued", "running"}
-RETRYABLE = {"error", "interrupted", "needs_review"}
+RETRYABLE = {"error", "interrupted", "needs_review", "needs_summary"}
 
 
 class ResearchTasks:
@@ -77,7 +77,10 @@ class ResearchTasks:
 
     def retry(self, task_id):
         task = self.get(task_id)
-        if task["status"] not in RETRYABLE:
+        old_incomplete = task["status"] == "complete" and (task.get("summary") or {}).get(
+            "insufficient_evidence"
+        )
+        if task["status"] not in RETRYABLE and not old_incomplete:
             raise ValueError("此任务当前不能重试")
         if any(t["status"] in ACTIVE for t in self.list()):
             raise ValueError("已有研究任务正在运行")
@@ -134,7 +137,10 @@ class ResearchTasks:
                             "arxiv_id": item["arxiv_id"],
                             "title": item["title"],
                             "url": item["url"],
-                            "reason": "arXiv 官方检索相关性顺序；同作品只保留本次首个候选",
+                            "reason": item.get("selection_reason")
+                            or "arXiv 官方检索相关性顺序；同作品只保留本次首个候选",
+                            "official_rank": item.get("official_rank"),
+                            "topic_similarity": item.get("topic_similarity"),
                             "job_id": "",
                             "document_id": "",
                         }
@@ -149,6 +155,16 @@ class ResearchTasks:
                     f"已保存 {len(selected)} 篇候选，后续重试复用此范围",
                     selected=selected,
                     search_query=response.get("search_query", task["query"]),
+                    search_steps=response.get("steps", []),
+                    selection_method=response.get("selection_method", "official_relevance"),
+                    candidates=[
+                        {
+                            key: item[key]
+                            for key in ("arxiv_id", "title", "official_rank", "topic_similarity")
+                            if key in item
+                        }
+                        for item in response["items"][:8]
+                    ],
                 )
             for index, item in enumerate(task["selected"]):
                 self.event(task_id, "import", f"处理 {item['title']}")
@@ -222,6 +238,30 @@ class ResearchTasks:
                     or not current["is_active"]
                 ):
                     raise ValueError("汇总期间文献状态发生变化，请确认文献库后重试")
+            if not summary.get("insufficient_evidence"):
+                cited = {item["document_id"] for item in summary.get("citations", [])}
+                covered = set(summary.get("covered_documents", cited))
+                if cited != set(ids) or covered != set(ids):
+                    missing = [
+                        item["title"]
+                        for item in results
+                        if item["document_id"] not in cited & covered
+                    ]
+                    summary = {
+                        "answer": "摘要综述没有完整覆盖本次文献，未展示部分结论。请核对原文摘要后重试。"
+                        + ("缺少来源：" + "；".join(missing) if missing else "来源范围不一致。"),
+                        "citations": [],
+                        "insufficient_evidence": True,
+                    }
+            if summary.get("insufficient_evidence"):
+                self.event(
+                    task_id,
+                    "summarize",
+                    "原文入库完成，摘要综述尚未通过，可从检查点重试",
+                    status="needs_summary",
+                    summary=summary,
+                )
+                return
             self.event(
                 task_id,
                 "complete",

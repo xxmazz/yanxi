@@ -49,7 +49,12 @@ class TaskTests(unittest.IsolatedAsyncioTestCase):
 
     async def summarize(self, ids):
         self.assertEqual(ids, [self.doc_id])
-        return {"answer": "Supported summary", "citations": []}
+        return {
+            "answer": "Supported summary",
+            "citations": [{"document_id": self.doc_id}],
+            "covered_documents": ids,
+            "insufficient_evidence": False,
+        }
 
     async def run_task(self, task_id, **overrides):
         callbacks = dict(
@@ -86,6 +91,65 @@ class TaskTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["status"], "complete")
         self.assertEqual((self.search_count, self.submit_count), (1, 1))
         self.assertEqual(result["attempt"], 2)
+
+    async def test_rejected_summary_retries_without_repeating_download(self):
+        async def refused(_ids):
+            return {"answer": "model refused", "citations": [], "insufficient_evidence": True}
+
+        task = self.tasks.create("topic", 1)
+        result = await self.run_task(task["id"], summarize=refused)
+        self.assertEqual(result["status"], "needs_summary")
+        self.assertEqual(len(result["results"]), 1)
+        self.tasks.retry(task["id"])
+        result = await self.run_task(task["id"])
+        self.assertEqual(result["status"], "complete")
+        self.assertEqual((self.search_count, self.submit_count), (1, 1))
+        # 升级前的来源完成记录仍可补生成摘要。
+        result["summary"] = await refused([])
+        self.tasks.save(result)
+        self.assertEqual(self.tasks.retry(task["id"])["status"], "queued")
+
+    async def test_partial_or_foreign_summary_scope_is_not_presented_as_complete(self):
+        for citations, covered in [
+            ([], [self.doc_id]),
+            ([self.doc_id], []),
+            (["foreign"], [self.doc_id]),
+        ]:
+
+            async def incomplete(_ids):
+                return {
+                    "answer": "partial claim must not leak",
+                    "citations": [{"document_id": key} for key in citations],
+                    "covered_documents": covered,
+                    "insufficient_evidence": False,
+                }
+
+            task = self.tasks.create("topic", 1)
+            result = await self.run_task(task["id"], summarize=incomplete)
+            self.assertEqual(result["status"], "needs_summary")
+            self.assertNotIn("partial claim", result["summary"]["answer"])
+            self.assertEqual(result["summary"]["citations"], [])
+
+    async def test_topic_ranking_provenance_survives_checkpoint(self):
+        async def ranked(query):
+            response = await self.search(query)
+            response.update(
+                search_query="translated topic",
+                selection_method="e5_topic",
+                steps=["local topic order"],
+            )
+            response["items"][0].update(
+                official_rank=4, topic_similarity=0.8, selection_reason="local query ranking"
+            )
+            return response
+
+        task = self.tasks.create("中文研究主题", 1)
+        result = await self.run_task(task["id"], search=ranked)
+        self.assertEqual(result["selection_method"], "e5_topic")
+        self.assertEqual(result["selected"][0]["official_rank"], 4)
+        self.assertEqual(result["selected"][0]["reason"], "local query ranking")
+        self.assertEqual(result["candidates"][0]["topic_similarity"], 0.8)
+        self.assertEqual(result["search_steps"], ["local topic order"])
 
     async def test_review_wait_and_resume(self):
         with self.store.connect() as db:
