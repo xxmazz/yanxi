@@ -57,6 +57,9 @@ const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
   { id: "write", label: "写作工坊", icon: FlaskConical },
 ];
 const STORAGE = "yanxi-demo-library-v1";
+const DEFAULT_CHART_CSV =
+  "方法,得分\nBaseline,68.4\n+ 检索,75.2\n+ 重排序,79.6\n+ 引用校验,82.1";
+type ChartType = "bar" | "line";
 // getRandomValues also works on an HTTP LAN preview; randomUUID requires a secure context.
 function createId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), (value) =>
@@ -135,6 +138,8 @@ export default function App() {
   const changed = () => setRefreshTick((n) => n + 1);
   const [importing, setImporting] = useState(false);
   const [writingTab, setWritingTab] = useState<"outline" | "chart">("outline");
+  const [chartCsv, setChartCsv] = useState(DEFAULT_CHART_CSV);
+  const [chartType, setChartType] = useState<ChartType>("bar");
 
   const active = papers.find((p) => p.id === currentId) || papers[0];
   const title = nav.find((n) => n.id === view)!.label;
@@ -1419,7 +1424,13 @@ export default function App() {
               {writingTab === "outline" ? (
                 <WritingWorkspace documents={serverDocs} />
               ) : (
-                <ChartWorkspace notify={notify} />
+                <ChartWorkspace
+                  notify={notify}
+                  csv={chartCsv}
+                  onCsvChange={setChartCsv}
+                  chartType={chartType}
+                  onChartTypeChange={setChartType}
+                />
               )}
             </>
           )}
@@ -1584,7 +1595,7 @@ export default function App() {
                     <span>
                       后续接入
                       <b>
-                        复杂表格与公式还原、参考文献双向跳转、研究方向时效核验与定期论文追踪。
+                        复杂表格与公式还原、更多引用格式、研究方向时效核验与定期论文追踪。
                       </b>
                     </span>
                   </div>
@@ -1622,11 +1633,19 @@ export default function App() {
   );
 }
 
-function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
-  const [csv, setCsv] = useState(
-    "方法,得分\nBaseline,68.4\n+ 检索,75.2\n+ 重排序,79.6\n+ 引用校验,82.1",
-  );
-  const [chartType, setChartType] = useState<"bar" | "line">("bar");
+function ChartWorkspace({
+  notify,
+  csv,
+  onCsvChange,
+  chartType,
+  onChartTypeChange,
+}: {
+  notify: (text: string) => void;
+  csv: string;
+  onCsvChange: (value: string) => void;
+  chartType: ChartType;
+  onChartTypeChange: (value: ChartType) => void;
+}) {
   const fileRef = useRef<HTMLInputElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const result = useMemo(() => {
@@ -1672,7 +1691,7 @@ function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
     try {
       const text = await file.text();
       parseChartCsv(text);
-      setCsv(text);
+      onCsvChange(text);
       notify("已读取本地 CSV。");
     } catch (e) {
       notify(e instanceof Error ? e.message : "文件读取失败。");
@@ -1691,7 +1710,7 @@ function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
           id="csv-data"
           spellCheck={false}
           value={csv}
-          onChange={(e) => setCsv(e.target.value)}
+          onChange={(e) => onCsvChange(e.target.value)}
         />
         {result.error && (
           <p className="chart-error" role="alert">
@@ -1709,9 +1728,7 @@ function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
           <button
             className="button secondary small"
             onClick={() => {
-              setCsv(
-                "方法,得分\nBaseline,68.4\n+ 检索,75.2\n+ 重排序,79.6\n+ 引用校验,82.1",
-              );
+              onCsvChange(DEFAULT_CHART_CSV);
             }}
           >
             恢复示例
@@ -1730,6 +1747,7 @@ function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
           <ShieldCheck size={18} />
           <p>
             图表在浏览器本地计算。支持负值、零值和带引号的类别。最多 30 行。
+            页面内切换会保留输入；刷新前请导出图注备份数据。
           </p>
         </div>
       </section>
@@ -1739,13 +1757,13 @@ function ChartWorkspace({ notify }: { notify: (text: string) => void }) {
           <div className="chart-type">
             <button
               className={chartType === "bar" ? "active" : ""}
-              onClick={() => setChartType("bar")}
+              onClick={() => onChartTypeChange("bar")}
             >
               柱状图
             </button>
             <button
               className={chartType === "line" ? "active" : ""}
-              onClick={() => setChartType("line")}
+              onClick={() => onChartTypeChange("line")}
             >
               折线图
             </button>
