@@ -2,7 +2,7 @@
 
 面向科研阅读与写作场景的本地模型文献工作台，支持 PDF 入库、混合检索、带原文页码的文献问答。引用图谱从参考文献原文构建，写作工坊基于真实摘要生成可编辑研究计划和架构图。
 
-2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；169项后端与13项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
+2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；176项后端与14项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
 
 10月30日继续补齐了[参考文献批量下载、每日/每周论文订阅与反馈](docs/FOLLOWING.md)，入口在“探索发现”。参考文献当前识别明确arXiv编号，订阅每次获取最新8篇并用本地E5给出库内关联理由。
 
@@ -87,4 +87,4 @@ GPT 系列参数量、LN 位置和上下文比较已验证，支持按指标逐�
 
 ## 技术说明与演示准备
 
-[10页技术文档](output/pdf/yanxi-technical-draft.pdf)已按工程e47f644更新，包含系统架构、四卡本地模型方案、实现与测试依据，技术内容定稿，团队信息待补。源稿与重建方式见[文档构建](docs/REPORT_BUILD.md)，视频按[七分钟脚本](docs/DEMO_SCRIPT.md)准备，尚未录制发布。工程和材料的剩余事项见[交付清单](docs/DELIVERY_PLAN.md)。
+[10页技术文档](output/pdf/yanxi-technical-draft.pdf)已按工程8311a87更新，包含系统架构、四卡本地模型方案、实现与测试依据，技术内容定稿，团队信息待补。源稿与重建方式见[文档构建](docs/REPORT_BUILD.md)，视频按[七分钟脚本](docs/DEMO_SCRIPT.md)准备，尚未录制发布。工程和材料的剩余事项见[交付清单](docs/DELIVERY_PLAN.md)。

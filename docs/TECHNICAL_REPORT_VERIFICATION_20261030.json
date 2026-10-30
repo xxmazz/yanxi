@@ -1,23 +1,22 @@
 {
   "document_date": "2026-10-30",
-  "engineering_baseline": "e47f6446efca39579687fa6402e76fa7c270b97f",
+  "engineering_baseline": "8311a8709f742696e8d741ea97e393b234756b0b",
   "pdf_path": "output/pdf/yanxi-technical-draft.pdf",
-  "pdf_sha256": "884be426b423e5f5b800312b9d2a9916e73a0d1649e7bea4bb37c68ebe6f3123",
-  "source_sha256": "cd98072b8d04c787db2062397ff0c58207598f2708d5f6bc390d713a91ef558b",
-  "builder_sha256": "662a4e421f0725a0bb507014e224c89182a1447830c81dce4400616fd647e7ba",
+  "pdf_sha256": "a0a8d2f230c888bc00abb5ec2b2ee0e452fb11a687ca62226de2b002af586228",
+  "source_sha256": "f134ac21af45ddbaddc5b61382df91c224e50ca92b262c27e0b4953f8aa27691",
+  "builder_sha256": "e443d3b3eebc6b74a6f9195e3cd1a659766d0855606dec67938f3fe0c172df67",
   "pages": 10,
   "page_limit": 30,
   "encrypted": false,
   "javascript_present": false,
-  "chinese_text_and_required_sections_verified": true,
   "embedded_chinese_font_subsets": {
     "/AAAAAA+STHeitiTC-Light-0": true,
     "/AAAAAB+STHeitiTC-Light-0": true,
     "/AAAAAC+STHeitiTC-Light-0": true,
     "/AAAAAA+STHeitiTC-Medium-0": true
   },
-  "unique_external_links": 50,
-  "local_source_links_and_baseline_evidence_targets_verified": true,
+  "unique_external_links": 52,
+  "baseline_link_targets_verified": true,
   "outline_destinations": [
     {
       "title": "摘要",
@@ -72,16 +71,12 @@
       "page": 9
     }
   ],
-  "team_information": "信息待补",
-  "technical_content": "已按工程e47f644更新，团队信息仍待本人补齐；不代表已提交",
-  "video_status": "由参赛者负责",
-  "public_deployment": "由参赛者负责，未以回环浏览器验收替代外网验收",
-  "scope": "技术PDF更新、字体/目录/链接/渲染检查；不额外重复历史GPU实验。核心版范围与增强项见正文及REQUIREMENTS_COVERAGE.md。",
   "visual_review": {
-    "renderer": "Poppler pdftoppm 110 DPI",
+    "renderer": "Poppler90DPI",
     "rendered_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     "contact_sheets_reviewed": 4,
-    "detail_pages_reviewed": [3, 7, 9],
-    "outcome": "已查看所有10页与架构/测试表/来源表细图；中文可读、无截断重叠，跨页表头重复，目录与页眉页脚对应。"
-  }
+    "outcome": "逐页查看，新增订阅/下载段落及更新后的表格无截断重叠，中文可读，跨页表头重复。"
+  },
+  "team_information": "信息待补",
+  "scope": "新增订阅、批量下载与176/14测试更新；视频和公网参赛者负责。实际模型/网络证据另见FOLLOWING_VERIFICATION_20261030.json。"
 }
