@@ -25,12 +25,15 @@ from .conversation import context_scope
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, valid_id
 from .following import Following, reference_candidates
+from .future import prepare as prepare_future
 from .graph import build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 from .reading_links import navigation
 from .research_tasks import ResearchTasks
+from .structure import analyze as analyze_structure
+from .structure import table_csv
 from .translation import TranslationService
 from .writing import prepare as prepare_writing
 from .writing import render_draft
@@ -425,6 +428,54 @@ def render_page(doc_id: str, number: int):
                 log.warning("PDF preview failed: %s", exc)
                 raise HTTPException(503, "原页预览生成失败，请使用原 PDF 链接") from exc
     return FileResponse(cached, media_type="image/png")
+
+
+@app.get("/api/documents/{doc_id}/pages/{number}/structure")
+def page_structure(doc_id: str, number: int):
+    return document_action(lambda: analyze_structure(store, doc_id, number))
+
+
+def structure_item(doc_id, number, item_id):
+    payload = document_action(lambda: analyze_structure(store, doc_id, number))
+    item = next((item for item in payload["items"] if item["id"] == item_id), None)
+    if item is None:
+        raise HTTPException(404, "本页没有此结构项")
+    return item
+
+
+@app.get("/api/documents/{doc_id}/pages/{number}/structure/{item_id}/image")
+def structure_image(doc_id: str, number: int, item_id: str):
+    import io
+
+    from PIL import Image
+
+    item = structure_item(doc_id, number, item_id)
+    rendered = render_page(doc_id, number)
+    with Image.open(rendered.path) as image:
+        x0, y0, x1, y1 = item["bbox"]
+        crop = image.crop(
+            (
+                int(x0 * image.width),
+                int(y0 * image.height),
+                int(x1 * image.width + 0.999),
+                int(y1 * image.height + 0.999),
+            )
+        )
+        output = io.BytesIO()
+        crop.save(output, format="PNG")
+    return Response(output.getvalue(), media_type="image/png")
+
+
+@app.get("/api/documents/{doc_id}/pages/{number}/structure/{item_id}/csv")
+def structure_csv(doc_id: str, number: int, item_id: str):
+    item = structure_item(doc_id, number, item_id)
+    if item["kind"] != "table":
+        raise HTTPException(404, "此项不是表格")
+    return Response(
+        table_csv(item),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="table-p{number}-{item_id}.csv"'},
+    )
 
 
 class Question(BaseModel):
@@ -841,6 +892,68 @@ async def graph_review(request: GraphReview):
             "insufficient_evidence": refused,
             "covered_documents": [item["document_id"] for item in evidence],
         }
+
+
+class FutureCheck(GraphReview):
+    topic: str = Field(min_length=3, max_length=240)
+
+
+@app.post("/api/graph/future-check")
+async def future_check(request: FutureCheck):
+    if len(request.topic.strip()) < 3:
+        raise HTTPException(422, "请输入至少三个字符的研究主题")
+    graph = document_action(lambda: build_graph(store, request.document_ids))
+    if graph["fingerprint"] != request.fingerprint:
+        raise HTTPException(409, "原文范围已变化，请重新构图")
+    if not any(node["future_work"] for node in graph["nodes"]):
+        raise HTTPException(409, "当前范围没有明确的后续研究原文")
+    if models.llm is None:
+        raise HTTPException(503, "本地模型未就绪")
+    searched = await search_papers(q=request.topic, start=0, sort="newest")
+    if searched["items"] and models.encoder is not None:
+        items = searched["items"]
+        query_vector = await asyncio.to_thread(
+            models.encode, [searched["search_query"]], query=True
+        )
+        vectors = await asyncio.to_thread(
+            models.encode, [item["title"] + " " + item["abstract"][:1900] for item in items]
+        )
+        if query_vector is not None and vectors is not None:
+            searched = {**searched, "items": rank_topic_candidates(items, query_vector[0], vectors)}
+    report = document_action(lambda: prepare_future(graph, searched))
+    if chat_lock.locked():
+        raise HTTPException(429, "本地模型正在处理其他请求，请稍后重试")
+    comparisons = []
+    async with chat_lock:
+        for item in report["candidates"]:
+            question = (
+                f"拟研究主题：{request.topic}。请只用一句简短中文概括当前摘要中与主题相关的"
+                "方法或研究对象；若联系不明确，说明摘要无法支持联系。"
+                "只描述本篇摘要陈述的工作，不推断它已经解决或没有解决其他论文的未来方向，"
+                "不声称研究主题首次被提出，不写摘要没有的指标或实验。"
+            )
+            try:
+                raw = await asyncio.to_thread(models.answer, question, [item])
+                answer, labels, refused = validate_answer(raw, [item])
+                comparisons.append(
+                    {
+                        "source": item["label"],
+                        "answer": answer,
+                        "supported": not refused and labels == [item["label"]],
+                    }
+                )
+            except (ValueError, RuntimeError):
+                comparisons.append(
+                    {
+                        "source": item["label"],
+                        "answer": "摘要概括未通过来源检查，请直接核对摘要。",
+                        "supported": False,
+                    }
+                )
+    current = document_action(lambda: build_graph(store, request.document_ids))
+    if current["fingerprint"] != request.fingerprint:
+        raise HTTPException(409, "核对期间原文已变化，请重新构图")
+    return {**report, "topic": request.topic, "comparisons": comparisons}
 
 
 class WritingRequest(BaseModel):

@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-30",
+  "browser": "151.0.7922.34",
+  "api_stubs": false,
+  "desktop_mouse": false,
+  "checks": [
+    {
+      "name": "original table and numbered formula in actual PDF",
+      "passed": true,
+      "seconds": 0.598,
+      "document_sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "table_rows": 13,
+      "equation": "QKT\nAttention(Q,K,V ) = softmax( √ )V (1)\nd\nk"
+    },
+    {
+      "name": "reader displays real extracted cells and downloads CSV",
+      "passed": true,
+      "seconds": 0.33,
+      "csv_sha256": "d8e3997bff5d5af42a23be085085461722714821d847c69c022200df37dfe2ef"
+    },
+    {
+      "name": "two-series charts, radar, SVG and caption downloads",
+      "passed": true,
+      "seconds": 0.193,
+      "series": 2,
+      "mobile_width": 390
+    },
+    {
+      "name": "future work real latest metadata and local Qwen comparison",
+      "passed": true,
+      "seconds": 6.815,
+      "after_year": 2020,
+      "candidate_count": 4,
+      "supported": 2,
+      "cached": true,
+      "search_query": "retrieval augmented generation evaluation",
+      "sources": [
+        {
+          "arxiv_id": "2610.37358v1",
+          "published": "2026-10-27T14:55:58Z",
+          "url": "https://arxiv.org/abs/2610.37358v1"
+        },
+        {
+          "arxiv_id": "2610.40454v1",
+          "published": "2026-10-29T17:01:22Z",
+          "url": "https://arxiv.org/abs/2610.40454v1"
+        },
+        {
+          "arxiv_id": "2610.39231v1",
+          "published": "2026-10-29T02:50:13Z",
+          "url": "https://arxiv.org/abs/2610.39231v1"
+        },
+        {
+          "arxiv_id": "2610.39230v1",
+          "published": "2026-10-29T02:50:00Z",
+          "url": "https://arxiv.org/abs/2610.39230v1"
+        }
+      ]
+    }
+  ],
+  "downloads": [
+    {
+      "name": "table-p8-0.csv",
+      "sha256": "d8e3997bff5d5af42a23be085085461722714821d847c69c022200df37dfe2ef"
+    },
+    {
+      "name": "研析-数据图表.svg",
+      "sha256": "2d7162de4e2629b101f1a705735a27ceeccaba652eefdf338274a3cfdcd52348"
+    },
+    {
+      "name": "研析-图表说明.md",
+      "sha256": "5a95c3f61142cfa90601b57f77a8dac9663fb32187286f64ecde1c6bb7a45bde"
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "javascript_errors": [],
+  "passed": true,
+  "engineering_baseline": "candidate before commit",
+  "backend_tests": 183,
+  "frontend_tests": 18,
+  "future_ui": {
+    "date": "2026-10-30",
+    "api_stubs": false,
+    "passed": true,
+    "candidates": 4,
+    "supported": 2,
+    "cached": true,
+    "export_name": "研析-更新研究核对.json",
+    "javascript_errors": []
+  },
+  "production_preservation": {
+    "backup": "before-following-ff36df5.sqlite3",
+    "unchanged_tables": {
+      "documents": true,
+      "pages": true,
+      "chunks": true,
+      "version_decisions": true
+    },
+    "documents": 33,
+    "pages": 1574,
+    "pdfs": 33,
+    "pdf_hashes_match_ids": true
+  },
+  "limitations": [
+    "原生页表格候选和编号公式原图/转写；不是任意表格或LaTeX复原",
+    "本轮最新元数据初查未用缓存，最终回归复用6小时内有效缓存；不将缓存刷新称为新抓取",
+    "最终4篇候选中2篇摘要概括通过，另外2篇拒答；不据此证明主题新颖",
+    "本轮图表样例是虚构输入，47/43/72另见既有真实回归",
+    "一次隔离服务重启失败、两次可复现脚本准备检查失败已保留本地日志；新服务最终4条验证通过"
+  ]
+}

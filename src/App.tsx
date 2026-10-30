@@ -38,7 +38,8 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { readSections, seedPapers } from "./data";
 import type { Paper, View } from "./data";
-import { parseChartCsv } from "./csv";
+import { parseMultiChartCsv, radarError } from "./csv";
+import { ChartFigure, type ChartType } from "./chart-figure";
 import { fingerprintPdf } from "./pdf-fingerprint";
 import { hasPdfHeader } from "./pdf-validation";
 import { api } from "./api";
@@ -59,7 +60,6 @@ const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
 const STORAGE = "yanxi-demo-library-v1";
 const DEFAULT_CHART_CSV =
   "方法,得分\nBaseline,68.4\n+ 检索,75.2\n+ 重排序,79.6\n+ 引用校验,82.1";
-type ChartType = "bar" | "line";
 // getRandomValues also works on an HTTP LAN preview; randomUUID requires a secure context.
 function createId() {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), (value) =>
@@ -1677,7 +1677,7 @@ function ChartWorkspace({
   const svgRef = useRef<SVGSVGElement>(null);
   const result = useMemo(() => {
     try {
-      return { data: parseChartCsv(csv), error: "" };
+      return { data: parseMultiChartCsv(csv), error: "" };
     } catch (e) {
       return {
         data: null,
@@ -1686,28 +1686,21 @@ function ChartWorkspace({
     }
   }, [csv]);
   const data = result.data;
-  const values = data?.rows.map((row) => row.value) || [0];
-  const min = Math.min(0, ...values),
-    max = Math.max(0, ...values);
-  const range = max - min || 1;
-  const y = (value: number) => 260 - ((value - min) / range) * 190;
-  const x = (i: number) =>
-    78 +
-    i * (460 / Math.max(data?.rows.length || 1, 1)) +
-    230 / Math.max(data?.rows.length || 1, 1);
-  const baseline = y(0);
+  const chartError = data && chartType === "radar" ? radarError(data) : "";
   const caption = data
-    ? "在本次输入的 " +
-      data.rows.length +
-      " 组数据中，" +
-      data.rows.reduce((a, b) => (b.value > a.value ? b : a)).label +
-      " 的" +
-      data.label +
-      "最高（" +
-      Math.max(...values) +
-      "），最低为 " +
-      Math.min(...values) +
-      "。该描述仅概括输入数据，不代表统计显著性或真实实验结论。"
+    ? data.series
+        .map((name, series) => {
+          const values = data.rows.map((row) => row.values[series]);
+          const best = data.rows.reduce((a, b) =>
+            b.values[series] > a.values[series] ? b : a,
+          );
+          return `在本次输入的 ${data.rows.length} 组数据中，${best.label} 的${name}最高（${Math.max(...values)}），最低为 ${Math.min(...values)}。`;
+        })
+        .join("\n") +
+      "该描述仅概括输入数据，不代表统计显著性或真实实验结论。" +
+      (chartType === "radar"
+        ? "雷达图使用所有系列共同的零起点刻度；指标须使用可比较的单位和方向，未自动归一化。"
+        : "")
     : "";
   const loadCsv = async (file?: File) => {
     if (!file) return;
@@ -1717,7 +1710,7 @@ function ChartWorkspace({
     }
     try {
       const text = await file.text();
-      parseChartCsv(text);
+      parseMultiChartCsv(text);
       onCsvChange(text);
       notify("已读取本地 CSV。");
     } catch (e) {
@@ -1730,9 +1723,10 @@ function ChartWorkspace({
         <span className="eyebrow">FROM DATA TO INSIGHT</span>
         <h3>让数据，讲述你的发现。</h3>
         <p>
-          粘贴两列 CSV，或导入本地文件。下方初始数据为虚构演示，不是实验结果。
+          粘贴 CSV：第一列类别，后续 1–6
+          列数值。下方初始数据为虚构演示，不是实验结果。
         </p>
-        <label htmlFor="csv-data">CSV 数据 · 类别 + 数值</label>
+        <label htmlFor="csv-data">CSV 数据 · 类别 + 一列或多列数值</label>
         <textarea
           id="csv-data"
           spellCheck={false}
@@ -1794,124 +1788,28 @@ function ChartWorkspace({
             >
               折线图
             </button>
+            <button
+              className={chartType === "radar" ? "active" : ""}
+              onClick={() => onChartTypeChange("radar")}
+            >
+              雷达图
+            </button>
           </div>
         </header>
         {data ? (
           <>
-            <svg
-              ref={svgRef}
-              className="chart-svg"
-              viewBox="0 0 610 340"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              aria-label={data.label + "数据图表"}
-            >
-              <rect width="610" height="340" fill="#ffffff" />
-              <text
-                x="30"
-                y="32"
-                fill="#849373"
-                fontSize="10"
-                fontFamily="sans-serif"
-              >
-                {data.label} · 本地数据图表
-              </text>
-              {Array.from({ length: 5 }, (_, i) => {
-                const v = min + (range / 4) * i;
-                return (
-                  <g key={i}>
-                    <line
-                      x1="65"
-                      x2="560"
-                      y1={y(v)}
-                      y2={y(v)}
-                      stroke="#e8eee0"
-                      strokeDasharray="3 4"
-                    />
-                    <text
-                      x="52"
-                      y={y(v) + 4}
-                      textAnchor="end"
-                      fontSize="10"
-                      fill="#a2b48e"
-                      fontFamily="sans-serif"
-                    >
-                      {Number(v.toPrecision(4))}
-                    </text>
-                  </g>
-                );
-              })}
-              <line
-                x1="65"
-                x2="560"
-                y1={baseline}
-                y2={baseline}
-                stroke="#b8cba4"
-              />
-              {chartType === "line" && (
-                <polyline
-                  fill="none"
-                  stroke="#6c8d55"
-                  strokeWidth="2.5"
-                  points={data.rows
-                    .map((r, i) => x(i) + "," + y(r.value))
-                    .join(" ")}
-                />
-              )}
-              {data.rows.map((r, i) => (
-                <g key={i}>
-                  {chartType === "bar" ? (
-                    <rect
-                      x={x(i) - Math.min(24, 170 / data.rows.length)}
-                      y={Math.min(baseline, y(r.value))}
-                      width={Math.min(48, 340 / data.rows.length)}
-                      height={Math.max(1, Math.abs(baseline - y(r.value)))}
-                      rx="3"
-                      fill={i === data.rows.length - 1 ? "#64874d" : "#bfd2ac"}
-                    />
-                  ) : (
-                    <circle
-                      cx={x(i)}
-                      cy={y(r.value)}
-                      r="4"
-                      fill="#6c8d55"
-                      stroke="white"
-                      strokeWidth="2"
-                    />
-                  )}
-                  <text
-                    x={x(i)}
-                    y={r.value >= 0 ? y(r.value) - 10 : y(r.value) + 15}
-                    textAnchor="middle"
-                    fontSize="10"
-                    fill="#80986b"
-                    fontFamily="sans-serif"
-                  >
-                    {Number(r.value.toPrecision(5))}
-                  </text>
-                  <text
-                    x={x(i)}
-                    y="295"
-                    textAnchor="middle"
-                    fontSize={data.rows.length > 8 ? "7" : "10"}
-                    fill="#99ad85"
-                    fontFamily="sans-serif"
-                  >
-                    {r.label.length > 10 ? r.label.slice(0, 9) + "…" : r.label}
-                  </text>
-                </g>
-              ))}
-              <text
-                x="310"
-                y="325"
-                textAnchor="middle"
-                fontSize="8"
-                fill="#bac7aa"
-                fontFamily="sans-serif"
-              >
-                研析 · 由用户输入数据生成 · 请核对来源
-              </text>
-            </svg>
+            {chartError ? (
+              <p className="chart-error" role="alert">
+                {chartError}
+              </p>
+            ) : (
+              <div className="chart-scroll">
+                <ChartFigure data={data} type={chartType} svgRef={svgRef} />
+              </div>
+            )}
+            {!chartError && (
+              <p className="chart-scroll-hint">窄屏可左右滑动查看完整图表。</p>
+            )}
             <div className="chart-caption">
               <b>Figure Caption · 数据描述</b>
               <p>{caption}</p>
@@ -1919,6 +1817,7 @@ function ChartWorkspace({
             <div className="chart-tools">
               <button
                 className="button secondary small"
+                disabled={!!chartError}
                 onClick={() => {
                   if (svgRef.current) {
                     download(

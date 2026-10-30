@@ -4207,3 +4207,91 @@ textarea {
     flex-basis: 100%;
   }
 }
+
+.page-structure {
+  margin-top: 20px;
+  padding: 14px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 10px;
+  min-width: 0;
+}
+.page-structure h4 {
+  margin-top: 0;
+}
+.structure-item {
+  margin-top: 14px;
+  min-width: 0;
+}
+.structure-item summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.structure-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: white;
+  margin-top: 10px;
+}
+.structure-item pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.structure-item > a {
+  display: inline-block;
+  margin: 8px 14px 8px 0;
+}
+.structure-table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.structure-table-scroll table {
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.structure-table-scroll td {
+  border: 1px solid #d1d5db;
+  padding: 6px;
+  white-space: pre-wrap;
+  min-width: 52px;
+}
+
+.future-check {
+  border-top: 1px solid #dce4d5;
+  padding-top: 16px;
+  margin-bottom: 24px;
+  min-width: 0;
+}
+.future-check form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.future-check input {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #b4c4a6;
+  border-radius: 6px;
+}
+.future-check label {
+  width: 100%;
+}
+.future-check-result article {
+  border-left: 3px solid #b4c4a6;
+  padding-left: 14px;
+  margin: 20px 0;
+  overflow-wrap: anywhere;
+}
+
+.chart-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+@media (max-width: 600px) {
+  .chart-scroll .chart-svg {
+    min-width: 520px;
+  }
+}

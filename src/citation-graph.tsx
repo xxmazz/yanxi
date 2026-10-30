@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowDownToLine, ArrowRight, BookOpen, RefreshCw } from "lucide-react";
 import { api } from "./api";
+import { FutureCheckPanel } from "./future-check";
 import type { ServerDocument, Evidence } from "./api";
 
 type Source = {
@@ -728,6 +729,14 @@ export function CitationGraph({
               提取原文 Future Work
               等表述，按已知发表年份排列；是否仍未解决，需结合更新研究核验。
             </p>
+            <FutureCheckPanel
+              key={graph.fingerprint}
+              documentIds={graph.document_ids}
+              fingerprint={graph.fingerprint}
+              disabled={
+                stale || !graph.nodes.some((item) => item.future_work.length)
+              }
+            />
             {graph.nodes
               .filter((item) => item.future_work.length)
               .sort((a, b) => (b.year || 0) - (a.year || 0))

@@ -2,9 +2,11 @@
 
 面向科研阅读与写作场景的本地模型文献工作台，支持 PDF 入库、混合检索、带原文页码的文献问答。引用图谱从参考文献原文构建，写作工坊基于真实摘要生成可编辑研究计划和架构图。
 
-2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；176项后端与14项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
+2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；183项后端与18项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
 
 10月30日继续补齐了[参考文献批量下载、每日/每周论文订阅与反馈](docs/FOLLOWING.md)，入口在“探索发现”。参考文献当前识别明确arXiv编号，订阅每次获取最新8篇并用本地E5给出库内关联理由。
+
+新增[表格与编号公式提取、多系列及雷达图、更新研究核对](docs/STRUCTURED_READING_AND_RESEARCH.md)：可查看原图、导出表格CSV，并将Future Work原文与较新arXiv摘要一起核对。
 
 ## 功能概览
 
@@ -17,7 +19,8 @@
 - 对照翻译：本地 Qwen 逐页／整篇翻译、中英段落对应、双向联动滚动、局部翻译与中文摘要英译、对照 Markdown 导出。
 - 研究图谱：真实参考文献连边、同作品版本合并、局部 PageRank／入度、逐页引用证据、本地模型简短综述、Future Work 原文与 JSON 导出。
 - 写作工具：本地模型生成有来源的研究计划、服务端真实书目、摘要原页核对、Markdown 编辑预览与导出、Mermaid／SVG 架构图。
-- 数据图表：两列 CSV 导入、数值校验、柱状与折线图、SVG 和图注导出。
+- 结构阅读：原生页表格候选、跨列及科学计数法标记、编号公式原图与转写、坐标和CSV导出。
+- 数据图表：1–6列数值系列、分组柱状／多折线／雷达图、数值校验、SVG和图注导出。
 - 自适应布局：桌面与移动端导航、弹窗和内容排版。
 
 ## 运行方式
@@ -39,7 +42,7 @@ npm run preview
 
 ## 技术栈与目录
 
-React 19、TypeScript、Vite、FastAPI、SQLite、pypdf、PyTorch、Transformers；NetworkX／SciPy 计算引用网络；React Markdown 与 GFM 负责写作排版。
+React 19、TypeScript、Vite、FastAPI、SQLite、pypdf／pdfplumber、PyTorch、Transformers；NetworkX／SciPy 计算引用网络；React Markdown 与 GFM 负责写作排版。
 
 处理链：PDF → 文本层／本地 OCR → 相似版本确认 → 按页切块 → 本地 E5 向量与 BM25 → 模型扩展中英检索词 → RRF 召回 → Qwen 证据问答 → 来源与数值检查 → PDF 页码回看。
 
@@ -55,7 +58,7 @@ React 19、TypeScript、Vite、FastAPI、SQLite、pypdf、PyTorch、Transformers
 
 连接后端时，上传的 PDF、文本和向量保存在用户自己的服务器，模型只加载本地权重。前端无法连接后端时，仅支持浏览器 PDF 预览，不用预置回答冒充推理。
 
-正文词组与本地语义向量联合识别相似版本，扫描页通过本地 OCR 入库；详见 [扫描件与版本管理](docs/OCR_AND_VERSIONS.md)。显式编号三级目录定位见 [章节导航](docs/CHAPTER_NAVIGATION.md)。数字制与有限英文作者年份制正文引用／书目双向跳转见 [引用导航](docs/READING_LINKS.md)。公式／表格结构化、更多引用格式与定期论文追踪仍需开发。对照翻译见 [本地翻译说明](docs/TRANSLATION.md)。真实检索与一键入库见 [论文检索说明](docs/DISCOVERY.md)。真实引用网络与摘要综述见 [图谱说明](docs/GRAPH.md)；官方 20 篇、100 条引用边的核对见 [真实图谱验收](docs/GRAPH20.md)，未来方向是否已被新研究解决仍需核验。来源和数值检查不能代替完整事实核验。文献库保留明确标注的示例卡片，写作仅使用所选文献摘要，方法与评估标明研究计划，详见 [写作说明](docs/WRITING.md)；图表初始数值为演示数据。
+正文词组与本地语义向量联合识别相似版本，扫描页通过本地 OCR 入库；详见 [扫描件与版本管理](docs/OCR_AND_VERSIONS.md)。显式编号三级目录定位见 [章节导航](docs/CHAPTER_NAVIGATION.md)。数字制与有限英文作者年份制正文引用／书目双向跳转见 [引用导航](docs/READING_LINKS.md)。原生页表格与编号公式已提供结构候选、原图和导出；复杂扫描表格／公式重建及更多引用格式仍需扩展，定期论文追踪见[订阅说明](docs/FOLLOWING.md)。对照翻译见 [本地翻译说明](docs/TRANSLATION.md)。真实检索与一键入库见 [论文检索说明](docs/DISCOVERY.md)。真实引用网络与摘要综述见 [图谱说明](docs/GRAPH.md)；官方 20 篇、100 条引用边的核对见 [真实图谱验收](docs/GRAPH20.md)，现支持按主题对照较新论文摘要，全文相关工作与方向是否已被解决仍须进一步核验。来源和数值检查不能代替完整事实核验。文献库保留明确标注的示例卡片，写作仅使用所选文献摘要，方法与评估标明研究计划，详见 [写作说明](docs/WRITING.md)；图表初始数值为演示数据。
 
 541 页教材的完整索引、逐页复核和固定问答用例见 [长文档回归](docs/LONG_DOCUMENT.md)，支持明确图号定位并保留解析警告；已与用户提供的比赛资料包原件核对哈希；官方扫描件和版本回归见 [官方样本验证](docs/OFFICIAL_FIXTURES.md)。
 

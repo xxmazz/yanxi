@@ -551,3 +551,161 @@ test("following panel persists subscription preference and submits only explicit
     await env.cleanup();
   }
 });
+
+test("page structures show provenance, merged cells and original-image/CSV targets", async () => {
+  const env = setup();
+  try {
+    env.routes.set("GET /api/documents/doc-a/pages/8/structure", {
+      page: 8,
+      note: "自动分列候选",
+      items: [
+        {
+          id: "0",
+          kind: "table",
+          label: "Table 2",
+          caption: "测试表题",
+          text: "原文表格",
+          bbox: [0.1, 0.2, 0.8, 0.5],
+          warning: "导出前核验",
+          rows: [
+            ["Model", "BLEU"],
+            ["A&B", "28.4"],
+            ["跨列", null],
+          ],
+        },
+        {
+          id: "1",
+          kind: "equation",
+          label: "(1)",
+          text: "f(x)=x",
+          bbox: [0.2, 0.6, 0.8, 0.7],
+          warning: "核对上下标",
+        },
+      ],
+    });
+    await env.render(components.PageStructure, {
+      documentId: "doc-a",
+      number: 8,
+    });
+    assert.equal(env.calls.length, 0, "analysis is on demand");
+    await click(button("提取本页表格与编号公式"));
+    assert.equal(document.querySelectorAll(".structure-item").length, 2);
+    assert.ok(document.body.textContent.includes("28.4"));
+    assert.ok(document.querySelector('span[title="原布局合并单元格"]'));
+    assert.equal(
+      document.querySelector(".structure-item img").getAttribute("src"),
+      "/api/documents/doc-a/pages/8/structure/0/image",
+    );
+    assert.equal(
+      document.querySelector("a[download]").getAttribute("href"),
+      "/api/documents/doc-a/pages/8/structure/0/csv",
+    );
+    assert.equal(
+      document.querySelector('a[target="_blank"]').getAttribute("href"),
+      "/api/documents/doc-a/pdf#page=8",
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("multi-series charts export two lines and radar with shared scale and reject negatives", async () => {
+  const env = setup();
+  try {
+    await charts(env);
+    await change(
+      document.querySelector("#csv-data"),
+      "指标,方法甲,方法乙\n准确率,82,85\n召回率,70,75\nF1,76,80",
+    );
+    await click(button("折线图"));
+    assert.equal(document.querySelectorAll(".chart-svg polyline").length, 2);
+    await click(button("雷达图"));
+    assert.equal(
+      document.querySelectorAll(".chart-svg polygon[data-series]").length,
+      2,
+    );
+    await click(button("导出 SVG"));
+    const svg = await env.downloads[0].blob.text();
+    assert.match(svg, /共同刻度 0–85/);
+    assert.doesNotMatch(svg, /NaN|Infinity/);
+    await click(button("导出图注"));
+    const caption = await env.downloads[1].blob.text();
+    assert.match(caption, /方法甲最高（82）/);
+    assert.match(caption, /方法乙最高（85）/);
+    await change(
+      document.querySelector("#csv-data"),
+      "指标,方法甲\n准确率,-1\n召回率,70\nF1,76",
+    );
+    assert.match(document.querySelector('[role="alert"]').textContent, /负值/);
+    assert.equal(button("导出 SVG").disabled, true);
+    await click(button("柱状图"));
+    assert.ok(document.querySelector(".chart-svg"));
+    await change(
+      document.querySelector("#csv-data"),
+      "指标,A,B\nx,-1e308,1e308\ny,1e308,-1e308",
+    );
+    assert.doesNotMatch(
+      document.querySelector(".chart-svg").outerHTML,
+      /NaN|Infinity/,
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("future research check submits exact scope and renders real-source fields without inventing novelty", async () => {
+  const env = setup();
+  try {
+    env.routes.set("POST /api/graph/future-check", (request) => {
+      assert.deepEqual(request.body, {
+        topic: "retrieval evaluation",
+        document_ids: ["doc-a"],
+        fingerprint: "a".repeat(64),
+      });
+      return {
+        topic: request.body.topic,
+        checked_at: "2026-10-30T08:00:00Z",
+        after_year: 2023,
+        search_query: "retrieval evaluation",
+        scope: "不是全网查新",
+        origins: [],
+        candidates: [
+          {
+            label: "E1",
+            title: "New research",
+            published: "2025-01-01",
+            text: "Original abstract for exact-source review.",
+            url: "https://arxiv.org/abs/2501.00001",
+          },
+        ],
+        comparisons: [
+          { source: "E1", answer: "来源受限的摘要概括。[E1]", supported: true },
+        ],
+      };
+    });
+    const props = {
+      documentIds: ["doc-a"],
+      fingerprint: "a".repeat(64),
+      disabled: false,
+    };
+    await env.render(components.FutureCheckPanel, props);
+    await change(
+      document.querySelector("#future-topic"),
+      "retrieval evaluation",
+    );
+    await submit(document.querySelector(".future-check form"));
+    assert.match(document.body.textContent, /不是全网查新/);
+    assert.equal(
+      document.querySelector(".future-check-result article a").href,
+      "https://arxiv.org/abs/2501.00001",
+    );
+    await click(button("导出核对结果"));
+    const result = JSON.parse(await env.downloads[0].blob.text());
+    assert.equal(result.candidates[0].published, "2025-01-01");
+    await env.render(components.FutureCheckPanel, { ...props, disabled: true });
+    assert.equal(document.querySelector(".future-check-result"), null);
+    assert.equal(button("核对更新研究").disabled, true);
+  } finally {
+    await env.cleanup();
+  }
+});

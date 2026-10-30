@@ -30,3 +30,25 @@ test("preserves zero and negative data, BOM and final newline", () => {
     [0, -3],
   );
 });
+
+test("multi-series CSV retains each metric and rejects missing/duplicate headers", async () => {
+  const { parseMultiChartCsv, radarError } = await import("../src/csv.ts");
+  const data = parseMultiChartCsv(
+    "指标,方法甲,方法乙\n准确率,82,85\n召回率,70,75\nF1,76,80",
+  );
+  assert.deepEqual(data.series, ["方法甲", "方法乙"]);
+  assert.deepEqual(data.rows[1], { label: "召回率", values: [70, 75] });
+  assert.equal(radarError(data), "");
+  for (const text of [
+    "指标,A,A\nx,1,2",
+    "指标,A,B\nx,1,",
+    "指标,A,B\nx,1",
+    "指标,A,B\nx,1,NaN",
+  ])
+    assert.throws(() => parseMultiChartCsv(text));
+  assert.match(
+    radarError(parseMultiChartCsv("指标,A\nx,-1\ny,2\nz,3")),
+    /负值/,
+  );
+  assert.match(radarError(parseMultiChartCsv("指标,A\nx,1")), /3–12/);
+});
