@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-31",
+  "browser": "151.0.7922.34",
+  "api_stubs": false,
+  "desktop_mouse": false,
+  "checks": [
+    {
+      "name": "official scanned Transformer table retains five leaf columns, blanks and source",
+      "passed": true,
+      "seconds": 65.932,
+      "document_sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+      "physical_page": 8,
+      "columns": 5,
+      "rows": 11,
+      "big": ["Transformer (big)", "28.4", "41.0", "2.3 · 10^19", ""],
+      "base": ["Transformer (base model)", "27.3", "38.1", "3.3 · 10^18", ""],
+      "empty_cells_preserved": true,
+      "model": "Qwen3-VL-4B-Instruct:edac7703329133ed:3c721d49623f3033",
+      "cached": false,
+      "source_hash": "00daa0e4a01f77829abf7cf85477f6a1c2f9043524e1d904e246aed5797cbdc7"
+    },
+    {
+      "name": "native and official scan formula produce exportable LaTeX with fractions and indices",
+      "passed": true,
+      "seconds": 6.655,
+      "results": [
+        {
+          "document_sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+          "page": 4,
+          "latex": "\\mathrm { A t t e n t i o n } ( Q , K , V ) = \\mathrm { s o f t m a x } \\left( \\frac { Q K ^ { T } } { \\sqrt { d _ { k } } } \\right) V",
+          "model": "Qwen3-VL-4B-Instruct:edac7703329133ed:3c721d49623f3033",
+          "source_hash": "90a6b8a4ac91e568b256fef9e66df1d61f7031a1b8251d3f4bf289b5dc7836c3",
+          "cached": false
+        },
+        {
+          "document_sha256": "64094fe169dd4ff454f579e9f197298df1c118c24b71b1f1ca8bb218c9e4801d",
+          "page": 3,
+          "latex": "\\mathrm { A t t e n t i o n } ( Q , K , V ) = \\mathrm { s o f t m a x } \\left( \\frac { Q K ^ { T } } { \\sqrt { d _ { k } } } \\right) V",
+          "model": "Qwen3-VL-4B-Instruct:edac7703329133ed:3c721d49623f3033",
+          "source_hash": "20d87f7ef7e50d54c44a5528cf5cab74051dcd75720ac9795272aa1c49de61cf",
+          "cached": false
+        }
+      ]
+    },
+    {
+      "name": "two-page synthetic scan selection merges only repeated header and exports all rows",
+      "passed": true,
+      "seconds": 15.074,
+      "synthetic_fixture": true,
+      "document_sha256": "978119bf1e204fa447a5db9962dd604718f8fb155d21d4c8f739a8885100151a",
+      "ocr_pages": 2,
+      "merged_rows": 5,
+      "columns": 3
+    },
+    {
+      "name": "real Ragas body evidence beyond abstract, page hashes and browser export",
+      "passed": true,
+      "seconds": 3.189,
+      "origin_document": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "target_document": "6c24762a3f277fd120ed1adf34b01420ecf92f18ff6d1b5435fa0a09cb804ecb",
+      "source_year": 2020,
+      "target_year": 2023,
+      "indexed_body_chunks": 21,
+      "answer": "Ragas框架专注于可能没有参考答案的情境，并且旨在估计正确性的不同代理指标，而不仅仅是检索片段的有用性。[E2]",
+      "evidence_pages": [1, 2, 5],
+      "citation_pages": [2],
+      "offsets_verified": true
+    },
+    {
+      "name": "narrow-screen visual controls and fulltext results remain usable",
+      "passed": true,
+      "seconds": 0.188,
+      "width": 390
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true,
+    "vision_ready": true
+  },
+  "downloads": [
+    {
+      "name": "visual-table-p8.csv",
+      "bytes": 678
+    },
+    {
+      "name": "equation-p4.tex",
+      "bytes": 279
+    },
+    {
+      "name": "equation-p3.tex",
+      "bytes": 280
+    },
+    {
+      "name": "visual-table-p1-2.csv",
+      "bytes": 102
+    },
+    {
+      "name": "研析-图片结构及来源.json",
+      "bytes": 3658
+    },
+    {
+      "name": "研析-研究方向正文核对.json",
+      "bytes": 9500
+    }
+  ],
+  "javascript_errors": [],
+  "passed": true,
+  "backend_tests": 200,
+  "frontend_tests": 29,
+  "build": "passed",
+  "format": "passed",
+  "gpu_allocation": {
+    "Qwen2.5-7B": "cuda:0/cuda:1",
+    "E5-small": "cuda:2",
+    "Qwen3-VL-4B": "cuda:2",
+    "EasyOCR": "cuda:3"
+  },
+  "previous_failures": [
+    "2B视觉模型将5列压为3列，未验收",
+    "4B整表将稀疏下一行数值填入上一行，加入OCR行几何单行复核",
+    "4B单行遗漏左侧空白，加入叶子表头与精确OCR数值横坐标校正",
+    "视觉与OCR共GPU3时OCR显存不足，视觉移至E5所在GPU2并重新验收",
+    "初轮浏览器脚本误用不存在的文献详情接口和扫描公式物理页码，按真实路由和原页修复后重跑"
+  ],
+  "limitations": [
+    "指定官方样例及合成续表不构成任意表格或公式准确率",
+    "识别结果为候选，保留原图、原文和原始模型输出供核对",
+    "正文检索每篇最多3段，非逐字全篇或穷尽式查新",
+    "真实服务为隔离库，不改生产论文与索引",
+    "两页夹具为合成扫描PDF，非官方论文"
+  ],
+  "download_sha256": [
+    {
+      "name": "visual-table-p8.csv",
+      "sha256": "3a947ef39a055c9137d3c808de22dd7967f8e32f982d6d53a92d73f919e47f76"
+    },
+    {
+      "name": "equation-p4.tex",
+      "sha256": "10b6468f5b7c7f2f430548ad6b3c09b5f8661d059d517499ef4dac11f60958eb"
+    },
+    {
+      "name": "equation-p3.tex",
+      "sha256": "37691e1766b1255240aa70c570a8603748cdf352a139f566344f4ac2ab486028"
+    },
+    {
+      "name": "visual-table-p1-2.csv",
+      "sha256": "f64955d8646f80da134f6dbb93d14329514bde4d3f50c26b0a281f9d25ad2a8e"
+    },
+    {
+      "name": "研析-图片结构及来源.json",
+      "sha256": "1c1c64ad3856d74ae42d0d16a5b216b14bd73f9899a4d5f246b4d420afe6c109"
+    },
+    {
+      "name": "研析-研究方向正文核对.json",
+      "sha256": "f161fdb8d7efb0eca51177fb2f58a433ae19d8534dc43826a638f29c216701a2"
+    }
+  ]
+}

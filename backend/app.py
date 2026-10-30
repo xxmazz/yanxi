@@ -25,6 +25,7 @@ from .conversation import context_scope
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, valid_id
 from .following import Following
+from .fulltext_check import evidence_for as prepare_fulltext_check
 from .future import prepare as prepare_future
 from .graph import build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
@@ -36,6 +37,7 @@ from .research_tasks import ResearchTasks
 from .structure import analyze as analyze_structure
 from .structure import table_csv
 from .translation import TranslationService
+from .visual_structure import VisualStructure
 from .writing import prepare as prepare_writing
 from .writing import render_draft
 
@@ -49,6 +51,7 @@ translation = TranslationService(store, models)
 research_tasks = ResearchTasks(store)
 following = Following(store)
 reference_resolver = ReferenceResolver(store)
+visual_structure = VisualStructure()
 download_workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="arxiv-import")
 download_slots = threading.BoundedSemaphore(2)
 search_lock = asyncio.Lock()
@@ -107,6 +110,8 @@ async def lifespan(app):
         await asyncio.to_thread(models.load)
     if ocr.path:
         await asyncio.to_thread(ocr.load)
+    if visual_structure.path:
+        await asyncio.to_thread(visual_structure.load)
     # 宕机前排队的任务重新提交，避免永久停在 queued 状态。
     for doc in store.documents():
         if doc["status"] in ("queued", "processing"):
@@ -141,6 +146,7 @@ def health():
         "model": Path(models.llm_path).name or None,
         "retrieval": "bm25+e5-rrf" if models.encoder is not None else "bm25",
         "ocr_ready": ocr.reader is not None,
+        "vision_ready": visual_structure.model is not None,
     }
 
 
@@ -435,6 +441,35 @@ def render_page(doc_id: str, number: int):
 @app.get("/api/documents/{doc_id}/pages/{number}/structure")
 def page_structure(doc_id: str, number: int):
     return document_action(lambda: analyze_structure(store, doc_id, number))
+
+
+class VisualStructureRequest(BaseModel):
+    kind: Literal["table", "equation"]
+    bbox: list[float] = Field(min_length=4, max_length=4)
+    refresh: bool = False
+    expected_columns: int = Field(default=0, ge=0, le=24)
+
+
+@app.post("/api/documents/{doc_id}/pages/{number}/visual-structure")
+def visual_page_structure(doc_id: str, number: int, request: VisualStructureRequest):
+    try:
+        return visual_structure.extract(
+            store,
+            doc_id,
+            number,
+            request.kind,
+            request.bbox,
+            request.refresh,
+            request.expected_columns,
+        )
+    except OverflowError as exc:
+        raise HTTPException(429, str(exc)) from exc
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(503, str(exc)) from exc
 
 
 def structure_item(doc_id, number, item_id):
@@ -972,6 +1007,69 @@ async def future_check(request: FutureCheck):
     if current["fingerprint"] != request.fingerprint:
         raise HTTPException(409, "核对期间原文已变化，请重新构图")
     return {**report, "topic": request.topic, "comparisons": comparisons}
+
+
+class FulltextCheck(FutureCheck):
+    target_document_ids: list[str] = Field(min_length=1, max_length=4)
+
+
+@app.post("/api/graph/fulltext-check")
+async def fulltext_check(request: FulltextCheck):
+    if chat_lock.locked():
+        raise HTTPException(429, "本地模型正在处理其他请求，请稍后重试")
+    async with chat_lock:
+        graph = document_action(lambda: build_graph(store, request.document_ids))
+        if graph["fingerprint"] != request.fingerprint:
+            raise HTTPException(409, "原方向文献已变化，请重新构图")
+        targets = document_action(lambda: build_graph(store, request.target_document_ids))
+        if models.llm is None or models.encoder is None:
+            raise HTTPException(503, "本地生成及向量模型需同时就绪")
+        query = await asyncio.to_thread(models.discovery_query, request.topic)
+        vector = await asyncio.to_thread(models.encode, [query], query=True)
+        report = document_action(
+            lambda: prepare_fulltext_check(store, graph, targets, query, vector[0])
+        )
+        report["topic"] = request.topic
+        report["retrieval_query"] = query
+        for group in report["groups"]:
+            evidence = group["evidence"]
+            group.update(
+                supported=False, answer="正文检索未获得足够证据，请核对论文原文。", citations=[]
+            )
+            if not evidence:
+                continue
+            question = (
+                f"拟议方向：{request.topic}。只根据所给本篇正文，用一至两条中文陈述本篇与方向有关的研究方法、对象或限制。"
+                "不要推断已经彻底解决其他论文的未来方向，也不要声称首次提出。保留原文的限定条件与研究对象。"
+                "reference-free或without human annotations指不依赖人工标注标准答案，不等于不需要检索参考文本。"
+            )
+            try:
+                raw = await asyncio.to_thread(models.answer, question, evidence)
+                answer, labels, refused = validate_answer(raw, evidence)
+                group.update(
+                    answer=answer,
+                    supported=not refused and bool(labels),
+                    citations=[
+                        {
+                            **citation(item),
+                            "start": item["start"],
+                            "end": item["end"],
+                            "page_sha256": item["page_sha256"],
+                        }
+                        for item in evidence
+                        if item["label"] in labels
+                    ],
+                )
+            except (ValueError, RuntimeError):
+                group["answer"] = "本篇正文概括未通过来源或数值核对，请直接查看原句。"
+        current = document_action(lambda: build_graph(store, request.document_ids))
+        target_current = document_action(lambda: build_graph(store, request.target_document_ids))
+        if (
+            current["fingerprint"] != request.fingerprint
+            or target_current["fingerprint"] != targets["fingerprint"]
+        ):
+            raise HTTPException(409, "核对期间原文或对照论文发生变化，请重新选择")
+        return report
 
 
 class WritingRequest(BaseModel):

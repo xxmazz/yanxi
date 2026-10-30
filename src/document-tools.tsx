@@ -3,6 +3,7 @@ import { api } from "./api";
 import type { ServerDocument, ParsedPage } from "./api";
 import { TranslationReader } from "./translation";
 import { ReadingLinks } from "./reading-links";
+import { VisualStructure } from "./visual-structure";
 import { PageStructure } from "./page-structure";
 
 type ActionsProps = {
@@ -334,6 +335,12 @@ export function ServerReader({
                     : "来自 PDF 文本层"}
                 </p>
                 {page.warning && <p role="status">{page.warning}</p>}
+                <VisualStructure
+                  key={`visual-${documentId}-${number}`}
+                  documentId={documentId}
+                  number={number}
+                  pages={pages || 1}
+                />
                 <PageStructure
                   key={`${documentId}-${number}`}
                   documentId={documentId}

@@ -1075,3 +1075,267 @@ test("invalid hover job identity shows an error and retries only on explicit req
     await env.cleanup();
   }
 });
+
+async function drawRegion(canvas, low = [0.1, 0.1], high = [0.9, 0.5]) {
+  canvas.getBoundingClientRect = () => ({
+    left: 0,
+    top: 0,
+    width: 1000,
+    height: 1000,
+  });
+  canvas.setPointerCapture = () => {};
+  await act(async () =>
+    canvas.dispatchEvent(
+      new MouseEvent("pointerdown", {
+        bubbles: true,
+        clientX: low[0] * 1000,
+        clientY: low[1] * 1000,
+      }),
+    ),
+  );
+  await act(async () =>
+    canvas.dispatchEvent(
+      new MouseEvent("pointerup", {
+        bubbles: true,
+        clientX: high[0] * 1000,
+        clientY: high[1] * 1000,
+      }),
+    ),
+  );
+}
+function visualResult(page, kind, rows) {
+  return {
+    document_id: "visual-paper",
+    page,
+    source_hash: "f".repeat(64),
+    model: "local-vision",
+    checked_at: "2026-10-31T00:00:00+08:00",
+    cached: false,
+    items: [
+      {
+        kind,
+        label: "table",
+        bbox: [0.1, 0.1, 0.9, 0.5],
+        rows,
+        latex: kind === "equation" ? "\\frac{x_1}{y^2}=1" : undefined,
+        warning: "核对原图",
+      },
+    ],
+  };
+}
+
+test("cross-page table joining removes only an identical header and refuses incompatible columns", () => {
+  const a = visualResult(1, "table", [
+    ["Model", "Score"],
+    ["Alpha", "10"],
+  ]);
+  const b = visualResult(2, "table", [
+    ["Model", "Score"],
+    ["Beta", "20"],
+  ]);
+  assert.deepEqual(components.joinVisualTables([a, b]), [
+    ["Model", "Score"],
+    ["Alpha", "10"],
+    ["Beta", "20"],
+  ]);
+  assert.equal(
+    components.joinVisualTables([
+      a,
+      visualResult(2, "table", [
+        ["Other", "Score"],
+        ["Beta", "20"],
+      ]),
+    ]).length,
+    4,
+  );
+  assert.throws(
+    () =>
+      components.joinVisualTables([
+        a,
+        visualResult(2, "table", [
+          ["x", "y", "z"],
+          ["1", "2", "3"],
+        ]),
+      ]),
+    /列数不同/,
+  );
+  const csv = components.visualCSV([["=HYPERLINK(x)", "-1.5", null, 'a"b']]);
+  assert.match(csv, /'=HYPERLINK/);
+  assert.match(csv, /"-1\.5"/);
+  assert.match(csv, /a""b/);
+});
+
+test("visual picker submits only the drawn formula region and exports source-bound LaTeX", async () => {
+  const env = setup();
+  env.routes.set(
+    "POST /api/documents/visual-paper/pages/1/visual-structure",
+    (request) => {
+      assert.deepEqual(request.body.bbox, [0.1, 0.1, 0.9, 0.5]);
+      assert.equal(request.body.kind, "equation");
+      return visualResult(1, "equation");
+    },
+  );
+  try {
+    await env.render(components.VisualStructure, {
+      documentId: "visual-paper",
+      number: 1,
+      pages: 2,
+    });
+    await click(button("扫描表格 / 公式 LaTeX 识别"));
+    assert.equal(button("识别所选区域").disabled, true);
+    await change(
+      document.querySelector('[aria-label="图片识别类型"]'),
+      "equation",
+    );
+    await drawRegion(document.querySelector(".visual-region-picker"));
+    await click(button("识别所选区域"));
+    assert.match(
+      document.querySelector(".visual-structure pre").textContent,
+      /\\frac/,
+    );
+    await click(button("导出公式 LaTeX"));
+    assert.match(await env.downloads[0].blob.text(), /Physical page: 1/);
+    assert.match(await env.downloads[0].blob.text(), /\\frac\{x_1\}/);
+    await click(button("导出识别结果与出处"));
+    assert.equal(
+      JSON.parse(await env.downloads[1].blob.text())[0].source_hash,
+      "f".repeat(64),
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("visual cross-page selection preserves page-specific regions before sequential inference", async () => {
+  const env = setup();
+  env.routes.set(
+    "POST /api/documents/visual-paper/pages/1/visual-structure",
+    () =>
+      visualResult(1, "table", [
+        ["Model", "Score"],
+        ["Alpha", "10"],
+      ]),
+  );
+  env.routes.set(
+    "POST /api/documents/visual-paper/pages/2/visual-structure",
+    () =>
+      visualResult(2, "table", [
+        ["Model", "Score"],
+        ["Beta", "20"],
+      ]),
+  );
+  try {
+    await env.render(components.VisualStructure, {
+      documentId: "visual-paper",
+      number: 1,
+      pages: 2,
+    });
+    await click(button("扫描表格 / 公式 LaTeX 识别"));
+    await drawRegion(document.querySelector(".visual-region-picker"));
+    await click(button("保留选区并选择下一页续表"));
+    assert.match(
+      document.querySelector(".visual-region-picker img").src,
+      /render\/2$/,
+    );
+    await drawRegion(
+      document.querySelector(".visual-region-picker"),
+      [0.2, 0.2],
+      [0.8, 0.6],
+    );
+    await click(button("识别所选区域"));
+    const calls = env.calls.filter((call) => call.method === "POST");
+    assert.deepEqual(
+      calls.map((call) => call.body.bbox),
+      [
+        [0.1, 0.1, 0.9, 0.5],
+        [0.2, 0.2, 0.8, 0.6],
+      ],
+    );
+    assert.equal(document.querySelectorAll(".visual-structure tr").length, 3);
+    await click(button("导出识别表格 CSV"));
+    const csv = await env.downloads[0].blob.text();
+    assert.match(csv, /Alpha/);
+    assert.match(csv, /Beta/);
+    assert.equal(csv.match(/Model/g).length, 1);
+    await click(button("清空选区"));
+    assert.equal(document.querySelectorAll(".visual-structure tr").length, 0);
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("fulltext check sends explicit comparison scope and exports page evidence", async () => {
+  const env = setup();
+  env.routes.set("GET /api/documents", [
+    { id: "older", title: "Original", status: "ready" },
+    { id: "newer", title: "Newer paper", status: "ready" },
+  ]);
+  env.routes.set("POST /api/graph/fulltext-check", {
+    topic: "attention evaluation",
+    checked_at: "2026-10-31",
+    scope: "正文核对范围",
+    after_year: 2020,
+    origins: [],
+    groups: [
+      {
+        title: "Newer paper",
+        year: 2023,
+        indexed_chunks: 17,
+        supported: true,
+        answer: "本篇研究注意力评估。",
+        citations: [
+          {
+            document_id: "newer",
+            page: 3,
+            quote: "We evaluate attention.",
+            url: "/api/documents/newer/pdf#page=3",
+          },
+        ],
+        evidence: [
+          {
+            label: "E1",
+            title: "Newer paper",
+            text: "We evaluate attention.",
+            page: 3,
+            url: "/api/documents/newer/pdf#page=3",
+          },
+        ],
+      },
+    ],
+  });
+  try {
+    await env.render(components.FulltextCheckPanel, {
+      documentIds: ["older"],
+      fingerprint: "a".repeat(64),
+      disabled: false,
+    });
+    assert.equal(document.querySelectorAll(".fulltext-source input").length, 1);
+    await change(
+      document.querySelector('[aria-label="正文核对主题"]'),
+      "attention evaluation",
+    );
+    await click(document.querySelector(".fulltext-source input"));
+    await submit(document.querySelector(".fulltext-check form"));
+    const request = env.calls.find((call) => call.method === "POST");
+    assert.deepEqual(request.body, {
+      document_ids: ["older"],
+      fingerprint: "a".repeat(64),
+      target_document_ids: ["newer"],
+      topic: "attention evaluation",
+    });
+    assert.equal(
+      document
+        .querySelector(".fulltext-results blockquote a")
+        .getAttribute("href"),
+      "/api/documents/newer/pdf#page=3",
+    );
+    await click(button("导出正文核对结果"));
+    assert.equal(
+      JSON.parse(await env.downloads[0].blob.text()).groups[0].citations[0]
+        .quote,
+      "We evaluate attention.",
+    );
+  } finally {
+    await env.cleanup();
+  }
+});

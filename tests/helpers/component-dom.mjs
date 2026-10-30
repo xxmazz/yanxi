@@ -20,6 +20,8 @@ export { PageStructure } from "./src/page-structure.tsx";
 export { ReferenceMatching } from "./src/reference-matching.tsx";
 export { ReadingLinks } from "./src/reading-links.tsx";
 export { hoverRanges } from "./src/hover-translation.tsx";
+export { VisualStructure, visualCSV, joinVisualTables } from "./src/visual-structure.tsx";
+export { FulltextCheckPanel } from "./src/fulltext-check.tsx";
 export { FollowingPanel } from "./src/following.tsx";
 export { WritingWorkspace } from "./src/writing-workspace.tsx";`,
     resolveDir: project,

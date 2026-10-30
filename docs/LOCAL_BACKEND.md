@@ -15,11 +15,12 @@
 
 ## 模型与显卡
 
-| 模块             | 模型                        | 本次服务器分配            | 来源与许可                                                                   |
-| ---------------- | --------------------------- | ------------------------- | ---------------------------------------------------------------------------- |
-| 问答、检索词扩展 | Qwen2.5-7B-Instruct，FP16   | GPU 0、1 分片，各预留显存 | [Qwen 官方模型](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct)，Apache-2.0 |
-| 中英检索向量     | multilingual-e5-small，FP32 | GPU 2                     | [intfloat 模型](https://huggingface.co/intfloat/multilingual-e5-small)，MIT  |
-| OCR              | EasyOCR 英中识别            | GPU 3                     | [EasyOCR](https://github.com/JaidedAI/EasyOCR)，Apache-2.0                   |
+| 模块              | 模型                        | 本次服务器分配            | 来源与许可                                                                       |
+| ----------------- | --------------------------- | ------------------------- | -------------------------------------------------------------------------------- |
+| 问答、检索词扩展  | Qwen2.5-7B-Instruct，FP16   | GPU 0、1 分片，各预留显存 | [Qwen 官方模型](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct)，Apache-2.0     |
+| 中英检索向量      | multilingual-e5-small，FP32 | GPU 2                     | [intfloat 模型](https://huggingface.co/intfloat/multilingual-e5-small)，MIT      |
+| 扫描表格/公式转写 | Qwen3-VL-4B-Instruct，FP16  | GPU 2，与E5共卡           | [Qwen官方视觉模型](https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct)，Apache-2.0 |
+| OCR               | EasyOCR 英中识别            | GPU 3                     | [EasyOCR](https://github.com/JaidedAI/EasyOCR)，Apache-2.0                       |
 
 本次机器为 Ubuntu 22.04、4 张 11 GB RTX 2080 Ti、Python 3.12.14。使用 PyTorch 2.13.0+cu130 和 Transformers 5.17.0。实测 FP16 的 eager 注意力产生非有限数值，切换 SDPA 后恢复正常。没有使用 2080 Ti 不支持的 BF16 / FlashAttention 作为前提。
 
@@ -36,7 +37,9 @@ npm run build
 cp .env.example .env
 ```
 
-修改 `.env` 中两个模型的绝对路径、数据目录、监听地址与端口。模型下载阶段需要联网；服务启动后设置了离线模式，只读取已下载权重。脚本当前下载上游默认版本，复现实验时应对照已发布的模型 SHA256 清单，不能假定默认分支永远不变。
+使用扫描表格/公式时另执行 `.venv/bin/python scripts/download_vision.py`，按[视觉模型说明](VISUAL_AND_FULLTEXT.md)设置路径及cuda:2。
+
+修改 `.env` 中各模型的绝对路径、数据目录、监听地址与端口。模型下载阶段需要联网；服务启动后设置了离线模式，只读取已下载权重。脚本当前下载上游默认版本，复现实验时应对照已发布的模型 SHA256 清单，不能假定默认分支永远不变。
 
 ```sh
 bash scripts/serve.sh
