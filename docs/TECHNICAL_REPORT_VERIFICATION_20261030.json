@@ -1,11 +1,11 @@
 {
   "document_date": "2026-10-30",
-  "engineering_baseline": "306ef6ff79869bc549205167df802a5f161d660b",
+  "engineering_baseline": "e47f6446efca39579687fa6402e76fa7c270b97f",
   "pdf_path": "output/pdf/yanxi-technical-draft.pdf",
-  "pdf_sha256": "ca1459b51eb3dc2f14f4b1ae78f31e5524fbfd602b31a1b01796668f4d006bf8",
-  "source_sha256": "151c06057cf8d7253f691cd961f92842b07d67feb0c2d8481843464f372a8c56",
-  "builder_sha256": "5150e249b969a91b0a68106d232148ecaf74c08b64139bba2a6f4b459067c503",
-  "pages": 9,
+  "pdf_sha256": "884be426b423e5f5b800312b9d2a9916e73a0d1649e7bea4bb37c68ebe6f3123",
+  "source_sha256": "cd98072b8d04c787db2062397ff0c58207598f2708d5f6bc390d713a91ef558b",
+  "builder_sha256": "662a4e421f0725a0bb507014e224c89182a1447830c81dce4400616fd647e7ba",
+  "pages": 10,
   "page_limit": 30,
   "encrypted": false,
   "javascript_present": false,
@@ -16,6 +16,8 @@
     "/AAAAAC+STHeitiTC-Light-0": true,
     "/AAAAAA+STHeitiTC-Medium-0": true
   },
+  "unique_external_links": 50,
+  "local_source_links_and_baseline_evidence_targets_verified": true,
   "outline_destinations": [
     {
       "title": "摘要",
@@ -47,7 +49,7 @@
     },
     {
       "title": "7. 测试方法与实际结果",
-      "page": 6
+      "page": 7
     },
     {
       "title": "8. 部署、访问控制与复现",
@@ -63,24 +65,23 @@
     },
     {
       "title": "11. 仓库证据索引",
-      "page": 8
+      "page": 9
     },
     {
       "title": "12. 主要开源来源与许可",
       "page": 9
     }
   ],
-  "unique_external_links": 45,
-  "local_source_links_and_baseline_evidence_targets_verified": true,
-  "visual_review": {
-    "renderer": "Poppler pdftoppm",
-    "rendered_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    "contact_sheets_reviewed": 3,
-    "detail_pages_reviewed": [3, 7, 9],
-    "outcome": "中文可读，架构图与跨页表格无截断重叠，目录及页眉页脚对应。"
-  },
   "team_information": "信息待补",
-  "video_status": "仅七分钟脚本，未录制或公开发布",
-  "public_deployment": "待正式域名与外网浏览器验收",
-  "scope": "本轮只生成和检查技术材料，不重跑历史模型测试，不启动GPU；上游许可仅作主要来源索引。"
+  "technical_content": "已按工程e47f644更新，团队信息仍待本人补齐；不代表已提交",
+  "video_status": "由参赛者负责",
+  "public_deployment": "由参赛者负责，未以回环浏览器验收替代外网验收",
+  "scope": "技术PDF更新、字体/目录/链接/渲染检查；不额外重复历史GPU实验。核心版范围与增强项见正文及REQUIREMENTS_COVERAGE.md。",
+  "visual_review": {
+    "renderer": "Poppler pdftoppm 110 DPI",
+    "rendered_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "contact_sheets_reviewed": 4,
+    "detail_pages_reviewed": [3, 7, 9],
+    "outcome": "已查看所有10页与架构/测试表/来源表细图；中文可读、无截断重叠，跨页表头重复，目录与页眉页脚对应。"
+  }
 }

@@ -31,7 +31,7 @@ PALE = colors.HexColor("#EDF4F6")
 WIDTH = A4[0] - 90
 
 
-def inline(value, baseline="306ef6f"):
+def inline(value, baseline="e47f644"):
     text = html.escape(re.sub(r"[\u2010-\u2015]", "-", value))
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
     text = re.sub(r"`([^`]+)`", r'<font color="#1F6079">\1</font>', text)
@@ -175,7 +175,7 @@ class Report(BaseDocTemplate):
             rightMargin=45,
             topMargin=53,
             bottomMargin=48,
-            title="研析 - 本地GPU科研助手技术方案初稿",
+            title="研析 - 本地GPU科研助手技术方案与实现说明",
             author="研析项目 / 团队信息待补",
             pageCompression=1,
         )
@@ -198,7 +198,7 @@ class Report(BaseDocTemplate):
             canvas.setFont("Body", 8)
             canvas.setFillColor(MUTED)
             canvas.drawString(45, A4[1] - 30, "研析  /  技术方案与实现说明")
-            canvas.drawRightString(A4[0] - 45, A4[1] - 30, "初稿 · 团队信息待补")
+            canvas.drawRightString(A4[0] - 45, A4[1] - 30, "技术内容定稿 · 团队信息待补")
             canvas.setStrokeColor(colors.HexColor("#D9E4E9"))
             canvas.line(45, A4[1] - 38, A4[0] - 45, A4[1] - 38)
         canvas.setFont("Body", 8)
@@ -242,12 +242,12 @@ def build(source, output, font, bold_font, baseline, date):
         )
     )
     story.append(Spacer(1, 27))
-    story.append(Paragraph("技术方案与实现说明 · 初稿", s["h2"]))
+    story.append(Paragraph("技术方案与实现说明", s["h2"]))
     story.append(Paragraph("从文献原件到可回看的证据，再到检索、问答、阅读与研究写作。", s["body"]))
     story.append(Spacer(1, 24))
     items = [
-        ["4张GPU", "20篇 / 100边", "15 / 15页", "145项"],
-        ["本地模型设备", "固定引用图谱样本", "官方扫描件OCR", "后端行为测试"],
+        ["4张GPU", "20篇 / 100边", "15 / 15页", "6个模块"],
+        ["本地模型设备", "固定引用图谱样本", "官方扫描件OCR", "科研核心工作流"],
     ]
     matrix = Table(
         [[Paragraph(markup(v), s["table"]) for v in row] for row in items],
@@ -269,7 +269,7 @@ def build(source, output, font, bold_font, baseline, date):
         f"文档日期：{date}",
         f"实现基线：{baseline}",
         "团队名称 / 成员 / 学校与学院：信息待补",
-        "状态：工程初稿，公网与材料最终验收尚待完成",
+        "状态：技术内容定稿，团队信息待补；视频与公网由参赛者安排",
     ]:
         story.append(Paragraph(text, s["body"]))
     story.extend(
@@ -400,7 +400,7 @@ def main():
     parser.add_argument(
         "--bold-font", type=Path, default=Path("/System/Library/Fonts/STHeiti Medium.ttc")
     )
-    parser.add_argument("--baseline", default="306ef6f")
+    parser.add_argument("--baseline", default="e47f644")
     parser.add_argument("--date", default="2026-10-30")
     args = parser.parse_args()
     build(args.source, args.output, args.font, args.bold_font, args.baseline, args.date)
