@@ -31,7 +31,7 @@ PALE = colors.HexColor("#EDF4F6")
 WIDTH = A4[0] - 90
 
 
-def inline(value, baseline="d79123a"):
+def inline(value, baseline="1e05378"):
     text = html.escape(re.sub(r"[\u2010-\u2015]", "-", value))
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
     text = re.sub(r"`([^`]+)`", r'<font color="#1F6079">\1</font>', text)
@@ -159,10 +159,11 @@ def architecture():
         )
     )
     gap = 9
-    w = (WIDTH - 2 * gap) / 3
-    box(0, 4, w, 46, "Qwen2.5-7B", "GPU 0、1：问答 / 翻译 / 综述")
-    box(w + gap, 4, w, 46, "multilingual-e5-small", "GPU 2：检索 / 版本 / 主题重排")
-    box(2 * (w + gap), 4, w, 46, "EasyOCR", "GPU 3：扫描页检测与识别")
+    w = (WIDTH - 3 * gap) / 4
+    box(0, 4, w, 46, "Qwen2.5-7B", "GPU 0、1：语言生成")
+    box(w + gap, 4, w, 46, "E5-small", "GPU 2：向量检索")
+    box(2 * (w + gap), 4, w, 46, "Qwen3-VL-4B", "GPU 2：表格 / 公式")
+    box(3 * (w + gap), 4, w, 46, "EasyOCR", "GPU 3：扫描文字")
     return drawing
 
 
@@ -400,8 +401,8 @@ def main():
     parser.add_argument(
         "--bold-font", type=Path, default=Path("/System/Library/Fonts/STHeiti Medium.ttc")
     )
-    parser.add_argument("--baseline", default="d79123a")
-    parser.add_argument("--date", default="2026-10-30")
+    parser.add_argument("--baseline", default="1e05378")
+    parser.add_argument("--date", default="2026-10-31")
     args = parser.parse_args()
     build(args.source, args.output, args.font, args.bold_font, args.baseline, args.date)
     print(args.output.resolve())

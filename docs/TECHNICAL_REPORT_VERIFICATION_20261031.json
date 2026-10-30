@@ -1,0 +1,79 @@
+{
+  "document_date": "2026-10-31",
+  "engineering_baseline": "1e05378480aada9b1dfcb977d97452eca201c0e4",
+  "pdf_path": "output/pdf/yanxi-technical-draft.pdf",
+  "pdf_sha256": "1dfebeceb1095c981ce948855c234462e8ad99429d7206bebadacd0a674d1890",
+  "source_sha256": "1007423de0bc5e437df482227e00186026471c40a250fe1ab5c34a8615df4e64",
+  "builder_sha256": "7348d3fbdb7cab0d304530f97a23b42682dd4ef2612cad84e54a9d0e66dd94e5",
+  "pages": 11,
+  "page_limit": 30,
+  "encrypted": false,
+  "javascript_present": false,
+  "embedded_chinese_font_subsets": {
+    "/AAAAAA+STHeitiTC-Light-0": true,
+    "/AAAAAB+STHeitiTC-Light-0": true,
+    "/AAAAAC+STHeitiTC-Light-0": true,
+    "/AAAAAD+STHeitiTC-Light-0": true,
+    "/AAAAAA+STHeitiTC-Medium-0": true
+  },
+  "unique_external_links": 62,
+  "baseline_link_targets_verified": true,
+  "outline_destinations": [
+    {
+      "title": "摘要",
+      "page": 3
+    },
+    {
+      "title": "1. 需求与设计目标",
+      "page": 3
+    },
+    {
+      "title": "2. 系统架构与数据流",
+      "page": 3
+    },
+    {
+      "title": "3. AI 技术选型、集成与优化",
+      "page": 4
+    },
+    {
+      "title": "4. 六个业务模块实现",
+      "page": 5
+    },
+    {
+      "title": "5. 有界研究任务",
+      "page": 7
+    },
+    {
+      "title": "6. 技术与应用创新设计",
+      "page": 7
+    },
+    {
+      "title": "7. 测试方法与实际结果",
+      "page": 7
+    },
+    {
+      "title": "8. 部署、访问控制与复现",
+      "page": 8
+    },
+    {
+      "title": "9. 限制与后续工作",
+      "page": 9
+    },
+    {
+      "title": "10. 团队、贡献与资料管理",
+      "page": 9
+    },
+    {
+      "title": "11. 仓库证据索引",
+      "page": 10
+    },
+    {
+      "title": "12. 主要开源来源与许可",
+      "page": 10
+    }
+  ],
+  "rendered_pages": 11,
+  "visual_review": "11页已渲染并查看总览，更新后的架构/功能/测试/部署/来源页细查，未见截断或重叠。",
+  "team_information": "依参赛者要求：信息待补",
+  "video_and_public_hosting": "由参赛者处理"
+}

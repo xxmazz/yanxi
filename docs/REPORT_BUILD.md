@@ -1,6 +1,6 @@
 # 技术文档构建与审阅
 
-技术内容已定稿、真实团队信息待本人补齐。技术源稿为 [技术源稿](TECHNICAL_REPORT_DRAFT.md)，交付预览为 [技术 PDF](../output/pdf/yanxi-technical-draft.pdf)。团队信息按本人确认暂标“信息待补”。技术内容已更新到2026-10-30工程收尾，文档描述的工程基线为 `d79123a`，文档自身由之后的真实提交管理；演示视频仍只有 [七分钟脚本](DEMO_SCRIPT.md)，尚未录制发布。
+技术内容已定稿、真实团队信息待本人补齐。技术源稿为 [技术源稿](TECHNICAL_REPORT_DRAFT.md)，交付预览为 [技术 PDF](../output/pdf/yanxi-technical-draft.pdf)。团队信息按本人确认暂标“信息待补”。技术内容已更新到2026-10-31工程收尾，文档描述的工程基线为 `1e05378`，文档自身由之后的真实提交管理；演示视频仍只有 [七分钟脚本](DEMO_SCRIPT.md)，尚未录制发布。
 
 ## 独立文档环境
 
@@ -14,7 +14,7 @@ uv pip install --python .venv-docs/bin/python -r scripts/requirements-docs.txt
   --output output/pdf/yanxi-technical-draft.pdf \
   --font /System/Library/Fonts/STHeiti\ Light.ttc \
   --bold-font /System/Library/Fonts/STHeiti\ Medium.ttc \
-  --baseline d79123a --date 2026-10-30
+  --baseline 1e05378 --date 2026-10-31
 ```
 
 示例字体路径适用于本次 Mac。其他机器通过两个字体参数指定有相应使用权限、含中文字形且受 ReportLab 支持的 TrueType 文件；TTC 使用第0个子字体。不要把系统字体源文件复制进仓库。正文字体以子集嵌入 PDF，读者无需另装字体。`.venv-docs` 也应位于忽略目录；本次使用工具提供的独立文档运行时。
@@ -36,4 +36,6 @@ uv pip install --python .venv-docs/bin/python -r scripts/requirements-docs.txt
 
 同日继续更新至8311a87，新增真实订阅、批量下载及重启调度结果，后端176项、前端14项，PDF仍为10页。字体、Git证据目标和逐页渲染已重新核对；本轮记录以当前JSON为准。
 
-同日继续更新至d79123a，加入无编号书目身份核对/实际下载及正文悬停翻译，192项后端、25项前端。PDF重新生成、逐页渲染，并按当前基线核对仓库证据目标；详情以当前验证JSON为准。
+同日继续更新至1e05378，加入无编号书目身份核对/实际下载及正文悬停翻译，192项后端、25项前端。PDF重新生成、逐页渲染，并按当前基线核对仓库证据目标；详情以当前验证JSON为准。
+
+2026-10-31 更新至1e05378，加入本地视觉表格/公式/两页续表和所选正文核对，200项后端、29项前端与5组新增真实浏览器回归。当前PDF核对记录见[本次检查](TECHNICAL_REPORT_VERIFICATION_20261031.json)。
