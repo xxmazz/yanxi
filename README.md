@@ -2,6 +2,8 @@
 
 面向科研阅读与写作场景的本地模型文献工作台，支持 PDF 入库、混合检索、带原文页码的文献问答。引用图谱从参考文献原文构建，写作工坊基于真实摘要生成可编辑研究计划和架构图。
 
+2026-10-30 工程候选版已完成四卡本地模型的 10 组 API 联合回归、165 项后端测试和 12 项前端测试。新增 React 组件检查覆盖切页、异步导入、任务重试及导出内容；真实浏览器登录与下载落盘仍待验证。范围、复现命令与打包方式见 [工程验收说明](docs/ENGINEERING_RELEASE.md)。
+
 ## 功能概览
 
 - 文献管理：关键词搜索、筛选、星标、排序、卡片与列表切换，以及目录 JSON 导出。
@@ -42,9 +44,9 @@ React 19、TypeScript、Vite、FastAPI、SQLite、pypdf、PyTorch、Transformers
 | 目录     | 内容                                    |
 | -------- | --------------------------------------- |
 | src/     | 页面、样式、演示数据与 CSV 解析         |
-| tests/   | CSV 解析与 PDF 文件头校验测试           |
+| tests/   | React 组件、CSV 与 PDF 文件头校验测试   |
 | backend/ | 本地模型、PDF 索引、问答 API 与后端测试 |
-| scripts/ | 生产构建静态预览服务                    |
+| scripts/ | 运行辅助、联合回归与工程打包工具        |
 | docs/    | 开发记录、协作说明与验证记录            |
 
 ## 演示范围与数据
@@ -73,7 +75,7 @@ GPT 系列参数量、LN 位置和上下文比较已验证，支持按指标逐�
 
 ## 后续计划
 
-按 [比赛工程清单](docs/COMPETITION_PLAN.md) 继续补齐扫描件、版本管理、翻译、检索、图谱和写作。最新后端测试见 [后端验证记录](docs/BACKEND_VERIFICATION.md)。
+各模块现状及扩展方向见 [比赛工程清单](docs/COMPETITION_PLAN.md)，本轮核心链路验收见 [工程候选版](docs/ENGINEERING_RELEASE.md)。公网和视频发布按参赛者安排另行处理；团队信息及最终提交材料仍需补齐。历次后端验证见 [后端验证记录](docs/BACKEND_VERIFICATION.md)。
 
 仓库：https://github.com/xxmazz/yanxi
 

@@ -18,3 +18,6 @@ models/
 # 文档渲染中间图片，最终 PDF 保留在 output/pdf
 tmp/pdfs/
 .venv-docs/
+# 工程源码快照与本地媒体，不将交付包再次打进自身
+output/release/
+output/video/

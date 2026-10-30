@@ -5,6 +5,8 @@ import json
 import time
 import uuid
 
+from .graph import source_fingerprint
+
 ACTIVE = {"queued", "running"}
 RETRYABLE = {"error", "interrupted", "needs_review", "needs_summary"}
 
@@ -41,6 +43,34 @@ class ResearchTasks:
             ]
         return sorted(tasks, key=lambda t: t["created_at"], reverse=True)[:20]
 
+    def view(self, task, fingerprints=None):
+        """保留原历史，读取时不把过期或缺失摘要展示为有效完成结果。"""
+        if task["status"] != "complete":
+            return task
+        summary = task.get("summary") or {}
+        reason = ""
+        if not summary or summary.get("insufficient_evidence"):
+            reason = "原文入库完成，历史摘要未生成或未通过，请从检查点补生成。"
+        else:
+            ids = tuple(sorted(item["document_id"] for item in task["selected"]))
+            cache = fingerprints if fingerprints is not None else {}
+            if ids not in cache:
+                try:
+                    cache[ids] = source_fingerprint(self.store, ids) if ids else None
+                except ValueError:
+                    cache[ids] = None
+            if not cache[ids] or summary.get("fingerprint") != cache[ids]:
+                reason = "文献、版本或来源快照已变化，旧摘要暂不展示；确认文献后可重新生成。"
+        if not reason:
+            return task
+        return {
+            **task,
+            "status": "needs_summary",
+            "summary_stale": True,
+            "error": reason,
+            "summary": {"answer": reason, "citations": [], "insufficient_evidence": True},
+        }
+
     def recover(self):
         for task in self.list():
             if task["status"] in ACTIVE:
@@ -75,16 +105,20 @@ class ResearchTasks:
             }
         )
 
-    def retry(self, task_id):
+    def retry(self, task_id, refresh_summary=False):
         task = self.get(task_id)
-        old_incomplete = task["status"] == "complete" and (task.get("summary") or {}).get(
-            "insufficient_evidence"
+        old_incomplete = task["status"] == "complete" and (
+            not task.get("summary")
+            or task["summary"].get("insufficient_evidence")
+            or refresh_summary
         )
         if task["status"] not in RETRYABLE and not old_incomplete:
             raise ValueError("此任务当前不能重试")
         if any(t["status"] in ACTIVE for t in self.list()):
             raise ValueError("已有研究任务正在运行")
         task.update(status="queued", error="", attempt=task["attempt"] + 1)
+        if old_incomplete:
+            task["summary"] = None
         return self.save(task)
 
     def cancel(self, task_id):

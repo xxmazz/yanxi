@@ -902,7 +902,8 @@ def start_research(task_id):
 
 @app.get("/api/research/tasks")
 def list_research_tasks():
-    return research_tasks.list()
+    fingerprints = {}
+    return [research_tasks.view(task, fingerprints) for task in research_tasks.list()]
 
 
 @app.post("/api/research/tasks", status_code=202)
@@ -918,7 +919,13 @@ async def create_research_task(request: ResearchTaskRequest):
 async def retry_research_task(task_id: str):
     if task_id in research_tasks.running:
         raise HTTPException(409, "任务仍在结束中，请稍后重试")
-    task = document_action(lambda: research_tasks.retry(task_id))
+
+    def retry_current():
+        stored = research_tasks.get(task_id)
+        view = research_tasks.view(stored)
+        return research_tasks.retry(task_id, refresh_summary=view.get("summary_stale", False))
+
+    task = document_action(retry_current)
     start_research(task_id)
     return task
 
@@ -930,7 +937,7 @@ async def cancel_research_task(task_id: str):
 
 @app.get("/api/research/tasks/{task_id}")
 def get_research_task(task_id: str):
-    return document_action(lambda: research_tasks.get(task_id))
+    return document_action(lambda: research_tasks.view(research_tasks.get(task_id)))
 
 
 dist = Path(os.getenv("YANXI_DIST_DIR", "dist"))

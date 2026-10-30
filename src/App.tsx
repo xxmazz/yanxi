@@ -1896,7 +1896,7 @@ function ChartWorkspace({
                   if (svgRef.current) {
                     download(
                       "研析-数据图表.svg",
-                      new XMLSerializer().serializeToString(svgRef.current),
+                      svgRef.current.outerHTML,
                       "image/svg+xml",
                     );
                     notify("已导出矢量图。");

@@ -303,6 +303,36 @@ def load_library(store, document_ids):
     return documents, pages, sources
 
 
+def library_fingerprint(documents, pages, sources):
+    return sha(
+        json.dumps(
+            {
+                "version": VERSION,
+                "documents": [
+                    {
+                        "id": d["id"],
+                        "title": d["title"],
+                        "authors": d["authors"],
+                        "arxiv_id": d["arxiv_id"],
+                        "version": d["version"],
+                        "ocr_pages": d["ocr_pages"],
+                        "pages": [(p["page"], p["method"], sha(p["text"])) for p in pages[d["id"]]],
+                        "sources": sources.get(d["id"], []),
+                    }
+                    for d in documents
+                ],
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+    )
+
+
+def source_fingerprint(store, document_ids):
+    """只核对文献来源快照，不构建引用边、布局或排名。"""
+    return library_fingerprint(*load_library(store, document_ids))
+
+
 def build_graph(store, document_ids=()):
     documents, pages, sources = load_library(store, document_ids)
     nodes = groups(documents, pages, sources)
@@ -360,28 +390,7 @@ def build_graph(store, document_ids=()):
                 "y": round(float(positions[node["id"]][1]) * 210 + 290, 2),
             }
         )
-    fingerprint = sha(
-        json.dumps(
-            {
-                "version": VERSION,
-                "documents": [
-                    {
-                        "id": d["id"],
-                        "title": d["title"],
-                        "authors": d["authors"],
-                        "arxiv_id": d["arxiv_id"],
-                        "version": d["version"],
-                        "ocr_pages": d["ocr_pages"],
-                        "pages": [(p["page"], p["method"], sha(p["text"])) for p in pages[d["id"]]],
-                        "sources": sources.get(d["id"], []),
-                    }
-                    for d in documents
-                ],
-            },
-            ensure_ascii=False,
-            sort_keys=True,
-        )
-    )
+    fingerprint = library_fingerprint(documents, pages, sources)
     return {
         "fingerprint": fingerprint,
         "version": VERSION,
