@@ -1,10 +1,10 @@
 {
   "document_date": "2026-10-30",
-  "engineering_baseline": "8311a8709f742696e8d741ea97e393b234756b0b",
+  "engineering_baseline": "03301edf32978738523aab576266facbaecb1b39",
   "pdf_path": "output/pdf/yanxi-technical-draft.pdf",
-  "pdf_sha256": "a0a8d2f230c888bc00abb5ec2b2ee0e452fb11a687ca62226de2b002af586228",
-  "source_sha256": "f134ac21af45ddbaddc5b61382df91c224e50ca92b262c27e0b4953f8aa27691",
-  "builder_sha256": "e443d3b3eebc6b74a6f9195e3cd1a659766d0855606dec67938f3fe0c172df67",
+  "pdf_sha256": "f27a6491ce6e1440ea508ed4a2b5461a7b1b201f3f2682ef53718b4a48782926",
+  "source_sha256": "9fbce39d9ca3b96dc1bee596b611ca124e342d1675e777219e0ec55eb483f798",
+  "builder_sha256": "59a5c2a52ece0692a0b41f1f9b9eace2b306cb9a17dafa1927a2b5ad51b737d7",
   "pages": 10,
   "page_limit": 30,
   "encrypted": false,
@@ -13,9 +13,10 @@
     "/AAAAAA+STHeitiTC-Light-0": true,
     "/AAAAAB+STHeitiTC-Light-0": true,
     "/AAAAAC+STHeitiTC-Light-0": true,
+    "/AAAAAD+STHeitiTC-Light-0": true,
     "/AAAAAA+STHeitiTC-Medium-0": true
   },
-  "unique_external_links": 52,
+  "unique_external_links": 55,
   "baseline_link_targets_verified": true,
   "outline_destinations": [
     {
@@ -44,7 +45,7 @@
     },
     {
       "title": "6. 技术与应用创新设计",
-      "page": 6
+      "page": 7
     },
     {
       "title": "7. 测试方法与实际结果",
@@ -52,15 +53,15 @@
     },
     {
       "title": "8. 部署、访问控制与复现",
-      "page": 7
+      "page": 8
     },
     {
       "title": "9. 限制与后续工作",
-      "page": 8
+      "page": 9
     },
     {
       "title": "10. 团队、贡献与资料管理",
-      "page": 8
+      "page": 9
     },
     {
       "title": "11. 仓库证据索引",
@@ -68,15 +69,15 @@
     },
     {
       "title": "12. 主要开源来源与许可",
-      "page": 9
+      "page": 10
     }
   ],
   "visual_review": {
-    "renderer": "Poppler90DPI",
+    "renderer": "Poppler80DPI",
     "rendered_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     "contact_sheets_reviewed": 4,
-    "outcome": "逐页查看，新增订阅/下载段落及更新后的表格无截断重叠，中文可读，跨页表头重复。"
+    "outcome": "已逐页查看；新增结构提取、图表、更新研究及测试段落排版完整，表格、目录及中文可读。"
   },
   "team_information": "信息待补",
-  "scope": "新增订阅、批量下载与176/14测试更新；视频和公网参赛者负责。实际模型/网络证据另见FOLLOWING_VERIFICATION_20261030.json。"
+  "scope": "新增结构阅读、多系列/雷达、较新摘要对照及183/18测试更新；视频和公网由参赛者负责。"
 }
