@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-30",
+  "browser": "151.0.7922.34",
+  "api_stubs": false,
+  "desktop_mouse": false,
+  "checks": [
+    {
+      "name": "opt-in real sentence hover runs local Qwen and preserves source offsets",
+      "passed": true,
+      "seconds": 2.674,
+      "document_sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "physical_page": 3,
+      "start": 48,
+      "end": 262,
+      "source": "The Transformer follows this overall architecture using stacked self-attention and point-wise, fully\nconnected layers for both the encoder and decoder, shown in the left and right halves of Figure 1,\nrespectively.\n",
+      "translation": "Transformer 使用堆叠的自注意力机制和点wise、全连接层，分别用于编码器和解码器，如图1的左右两部分所示。",
+      "source_hash": "9b24bab192e99d05f5541c573ab811511750c43baedffa5788ca9fdf95299047",
+      "target": "zh",
+      "submissions": 1
+    },
+    {
+      "name": "same sentence cache, keyboard access, and page changes isolate displayed results",
+      "passed": true,
+      "seconds": 0.18,
+      "cache_reused_without_submission": true,
+      "keyboard": "Enter / Escape",
+      "reference_navigation": "3 → 11 → 3",
+      "page_change_clears_translation": true
+    },
+    {
+      "name": "forged source selection is rejected before creating a translation",
+      "passed": true,
+      "seconds": 0.026,
+      "status": 409,
+      "detail": "选段与当前原文不一致，请重新打开此页"
+    },
+    {
+      "name": "390px touch selection stays within viewport",
+      "passed": true,
+      "seconds": 0.894,
+      "width": 390,
+      "cached_touch": true,
+      "disabling_preserves_source": true
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "javascript_errors": [],
+  "passed": true,
+  "engineering_baseline": "f6bfc44 plus hover translation changes; see commit containing this file",
+  "unit_tests": {
+    "backend": 192,
+    "frontend": 25
+  },
+  "gpu_after_test": {
+    "memory_mib": [1, 1, 1, 1]
+  },
+  "notes": [
+    "Initial run exposed line-boundary sentence truncation; final run verifies complete source sentence.",
+    "A mixed terminology rendering for point-wise remains visible in actual output; no general translation accuracy claim."
+  ]
+}

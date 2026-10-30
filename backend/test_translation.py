@@ -13,6 +13,7 @@ from backend.core import Store
 from backend.translation import (
     TranslationService,
     canonical_numbers,
+    digest,
     protect,
     restore,
     segments,
@@ -203,6 +204,51 @@ class TranslationTests(unittest.TestCase):
         self.service.recover()
         self.assertEqual(self.service.job("interrupted")["status"], "error")
         self.assertIn("重启", self.service.job("interrupted")["error"])
+
+    def test_selection_verifies_unicode_offsets_and_returns_source_proof(self):
+        text = "🙂 文献正文。The model uses 32 GPUs and 0.0003 learning rate."
+        self.write_page(text)
+        start = text.index("The")
+        selected = text[start:]
+        job = self.service.start_selection(self.doc_id, 1, start, len(text), selected, "zh")
+        self.assertEqual(job["source"]["source_hash"], digest(text))
+        self.assertEqual(job["source"]["start"], start)
+        self.assertEqual(job["source"]["text"], selected)
+        result = self.wait(job)
+        self.assertEqual(result["status"], "ready")
+        self.assertIn("0.0003", result["result"])
+        # 选段翻译不将局部结果冒充整页翻译，也不写问答索引。
+        self.assertFalse(self.service.page(self.doc_id, 1, "zh")["complete"])
+
+    def test_selection_rejects_stale_forged_out_of_range_and_archived_source(self):
+        with patch.object(self.service, "start") as start:
+            for low, high, text in ((0, 5, "wrong"), (-1, 3, "The"), (1, 10000, "The"), (5, 1, "")):
+                with self.assertRaises(ValueError):
+                    self.service.start_selection(self.doc_id, 1, low, high, text, "zh")
+            with self.assertRaises(KeyError):
+                self.service.start_selection(self.doc_id, 2, 0, 3, "The", "zh")
+            self.write_page("New page text")
+            with self.assertRaises(ValueError):
+                self.service.start_selection(self.doc_id, 1, 0, 3, "The", "zh")
+            self.store.trash(self.doc_id)
+            with self.assertRaises(ValueError):
+                self.service.start_selection(self.doc_id, 1, 0, 3, "New", "zh")
+            start.assert_not_called()
+
+    def test_selection_api_limits_and_queued_worker(self):
+        module = importlib.import_module("backend.app")
+        with patch.object(module, "translation", self.service):
+            client = TestClient(module.app)
+            url = f"/api/documents/{self.doc_id}/translation/selection/1"
+            data = {"text": "The model uses 32 GPUs", "start": 0, "end": 22, "target": "zh"}
+            data["end"] = len(data["text"])
+            response = client.post(url, json=data)
+            self.assertEqual(response.status_code, 202)
+            self.assertEqual(self.wait(response.json())["status"], "ready")
+            self.assertEqual(client.post(url, json={**data, "end": 1}).status_code, 409)
+            self.assertEqual(client.post(url, json={**data, "start": -1}).status_code, 422)
+            self.assertEqual(client.post(url, json={**data, "text": "x" * 801}).status_code, 422)
+            self.assertEqual(client.post(url, json={**data, "target": "fr"}).status_code, 422)
 
     def test_api_validation_export_and_real_worker_flow(self):
         module = importlib.import_module("backend.app")

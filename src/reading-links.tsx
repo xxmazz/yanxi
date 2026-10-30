@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "./api";
 import type { ParsedPage } from "./api";
+import { useHoverTranslation } from "./hover-translation";
 
 type Anchor = {
   page: number;
@@ -29,6 +30,7 @@ export function ReadingLinks({
   page: ParsedPage | null;
   jump: (number: number) => void;
 }) {
+  const hover = useHoverTranslation(documentId, page);
   const [data, setData] = useState<Navigation | null>(null);
   const [error, setError] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
@@ -88,7 +90,9 @@ export function ReadingLinks({
   let cursor = 0;
   for (const item of matches) {
     pieces.push(
-      <span key={`text-${cursor}`}>{textRange(cursor, item.start)}</span>,
+      <span key={`text-${cursor}`}>
+        {hover.decorate(cursor, item.start, textRange)}
+      </span>,
     );
     pieces.push(
       <button
@@ -110,7 +114,9 @@ export function ReadingLinks({
     cursor = item.end;
   }
   pieces.push(
-    <span key={`text-${cursor}`}>{textRange(cursor, chars.length)}</span>,
+    <span key={`text-${cursor}`}>
+      {hover.decorate(cursor, chars.length, textRange)}
+    </span>,
   );
   return (
     <>
@@ -230,7 +236,17 @@ export function ReadingLinks({
           </>
         )}
       </details>
-      {page && <pre className="reference-page-text">{pieces}</pre>}
+      {page && hover.controls}
+      {page && (
+        <pre
+          className="reference-page-text"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") hover.dismiss();
+          }}
+        >
+          {pieces}
+        </pre>
+      )}
       {active && active.page === page?.page && !validActive && (
         <p role="status">
           定位片段与当前正文不一致，请重新打开此文献以刷新导航。

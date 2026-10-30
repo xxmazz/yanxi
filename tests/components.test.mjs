@@ -844,3 +844,234 @@ test("ambiguous bibliographic matches remain review-only and show official candi
     await env.cleanup();
   }
 });
+
+const hoverText =
+  "🙂 Preface. The model uses 32 GPUs and a learning rate of 0.0003. Another sentence explains attention mechanisms.";
+const hoverPage = { page: 1, text: hoverText, method: "native", blocks: [] };
+function hoverRoutes(env) {
+  env.routes.set("GET /api/documents/hover-paper/reading-links", {
+    document_id: "hover-paper",
+    fingerprint: "a".repeat(64),
+    entries: [],
+    mentions: [],
+    limitations: "",
+  });
+}
+async function activateHover(element, key = "click") {
+  assert(element, "hover source exists");
+  await act(async () =>
+    element.dispatchEvent(
+      key === "click"
+        ? new MouseEvent("click", { bubbles: true })
+        : new window.KeyboardEvent("keydown", {
+            key,
+            bubbles: true,
+            cancelable: true,
+          }),
+    ),
+  );
+}
+function hoverJob(request, overrides = {}) {
+  return {
+    id: "hover-job",
+    status: "ready",
+    source_text: request.body.text,
+    target: request.body.target,
+    result: "该模型使用32块GPU，学习率为0.0003。",
+    error: "",
+    ...overrides,
+  };
+}
+
+test("hover sentence offsets preserve Unicode and exclude complete formula/code spans", () => {
+  const wrapped =
+    "Figure 1: Architecture.\nThe Transformer uses fully\nconnected layers in both\nencoder and decoder, respectively.\n3.1 Encoder";
+  const sentence = components
+    .hoverRanges(wrapped, 0, Array.from(wrapped).length)
+    .find((range) => range.text.includes("The Transformer"));
+  assert.match(sentence.text, /fully\nconnected/);
+  assert.match(sentence.text, /respectively\./);
+  assert.doesNotMatch(sentence.text, /3\.1 Encoder/);
+  const text =
+    "🙂 The method is described here. $x=2$ Another explanation follows here.\n```python\nx = 3\n```\n" +
+    "Long technical sentence ".repeat(70);
+  const chars = Array.from(text);
+  const ranges = components.hoverRanges(text, 0, chars.length);
+  assert(ranges.length > 3);
+  for (const range of ranges) {
+    assert.equal(chars.slice(range.start, range.end).join(""), range.text);
+    assert(Array.from(range.text).length <= 700);
+    assert.doesNotMatch(range.text, /\$x=2\$|```|x = 3/);
+  }
+  assert(ranges.some((range) => range.text.includes("Another explanation")));
+  assert(ranges.some((range) => range.text.includes("Long technical")));
+});
+
+test("hover translation is opt-in, verifies exact source selection, caches per language and preserves body", async () => {
+  const env = setup();
+  hoverRoutes(env);
+  env.routes.set(
+    "POST /api/documents/hover-paper/translation/selection/1",
+    (request) => hoverJob(request),
+  );
+  try {
+    await env.render(components.ReadingLinks, {
+      documentId: "hover-paper",
+      page: hoverPage,
+      jump() {},
+    });
+    assert.equal(document.querySelector(".hover-translation-source"), null);
+    assert.equal(
+      document.querySelector(".reference-page-text").textContent,
+      hoverText,
+    );
+    await click(button("开启悬停翻译"));
+    const source = [
+      ...document.querySelectorAll(".hover-translation-source"),
+    ].find((node) => node.textContent.includes("32 GPUs"));
+    await activateHover(source);
+    const requests = () => env.calls.filter((call) => call.method === "POST");
+    assert.equal(requests().length, 1);
+    const selected = requests()[0].body;
+    assert.equal(
+      Array.from(hoverText).slice(selected.start, selected.end).join(""),
+      selected.text,
+    );
+    assert.equal(selected.target, "zh");
+    assert.match(
+      document.querySelector(".hover-translation-result").textContent,
+      /0\.0003/,
+    );
+    await click(
+      button("关闭", document.querySelector(".hover-translation-result")),
+    );
+    await activateHover(source, "Enter");
+    assert.equal(requests().length, 1);
+    assert.match(
+      document.querySelector(".hover-translation-result").textContent,
+      /会话缓存/,
+    );
+    assert.equal(
+      document.querySelector(".reference-page-text").textContent,
+      hoverText,
+    );
+    await change(document.querySelector('[aria-label="悬停译文语言"]'), "en");
+    assert.equal(document.querySelector(".hover-translation-result"), null);
+    await activateHover(
+      document.querySelectorAll(".hover-translation-source")[1],
+    );
+    assert.equal(requests().length, 2);
+    assert.equal(requests()[1].body.target, "en");
+    await activateHover(
+      document.querySelectorAll(".hover-translation-source")[1],
+      "Escape",
+    );
+    assert.equal(document.querySelector(".hover-translation-result"), null);
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("leaving a sentence before the hover delay makes no model request", async () => {
+  const env = setup();
+  hoverRoutes(env);
+  try {
+    await env.render(components.ReadingLinks, {
+      documentId: "hover-paper",
+      page: hoverPage,
+      jump() {},
+    });
+    await click(button("开启悬停翻译"));
+    const source = document.querySelector(".hover-translation-source");
+    await act(async () => {
+      source.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+      source.dispatchEvent(new MouseEvent("mouseout", { bubbles: true }));
+      await new Promise((resolve) => setTimeout(resolve, 650));
+    });
+    assert.equal(env.calls.filter((call) => call.method === "POST").length, 0);
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("late hover results cannot appear on another page and only one source request is in flight", async () => {
+  const env = setup();
+  hoverRoutes(env);
+  let finish;
+  env.routes.set(
+    "POST /api/documents/hover-paper/translation/selection/1",
+    (request) =>
+      new Promise((resolve) => {
+        finish = () => resolve(hoverJob(request));
+      }),
+  );
+  try {
+    const props = { documentId: "hover-paper", page: hoverPage, jump() {} };
+    await env.render(components.ReadingLinks, props);
+    await click(button("开启悬停翻译"));
+    const sources = document.querySelectorAll(".hover-translation-source");
+    await activateHover(sources[0]);
+    await activateHover(sources[1]);
+    assert.equal(env.calls.filter((call) => call.method === "POST").length, 1);
+    assert.match(
+      document.querySelector(".hover-translation-controls").textContent,
+      /请完成后/,
+    );
+    await env.render(components.ReadingLinks, {
+      ...props,
+      page: {
+        ...hoverPage,
+        page: 2,
+        text: "A completely different page with new evidence.",
+      },
+    });
+    await act(async () => finish());
+    assert.equal(document.querySelector(".hover-translation-result"), null);
+    assert.match(
+      document.querySelector(".reference-page-text").textContent,
+      /different page/,
+    );
+    assert.doesNotMatch(
+      document.querySelector(".reference-page-text").textContent,
+      /32 GPUs/,
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("invalid hover job identity shows an error and retries only on explicit request", async () => {
+  const env = setup();
+  hoverRoutes(env);
+  let wrong = true;
+  env.routes.set(
+    "POST /api/documents/hover-paper/translation/selection/1",
+    (request) =>
+      hoverJob(request, wrong ? { source_text: "Other source" } : {}),
+  );
+  try {
+    await env.render(components.ReadingLinks, {
+      documentId: "hover-paper",
+      page: hoverPage,
+      jump() {},
+    });
+    await click(button("开启悬停翻译"));
+    const source = document.querySelectorAll(".hover-translation-source")[1];
+    await activateHover(source);
+    assert.match(
+      document.querySelector('[role="alert"]').textContent,
+      /不一致/,
+    );
+    await activateHover(source);
+    assert.equal(env.calls.filter((call) => call.method === "POST").length, 1);
+    wrong = false;
+    await click(button("重试选段翻译"));
+    assert.equal(env.calls.filter((call) => call.method === "POST").length, 2);
+    assert.match(
+      document.querySelector(".hover-translation-result").textContent,
+      /0\.0003/,
+    );
+  } finally {
+    await env.cleanup();
+  }
+});

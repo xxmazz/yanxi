@@ -254,6 +254,28 @@ class TranslationService:
                 ),
             )
 
+    def start_selection(self, doc_id, number, start, end, text, target):
+        self.check_document(doc_id)
+        page = self.store.page(doc_id, number)
+        if page is None:
+            raise KeyError("此页尚未解析或不存在")
+        if not 0 <= start < end <= len(page["text"]) or page["text"][start:end] != text:
+            raise ValueError("选段与当前原文不一致，请重新打开此页")
+        if not text.strip() or len(text) > 800:
+            raise ValueError("悬停翻译仅支持1至800字的原文选段")
+        job = self.start(target, text=text)
+        return {
+            **job,
+            "source": {
+                "document_id": doc_id,
+                "page": number,
+                "start": start,
+                "end": end,
+                "text": text,
+                "source_hash": digest(page["text"]),
+            },
+        }
+
     def start(self, target, doc_id="", number=None, text=""):
         with self.lock:
             pages = []

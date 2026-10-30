@@ -4311,3 +4311,57 @@ textarea {
   margin: 12px 0;
   padding-left: 12px;
 }
+
+.hover-translation-controls {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 12px;
+  background: #f5f8f2;
+  border: 1px solid #dce6d7;
+  border-radius: 8px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.hover-translation-toolbar,
+.hover-translation-result > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.hover-translation-controls button,
+.hover-translation-controls select {
+  padding: 6px 10px;
+  border: 1px solid #d1deca;
+  border-radius: 5px;
+  background: #fff;
+  color: #38513b;
+  cursor: pointer;
+}
+.hover-translation-source {
+  cursor: help;
+  border-radius: 3px;
+}
+.hover-translation-source:hover,
+.hover-translation-source:focus-visible {
+  background: #e4eedc;
+  outline: 1px solid #aac09c;
+}
+.hover-translation-result {
+  max-height: min(40vh, 340px);
+  overflow: auto;
+  margin-top: 10px;
+  border-top: 1px solid #d1deca;
+  padding-top: 10px;
+  line-height: 1.65;
+}
+.hover-translation-result blockquote {
+  border-left: 2px solid #b6c8aa;
+  padding-left: 10px;
+  margin: 6px 0;
+  color: #697463;
+  white-space: pre-wrap;
+}

@@ -775,6 +775,22 @@ def translate_text(request: TextTranslation):
     return translation_action(lambda: translation.start(request.target, text=request.text))
 
 
+class SelectionTranslation(BaseModel):
+    target: Literal["zh", "en"] = "zh"
+    start: int = Field(ge=0, le=500000)
+    end: int = Field(ge=1, le=500000)
+    text: str = Field(min_length=1, max_length=800)
+
+
+@app.post("/api/documents/{doc_id}/translation/selection/{number}", status_code=202)
+def translate_selection(doc_id: str, number: int, request: SelectionTranslation):
+    return translation_action(
+        lambda: translation.start_selection(
+            doc_id, number, request.start, request.end, request.text, request.target
+        )
+    )
+
+
 @app.get("/api/translation/jobs/{job_id}")
 def translation_job(job_id: str):
     return translation_action(lambda: translation.job(job_id))
