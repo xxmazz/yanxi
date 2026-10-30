@@ -1,3 +1,4 @@
+import { FollowingPanel } from "./following";
 import { ResearchTasks } from "./research-tasks";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Download, Search, BookOpen } from "lucide-react";
@@ -130,6 +131,7 @@ export function Discovery({
   };
   return (
     <>
+      <FollowingPanel documents={documents} open={open} changed={changed} />
       <ResearchTasks changed={changed} open={open} />
       <div className="page-heading">
         <div>

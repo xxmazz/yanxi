@@ -476,3 +476,78 @@ test("chat follow-ups carry only last successful source IDs and reset on new con
     await env.cleanup();
   }
 });
+
+test("following panel persists subscription preference and submits only explicitly selected reference IDs", async () => {
+  const env = setup();
+  const state = { subscriptions: [], batches: [] };
+  env.routes.set("GET /api/following", () => state);
+  env.routes.set("POST /api/following/subscriptions", (request) => {
+    state.subscriptions.push({
+      id: "subscription",
+      query: request.body.query,
+      cadence: request.body.cadence,
+      enabled: true,
+      last_run: null,
+      next_run: 1,
+      error: "",
+      feedback: {},
+      items: [],
+    });
+    return state.subscriptions[0];
+  });
+  env.routes.set("GET /api/documents/source/reference-candidates", {
+    fingerprint: "f".repeat(64),
+    references: 2,
+    unresolved: 1,
+    items: [
+      {
+        arxiv_id: "1706.03762v7",
+        reference: "[1]",
+        quote: "Source arXiv:1706.03762v7",
+        pages: [10],
+      },
+    ],
+  });
+  env.routes.set("POST /api/documents/source/reference-batches", {
+    id: "batch",
+  });
+  try {
+    await env.render(components.FollowingPanel, {
+      documents: [
+        {
+          id: "source",
+          title: "Source",
+          status: "ready",
+          is_active: true,
+          trashed_at: null,
+        },
+      ],
+      open: () => {},
+      changed: () => {},
+    });
+    await change(
+      document.querySelector('[aria-label="订阅研究主题"]'),
+      "retrieval augmented generation",
+    );
+    await change(document.querySelector('[aria-label="追踪频率"]'), "weekly");
+    await submit(document.querySelector("form"));
+    assert.deepEqual(
+      env.calls.find((c) => c.url === "/api/following/subscriptions").body,
+      { query: "retrieval augmented generation", cadence: "weekly" },
+    );
+    await change(
+      document.querySelector('[aria-label="参考文献来源论文"]'),
+      "source",
+    );
+    await click(button("读取参考文献"));
+    assert.equal(button("下载所选参考文献（0）").disabled, true);
+    await click(button("选择前30篇"));
+    await click(button("下载所选参考文献（1）"));
+    assert.deepEqual(
+      env.calls.find((c) => c.url.endsWith("reference-batches")).body,
+      { fingerprint: "f".repeat(64), arxiv_ids: ["1706.03762v7"] },
+    );
+  } finally {
+    await env.cleanup();
+  }
+});

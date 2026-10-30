@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-30",
+  "baseline_before_changes": "b1e8cd393706be46df3aa76d0f75f0a0979d6527",
+  "backend_tests": 176,
+  "frontend_tests": 14,
+  "live_browser": {
+    "date": "2026-10-30",
+    "browser": "151.0.7922.34",
+    "isolation": "existing document clone, four local models, real arXiv requests",
+    "checks": [
+      {
+        "name": "browser subscription creation, weekly cadence, pause and real refresh",
+        "passed": true,
+        "count": 8,
+        "error": "",
+        "search_query": "retrieval augmented generation"
+      },
+      {
+        "name": "browser feedback persists",
+        "passed": true,
+        "paper": "2610.40454v1",
+        "reason": "与库内《Retrieval Augmented Generation Systems: Automatic Dataset Creation, Evaluation and Boolean Agent Setup》摘要主题接近（E5余弦0.881）"
+      },
+      {
+        "name": "real reference batch download and source record",
+        "passed": true,
+        "status": "complete",
+        "items": [
+          {
+            "arxiv_id": "1607.06450",
+            "status": "complete",
+            "document_id": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+            "error": ""
+          }
+        ]
+      },
+      {
+        "name": "reload persistence",
+        "passed": true
+      }
+    ],
+    "subscription_id": "09f717e9fdc74cb98d5e4fe58619efd9",
+    "batch_id": "ac4992bce6f348ac824424e0f274f2e0",
+    "javascript_errors": [],
+    "passed": true
+  },
+  "two_reference_batch": {
+    "status": "complete",
+    "items": [
+      {
+        "arxiv_id": "1607.06450",
+        "status": "complete",
+        "document_id": "c464f839fb8d59f7fde92f9b4caa67c2d1f2f196b88f93fb60502249df0aaef7",
+        "error": ""
+      },
+      {
+        "arxiv_id": "1601.06733",
+        "status": "complete",
+        "document_id": "5085f14d6a203ec934b512646e1aeed37802fee1e686a9b6a9fa99ca51a13b91",
+        "error": ""
+      }
+    ],
+    "seconds": 52.62,
+    "passed": true
+  },
+  "scheduler_restart": {
+    "passed": true,
+    "automatic_scheduler_after_restart": true,
+    "items": 8,
+    "feedback_preserved": true,
+    "previous_success": 1793368531.2382307,
+    "new_success": 1793368655.6282387,
+    "next_run": 1793973455.6370392,
+    "cadence": "weekly",
+    "cached_official_query": true,
+    "all_batches_preserved": true
+  },
+  "responsive_browser": {
+    "passed": true,
+    "mobile": {
+      "viewport": 390,
+      "width": 390
+    }
+  },
+  "preservation": {
+    "production_unchanged": true,
+    "documents": 33,
+    "page_rows": 1574,
+    "pdfs": 33,
+    "clone_new_documents": 1,
+    "new_paper_title": "Long Short-Term Memory-Networks for Machine Reading",
+    "new_paper_pages": 11
+  },
+  "reference_candidates": {
+    "document_id": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+    "references": 40,
+    "identified_arxiv_works": 16,
+    "unresolved_without_explicit_id": 24
+  },
+  "scope": "真实Chromium+已有四卡Qwen/E5/OCR隔离环境；真实官方检索及下载。重启调度复用有效官方查询缓存；未改变时钟假装运行一周。日/周间隔与暂停用隔离测试验证。不是任意书目自动匹配、全量最新论文同步、训练式推荐或代码可复现性评价。",
+  "initial_failure": "首轮临时服务在构建目录上传前启动，未挂载静态页面，浏览器等待失败；上传构建并重启后实际流程通过，原始报告保留在runtime。",
+  "source_sha256": {
+    "backend/app.py": "8ea37e111ba896a6a647be51183cf1aca03ab7a59a34d18cc9b3d704ee55efd4",
+    "backend/following.py": "260d9de69e4ecc9d1a0dc9096921c778adcb9c0db79a8fabbcd5b1357e935480",
+    "backend/test_following.py": "d238e31bd170156085ca00a08bda58eaf41c54b43fa0c7c7fc9aa2790c17f10c",
+    "src/following.tsx": "83a0768289cf3adcc9a25f6f8c312d71ad4291e078fad6db3e3dbfc188f11134",
+    "src/discovery.tsx": "35f287e0833051017a45b723e7ee4809f58b07e6a6128b1247d9de88d869a7d6",
+    "src/styles.css": "e3d82e842966f4d620eac17022537c344108a5ee954cc48b1daccad7e42cda3b",
+    "src/App.tsx": "39d47594a88191063be53ecc6202bf7e4691158bf49e97b32fa67ac27ef5bb48"
+  },
+  "raw_report_sha256": {
+    "LIVE.json": "5243f835bcca6951748630ca531568141fd5b12451a04c91d7dc655449333da7",
+    "MULTI.json": "f3ae4be6e391c819bab4e7c3e4acb42bddf1014f135fa1ee648641caa5faeb0f",
+    "SCHEDULER.json": "38626403387abdb49b07a24a7b9671e26c5909dc3714ab26e2e114dab0d2da8c",
+    "VISUAL.json": "3f93e9f48c6abe153dac1bb97b9cd94c7f10abe0d1bca6335bd82df984e1ddda",
+    "PRESERVATION.json": "c0c08bd4656c71a3936cc4eda1dea0b68ecce45e4e40dd67b8fa1811096bad97"
+  }
+}

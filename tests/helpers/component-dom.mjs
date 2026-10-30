@@ -15,6 +15,7 @@ const bundle = await build({
   stdin: {
     contents: `export { default as App } from "./src/App.tsx";
 export { ResearchTasks } from "./src/research-tasks.tsx";
+export { FollowingPanel } from "./src/following.tsx";
 export { WritingWorkspace } from "./src/writing-workspace.tsx";`,
     resolveDir: project,
   },
@@ -77,6 +78,7 @@ export function setup() {
   routes.set("GET /api/documents?include_archived=true", []);
   routes.set("GET /api/discovery/jobs", []);
   routes.set("GET /api/research/tasks", []);
+  routes.set("GET /api/following", { subscriptions: [], batches: [] });
   globalThis.fetch = async (url, init = {}) => {
     // No fallback to real fetch: an unstubbed request is a test failure.
     const request = {

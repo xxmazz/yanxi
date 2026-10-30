@@ -24,6 +24,7 @@ from .comparison import explicit_configuration_facts
 from .conversation import context_scope
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, valid_id
+from .following import Following, reference_candidates
 from .graph import build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
@@ -42,6 +43,7 @@ ocr = LocalOCR()
 discovery = ArxivDiscovery(store)
 translation = TranslationService(store, models)
 research_tasks = ResearchTasks(store)
+following = Following(store)
 download_workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="arxiv-import")
 download_slots = threading.BoundedSemaphore(2)
 search_lock = asyncio.Lock()
@@ -109,7 +111,12 @@ async def lifespan(app):
                 store.fail(doc["id"], "重启恢复队列已满，请重新导入")
     discovery.recover_jobs()
     translation.recover()
+    following.recover()
+    follow_scheduler = asyncio.create_task(following.scheduler(follow_search))
     yield
+    follow_scheduler.cancel()
+    await asyncio.gather(follow_scheduler, return_exceptions=True)
+    await following.shutdown()
     await research_tasks.shutdown()
     await asyncio.to_thread(translation.shutdown)
     download_workers.shutdown(wait=True)
@@ -970,6 +977,97 @@ async def cancel_research_task(task_id: str):
 @app.get("/api/research/tasks/{task_id}")
 def get_research_task(task_id: str):
     return document_action(lambda: research_tasks.view(research_tasks.get(task_id)))
+
+
+async def follow_search(query):
+    return await search_papers(q=query, start=0, sort="newest")
+
+
+class SubscriptionRequest(BaseModel):
+    query: str = Field(min_length=2, max_length=240)
+    cadence: Literal["daily", "weekly"] = "daily"
+
+
+class SubscriptionEnabled(BaseModel):
+    enabled: bool
+
+
+class FeedbackRequest(BaseModel):
+    base_id: str = Field(max_length=60)
+    value: Literal[-1, 0, 1]
+
+
+@app.get("/api/following")
+def list_following():
+    return {"subscriptions": following.list("subscription"), "batches": following.list("batch")}
+
+
+@app.post("/api/following/subscriptions", status_code=201)
+def create_subscription(request: SubscriptionRequest):
+    if not request.query.strip():
+        raise HTTPException(422, "订阅主题不能为空")
+    return document_action(lambda: following.subscribe(request.query, request.cadence))
+
+
+@app.post("/api/following/{identifier}/enabled")
+def enable_subscription(identifier: str, request: SubscriptionEnabled):
+    return document_action(lambda: following.configure(identifier, request.enabled))
+
+
+@app.post("/api/following/{identifier}/refresh")
+async def refresh_subscription(identifier: str):
+    try:
+        return await following.refresh(identifier, follow_search)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+@app.post("/api/following/{identifier}/feedback")
+def feedback_subscription(identifier: str, request: FeedbackRequest):
+    return document_action(lambda: following.feedback(identifier, request.base_id, request.value))
+
+
+@app.get("/api/documents/{doc_id}/reference-candidates")
+def get_reference_candidates(doc_id: str):
+    return document_action(lambda: reference_candidates(navigation(store, doc_id)))
+
+
+class ReferenceBatchRequest(BaseModel):
+    fingerprint: str = Field(min_length=64, max_length=64)
+    arxiv_ids: list[str] = Field(min_length=1, max_length=30)
+
+
+@app.post("/api/documents/{doc_id}/reference-batches", status_code=202)
+async def start_reference_batch(doc_id: str, request: ReferenceBatchRequest):
+    def create():
+        candidates = reference_candidates(navigation(store, doc_id))
+        if candidates["fingerprint"] != request.fingerprint:
+            raise ValueError("原文已变化，请重新读取参考文献")
+        lookup = {item["arxiv_id"]: item for item in candidates["items"]}
+        ids = list(dict.fromkeys(request.arxiv_ids))
+        if any(identifier not in lookup for identifier in ids):
+            raise ValueError("只能下载已核对的参考文献编号")
+        batch = following.batch(doc_id, [lookup[identifier] for identifier in ids])
+        following.start_batch(batch["id"], task_import, discovery.job)
+        return following.get(batch["id"])
+
+    return document_action(create)
+
+
+@app.post("/api/following/{identifier}/cancel")
+def cancel_reference_batch(identifier: str):
+    return document_action(lambda: following.cancel(identifier))
+
+
+@app.post("/api/following/{identifier}/retry")
+async def retry_reference_batch(identifier: str):
+    def retry():
+        following.start_batch(identifier, task_import, discovery.job)
+        return following.get(identifier)
+
+    return document_action(retry)
 
 
 dist = Path(os.getenv("YANXI_DIST_DIR", "dist"))
