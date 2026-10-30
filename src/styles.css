@@ -4295,3 +4295,19 @@ textarea {
     min-width: 520px;
   }
 }
+
+.reference-matching {
+  border-top: 1px solid #dce4d5;
+  padding-top: 12px;
+  margin-top: 18px;
+  min-width: 0;
+}
+.reference-match-entry {
+  padding: 10px 0;
+  overflow-wrap: anywhere;
+}
+.reference-match-entry article {
+  border-left: 3px solid #b4c4a6;
+  margin: 12px 0;
+  padding-left: 12px;
+}

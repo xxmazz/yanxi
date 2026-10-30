@@ -17,6 +17,7 @@ const bundle = await build({
 export { ResearchTasks } from "./src/research-tasks.tsx";
 export { FutureCheckPanel } from "./src/future-check.tsx";
 export { PageStructure } from "./src/page-structure.tsx";
+export { ReferenceMatching } from "./src/reference-matching.tsx";
 export { FollowingPanel } from "./src/following.tsx";
 export { WritingWorkspace } from "./src/writing-workspace.tsx";`,
     resolveDir: project,

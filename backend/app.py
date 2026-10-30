@@ -24,13 +24,14 @@ from .comparison import explicit_configuration_facts
 from .conversation import context_scope
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, valid_id
-from .following import Following, reference_candidates
+from .following import Following
 from .future import prepare as prepare_future
 from .graph import build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
 from .reading_links import navigation
+from .reference_resolution import ReferenceResolver
 from .research_tasks import ResearchTasks
 from .structure import analyze as analyze_structure
 from .structure import table_csv
@@ -47,6 +48,7 @@ discovery = ArxivDiscovery(store)
 translation = TranslationService(store, models)
 research_tasks = ResearchTasks(store)
 following = Following(store)
+reference_resolver = ReferenceResolver(store)
 download_workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="arxiv-import")
 download_slots = threading.BoundedSemaphore(2)
 search_lock = asyncio.Lock()
@@ -1144,7 +1146,35 @@ def feedback_subscription(identifier: str, request: FeedbackRequest):
 
 @app.get("/api/documents/{doc_id}/reference-candidates")
 def get_reference_candidates(doc_id: str):
-    return document_action(lambda: reference_candidates(navigation(store, doc_id)))
+    return document_action(lambda: reference_resolver.candidates(doc_id, navigation(store, doc_id)))
+
+
+class ReferenceResolutionRequest(BaseModel):
+    fingerprint: str = Field(min_length=64, max_length=64)
+    reference: str = Field(min_length=1, max_length=160)
+
+
+@app.post("/api/documents/{doc_id}/reference-resolutions")
+async def resolve_reference(doc_id: str, request: ReferenceResolutionRequest):
+    if search_lock.locked():
+        raise HTTPException(429, "正在检索其他论文，请稍后匹配")
+    async with search_lock:
+        data = await asyncio.to_thread(document_action, lambda: navigation(store, doc_id))
+        if data["fingerprint"] != request.fingerprint:
+            raise HTTPException(409, "原文已变化，请重新读取参考文献")
+        try:
+            result = await asyncio.to_thread(
+                reference_resolver.resolve, doc_id, data, request.reference, discovery
+            )
+        except DiscoveryError as exc:
+            raise HTTPException(exc.status, str(exc)) from exc
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        current = await asyncio.to_thread(document_action, lambda: navigation(store, doc_id))
+        if current["fingerprint"] != request.fingerprint:
+            raise HTTPException(409, "检索期间原文已变化，请重新读取参考文献")
+        reference_resolver.save(doc_id, request.fingerprint, result)
+        return result
 
 
 class ReferenceBatchRequest(BaseModel):
@@ -1155,7 +1185,7 @@ class ReferenceBatchRequest(BaseModel):
 @app.post("/api/documents/{doc_id}/reference-batches", status_code=202)
 async def start_reference_batch(doc_id: str, request: ReferenceBatchRequest):
     def create():
-        candidates = reference_candidates(navigation(store, doc_id))
+        candidates = reference_resolver.candidates(doc_id, navigation(store, doc_id))
         if candidates["fingerprint"] != request.fingerprint:
             raise ValueError("原文已变化，请重新读取参考文献")
         lookup = {item["arxiv_id"]: item for item in candidates["items"]}

@@ -4,7 +4,7 @@
 
 2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；183项后端与18项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
 
-10月30日继续补齐了[参考文献批量下载、每日/每周论文订阅与反馈](docs/FOLLOWING.md)，入口在“探索发现”。参考文献当前识别明确arXiv编号，订阅每次获取最新8篇并用本地E5给出库内关联理由。
+10月30日继续补齐了[参考文献批量下载、每日/每周论文订阅与反馈](docs/FOLLOWING.md)，入口在“探索发现”。参考文献支持明确arXiv/CoRR编号，并可[按题名、作者和年份匹配无编号书目](docs/REFERENCE_MATCHING.md)后勾选下载；订阅每次获取最新8篇并用本地E5给出库内关联理由。
 
 新增[表格与编号公式提取、多系列及雷达图、更新研究核对](docs/STRUCTURED_READING_AND_RESEARCH.md)：可查看原图、导出表格CSV，并将Future Work原文与较新arXiv摘要一起核对。
 

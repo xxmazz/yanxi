@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-30",
+  "browser": "151.0.7922.34",
+  "api_stubs": false,
+  "desktop_mouse": false,
+  "checks": [
+    {
+      "name": "resolve two identifier-free bibliographies using real title metadata",
+      "passed": true,
+      "seconds": 4.222,
+      "results": [
+        {
+          "reference": "[11]",
+          "arxiv_id": "1512.03385v1",
+          "title": "Deep Residual Learning for Image Recognition",
+          "authors": ["Kaiming He", "Xiangyu Zhang"],
+          "reference_year": 2016,
+          "published_year": 2015,
+          "cached": false
+        },
+        {
+          "reference": "[20]",
+          "arxiv_id": "1412.6980v9",
+          "title": "Adam: A Method for Stochastic Optimization",
+          "authors": ["Diederik P. Kingma", "Jimmy Ba"],
+          "reference_year": 2015,
+          "published_year": 2014,
+          "cached": false
+        }
+      ]
+    },
+    {
+      "name": "unmatched reference is never added to downloadable IDs",
+      "passed": true,
+      "seconds": 2.935,
+      "reference": "[13]",
+      "status": "no_match",
+      "candidates": 8
+    },
+    {
+      "name": "reload persists verified provenance and real user-selected batch import",
+      "passed": true,
+      "seconds": 32.75,
+      "batch_id": "e8967ac9b3ef426faa1ce1f119683728",
+      "status": "complete",
+      "items": [
+        {
+          "arxiv_id": "1512.03385v1",
+          "document_sha256": "1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a",
+          "match_method": "title-authors-year",
+          "title": "Deep Residual Learning for Image Recognition",
+          "pages": 12,
+          "document_status": "ready"
+        },
+        {
+          "arxiv_id": "1412.6980v9",
+          "document_sha256": "eab9c73ae2ceda884b94830bda99312254bac4806f6c9f045cbab90721ecda31",
+          "match_method": "title-authors-year",
+          "title": "Adam: A Method for Stochastic Optimization",
+          "pages": 15,
+          "document_status": "ready"
+        }
+      ]
+    },
+    {
+      "name": "narrow-screen reference controls and metadata remain on page",
+      "passed": true,
+      "seconds": 0.086,
+      "width": 390
+    }
+  ],
+  "health": {
+    "status": "ok",
+    "model_ready": true,
+    "embedding_ready": true,
+    "model": "Qwen2.5-7B-Instruct",
+    "retrieval": "bm25+e5-rrf",
+    "ocr_ready": true
+  },
+  "library_count_before": 33,
+  "library_count_after": 35,
+  "javascript_errors": [],
+  "passed": true,
+  "engineering_baseline": "f157859 plus reference matching changes; see commit containing this file",
+  "unit_tests": {
+    "backend": 189,
+    "frontend": 20
+  },
+  "production_preservation": {
+    "pdf_count": 33,
+    "page_rows": 1574,
+    "pdf_hashes_valid": true,
+    "documents_pages_chunks_version_decisions_unchanged": true
+  },
+  "new_document_vectors": [
+    {
+      "arxiv_id": "1512.03385v1",
+      "chunks": 66,
+      "vectors": 66
+    },
+    {
+      "arxiv_id": "1412.6980v9",
+      "chunks": 49,
+      "vectors": 49
+    }
+  ]
+}

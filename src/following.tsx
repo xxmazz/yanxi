@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
 import type { ServerDocument } from "./api";
+import {
+  ReferenceMatching,
+  type UnresolvedReference,
+} from "./reference-matching";
 
 type Candidate = {
   arxiv_id: string;
   reference: string;
   quote: string;
   pages: number[];
+  title?: string;
+  match_method?: string;
+  metadata_url?: string;
+  match?: { reasons: string[] };
 };
 type FeedPaper = {
   base_id: string;
@@ -68,6 +76,8 @@ export function FollowingPanel({
     references: number;
     unresolved: number;
     fingerprint: string;
+    unresolved_entries?: UnresolvedReference[];
+    resolved_by_title?: number;
   } | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -243,6 +253,7 @@ export function FollowingPanel({
           来源论文{" "}
           <select
             aria-label="参考文献来源论文"
+            disabled={busy}
             value={docId}
             onChange={(e) => {
               setDocId(e.target.value);
@@ -286,8 +297,9 @@ export function FollowingPanel({
           <>
             <p>
               识别到{candidates.references}条书目，其中{candidates.items.length}
-              个不同arXiv编号可自动下载；{candidates.unresolved}
-              条未识别出明确编号，需按题名手动检索。每批最多30篇。上传后仍需等待解析及版本确认。
+              个不同arXiv编号可勾选下载（其中{candidates.resolved_by_title || 0}
+              个由题名核对）；{candidates.unresolved}
+              条待按题名匹配。每批最多30篇。上传后仍需等待解析及版本确认。
             </p>
             <button
               onClick={() =>
@@ -318,11 +330,23 @@ export function FollowingPanel({
                     )
                   }
                 />
-                {item.reference} · arXiv:{item.arxiv_id} · 第
-                {item.pages.join("、")}页
+                {item.reference} · {item.title ? `${item.title} · ` : ""}arXiv:
+                {item.arxiv_id} · 第{item.pages.join("、")}页
                 <details>
                   <summary>核对书目</summary>
                   <p>{item.quote}</p>
+                  {item.match_method === "title-authors-year" && (
+                    <>
+                      <p>题名匹配：{item.match?.reasons.join("；")}</p>
+                      <a
+                        href={item.metadata_url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        核对官方元数据
+                      </a>
+                    </>
+                  )}
                 </details>
               </label>
             ))}
@@ -337,6 +361,20 @@ export function FollowingPanel({
             >
               下载所选参考文献（{selected.length}）
             </button>
+            <ReferenceMatching
+              key={`${docId}-${candidates.fingerprint}`}
+              documentId={docId}
+              fingerprint={candidates.fingerprint}
+              entries={candidates.unresolved_entries || []}
+              disabled={busy}
+              pending={setBusy}
+              resolved={async () => {
+                const latest = await api<NonNullable<typeof candidates>>(
+                  `/api/documents/${docId}/reference-candidates`,
+                );
+                setCandidates(latest);
+              }}
+            />
           </>
         )}
       </details>

@@ -709,3 +709,138 @@ test("future research check submits exact scope and renders real-source fields w
     await env.cleanup();
   }
 });
+
+const unresolvedReference = {
+  reference: "[11]",
+  title: "Deep residual learning for image recognition",
+  authors: "Kaiming He, Xiangyu Zhang",
+  year: 2016,
+  quote:
+    "[11] Kaiming He, Xiangyu Zhang. Deep residual learning for image recognition. 2016.",
+  pages: [10],
+  resolution: null,
+};
+const resolvedReference = {
+  reference: "[11]",
+  status: "matched",
+  search_title: unresolvedReference.title,
+  checked_at: "2026-10-30T00:00:00Z",
+  note: "核对标题作者与年份",
+  candidates: [
+    {
+      title: "Deep Residual Learning for Image Recognition",
+      arxiv_id: "1512.03385v1",
+      authors: ["Kaiming He", "Xiangyu Zhang"],
+      published: "2015-12-10",
+      url: "https://arxiv.org/abs/1512.03385v1",
+      match: { verified: true, reasons: ["完整标题一致", "作者及年份核对"] },
+    },
+  ],
+};
+
+test("reference title matching refreshes candidates but never starts a download without selection", async () => {
+  const env = setup();
+  let matched = false;
+  env.routes.set("GET /api/documents/source/reference-candidates", () => ({
+    fingerprint: "f".repeat(64),
+    references: 1,
+    unresolved: matched ? 0 : 1,
+    resolved_by_title: matched ? 1 : 0,
+    unresolved_entries: matched ? [] : [unresolvedReference],
+    items: matched
+      ? [
+          {
+            arxiv_id: "1512.03385v1",
+            reference: "[11]",
+            quote: unresolvedReference.quote,
+            pages: [10],
+            title: resolvedReference.candidates[0].title,
+            match_method: "title-authors-year",
+            match: resolvedReference.candidates[0].match,
+            metadata_url: resolvedReference.candidates[0].url,
+          },
+        ]
+      : [],
+  }));
+  env.routes.set(
+    "POST /api/documents/source/reference-resolutions",
+    (request) => {
+      assert.deepEqual(request.body, {
+        reference: "[11]",
+        fingerprint: "f".repeat(64),
+      });
+      matched = true;
+      return resolvedReference;
+    },
+  );
+  env.routes.set("POST /api/documents/source/reference-batches", {
+    id: "batch",
+  });
+  try {
+    await env.render(components.FollowingPanel, {
+      documents: [
+        {
+          id: "source",
+          title: "Source",
+          status: "ready",
+          is_active: true,
+          trashed_at: null,
+        },
+      ],
+      open: () => {},
+      changed: () => {},
+    });
+    await change(
+      document.querySelector('[aria-label="参考文献来源论文"]'),
+      "source",
+    );
+    await click(button("读取参考文献"));
+    assert.equal(button("下载所选参考文献（0）").disabled, true);
+    await click(button("匹配前5条无编号书目"));
+    assert.ok(document.body.textContent.includes("由题名核对"));
+    assert.equal(
+      env.calls.filter((call) => call.url.endsWith("reference-batches")).length,
+      0,
+    );
+    assert.equal(button("下载所选参考文献（0）").disabled, true);
+    await click(button("选择前30篇"));
+    await click(button("下载所选参考文献（1）"));
+    assert.deepEqual(
+      env.calls.find((call) => call.url.endsWith("reference-batches")).body,
+      { fingerprint: "f".repeat(64), arxiv_ids: ["1512.03385v1"] },
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("ambiguous bibliographic matches remain review-only and show official candidate links", async () => {
+  const env = setup();
+  let refreshed = 0;
+  env.routes.set("POST /api/documents/source/reference-resolutions", {
+    ...resolvedReference,
+    status: "ambiguous",
+  });
+  try {
+    await env.render(components.ReferenceMatching, {
+      documentId: "source",
+      fingerprint: "f".repeat(64),
+      entries: [unresolvedReference],
+      disabled: false,
+      pending: () => {},
+      resolved: async () => {
+        refreshed++;
+      },
+    });
+    await click(button("匹配此书目"));
+    assert.match(document.body.textContent, /有多个身份同时符合，暂不加入下载/);
+    assert.equal(
+      document.querySelector(".reference-match-entry a").href,
+      "https://arxiv.org/abs/1512.03385v1",
+    );
+    assert.equal(refreshed, 1);
+    assert.equal(env.calls.length, 1);
+  } finally {
+    await env.cleanup();
+  }
+});

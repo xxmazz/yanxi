@@ -9,11 +9,20 @@ import uuid
 from .discovery import ARXIV_ID
 
 
+def explicit_ids(text):
+    marked = re.findall(r"(?:arxiv\s*:\s*|arxiv\.org/(?:abs|pdf)/)(" + ARXIV_ID + r")", text, re.I)
+    # CoRR 书目中 abs/ 后的完整编号也是明确身份；普通编号不按arXiv猜测。
+    corr = re.findall(r"\bCoRR\s*,\s*abs/(" + ARXIV_ID + r")", text, re.I)
+    return marked + corr
+
+
 def reference_candidates(data):
-    items, seen = [], set()
+    items, seen, identified = [], set(), []
     for entry in data["entries"]:
         text = " ".join(e["quote"] for e in entry["evidence"])
-        ids = re.findall(r"(?:arxiv\s*:\s*|arxiv\.org/(?:abs|pdf)/)(" + ARXIV_ID + r")", text, re.I)
+        ids = explicit_ids(text)
+        if ids:
+            identified.append(entry["label"])
         for identifier in ids:
             base = re.sub(r"v\d+$", "", identifier)
             if base in seen:
@@ -30,14 +39,8 @@ def reference_candidates(data):
     return {
         "items": items,
         "references": len(data["entries"]),
-        "unresolved": sum(
-            not re.search(
-                r"(?:arxiv\s*:|arxiv\.org/(?:abs|pdf)/)" + ARXIV_ID,
-                " ".join(e["quote"] for e in entry["evidence"]),
-                re.I,
-            )
-            for entry in data["entries"]
-        ),
+        "unresolved": len(data["entries"]) - len(identified),
+        "identified_references": identified,
         "fingerprint": data["fingerprint"],
     }
 
