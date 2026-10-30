@@ -1,0 +1,157 @@
+{
+  "api_stubs": true,
+  "purpose": "只核对样式与既有交互，不执行模型推理或写入正式库",
+  "checks": [
+    {
+      "name": "我的文献",
+      "width": 1440,
+      "scroll": 1440,
+      "overflow": false
+    },
+    {
+      "name": "沉浸阅读",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "name": "文献问答",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "name": "探索发现",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "name": "引用图谱",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "name": "写作工坊",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "name": "我的文献",
+      "width": 390,
+      "scroll": 390,
+      "overflow": false
+    },
+    {
+      "name": "沉浸阅读",
+      "width": 390,
+      "scroll": 390,
+      "overflow": false
+    },
+    {
+      "name": "文献问答",
+      "width": 390,
+      "scroll": 390,
+      "overflow": false
+    },
+    {
+      "name": "探索发现",
+      "width": 390,
+      "scroll": 390,
+      "overflow": false
+    },
+    {
+      "name": "引用图谱",
+      "width": 390,
+      "scroll": 390,
+      "overflow": false
+    },
+    {
+      "name": "写作工坊",
+      "width": 390,
+      "scroll": 390,
+      "overflow": false
+    },
+    {
+      "name": "我的文献",
+      "width": 320,
+      "scroll": 320,
+      "overflow": false
+    },
+    {
+      "name": "沉浸阅读",
+      "width": 320,
+      "scroll": 320,
+      "overflow": false
+    },
+    {
+      "name": "文献问答",
+      "width": 320,
+      "scroll": 320,
+      "overflow": false
+    },
+    {
+      "name": "探索发现",
+      "width": 320,
+      "scroll": 320,
+      "overflow": false
+    },
+    {
+      "name": "引用图谱",
+      "width": 320,
+      "scroll": 320,
+      "overflow": false
+    },
+    {
+      "name": "写作工坊",
+      "width": 320,
+      "scroll": 320,
+      "overflow": false
+    }
+  ],
+  "javascript_errors": [],
+  "date": "2026-10-31",
+  "browser": "Chromium 151.0.7922.34",
+  "frontend_tests": {
+    "passed": 29,
+    "failed": 0
+  },
+  "production_build": "passed",
+  "format_check": "passed",
+  "production_model_inference": false,
+  "gpu_memory_mib": [1, 1, 1, 1],
+  "interactions": [
+    "六个导航入口",
+    "文献卡片和列表切换",
+    "文献搜索",
+    "上传弹窗打开及Esc关闭"
+  ],
+  "scope": "只验证布局和现有前端交互；接口使用预览替身，论文元数据及原页来自只读副本，不将其计入真实模型验证。",
+  "source_requirement_sha256": "58b406ac67aa2b53ff013ae9cac1920c8579ebdd0d3134afe4c06524f77862f6",
+  "previous_issue": "扩大标签字号后，窄屏文献筛选栏合计宽度405像素；改为换行布局并为600像素以下设置单列文献，18项布局重验通过。",
+  "screenshot_sha256": {
+    "chat-desktop.png": "8b2e882fb0a9e77a998cc24d1b9241934dd328bc01e2c3d80f2e5557fb7438d5",
+    "discover-desktop.png": "42755304d770ebe8c2cc8cf7c3d9e4baafa2db87c9b17bce24cb6a966fdda677",
+    "graph-desktop.png": "546900698fd897917b640e705c0c1c8a634f64dd2c435941fe12c5a5c55ca128",
+    "library-desktop.png": "44a0a54200dcacf90e11b0e3daa5f23526fb243b3161c41e1c94a4776c78bc8e",
+    "library-list.png": "c5d7c7d56160148c439895f9f6ca33522582fac166a471f31e1c2cf2d8c910a4",
+    "reader-desktop.png": "36f2de782f9b8e8b2a7a1684b1922ac202986f8621aba6e24bda97435b4a3710",
+    "upload-desktop.png": "ef22a33dfbbd5d476ada2c3903f1bbfae5f8f940c85c71926c82418910827cac",
+    "write-desktop.png": "8c22fe9c2d0ec555ea4ec7037a6a42cde896b1eabff903a76576624cda718814",
+    "写作工坊-320.png": "0586bbdac1fa94296409493e2c6c4f2e8d3ad9e2c83dc3895f294007f4e623f0",
+    "写作工坊-390.png": "e09a6dbe248d578dccd25bd044750adf89d7e084719710ac3679bff0a142b9c8",
+    "引用图谱-320.png": "f0a16ac15183bd97ef587f92b43f74b0b2f0cee13eeb80e200648880a14d8775",
+    "引用图谱-390.png": "2012b761e02c8c9279288f6fb4a3c5cff1dac2e7e6fe667a1a07e245461b923a",
+    "我的文献-320.png": "08b8c6542a9ecf02a4315b7c944905c12998215d3e82309411a4a373ee3e34a4",
+    "我的文献-390.png": "508fd5860b65facc3e45bc2fee438be0d7dcfdfee0edaf35fc344b229cee0a0a",
+    "探索发现-320.png": "cb49362ba74f344403e415a95bbf288ce2d37a16a5f99f21ff41c33d8ead4168",
+    "探索发现-390.png": "ecf957d33c6a629a19165c13c4d17d2fb8d846ee8cd03b16ec938b9cccb7eee3",
+    "文献问答-320.png": "03727799f3fda77dc6e5d86cc4ea87f38b1a775dbcc8c7dfcdb8830899be4656",
+    "文献问答-390.png": "d310ad3b83d5a7bafcd82ae4bdf6f19bf9dadcbc56a9993634e24659f887fb6a",
+    "沉浸阅读-320.png": "14cf608ac127694c71978074ae5b782e8d904d2b3e2fbee8be647eb34bf40cd7",
+    "沉浸阅读-390.png": "d12e24a8c16c1a16cde21c681d60b29e5fd81d65effc02a6e1f0986aaee6b2a5"
+  },
+  "source_sha256": {
+    "src/App.tsx": "de86595b609966d7480b7b3b578e35ffe120b91de2afc2699462ef37820beca7",
+    "src/main.tsx": "260ff9024a701f521df2544398f0a9b34cc28cabadfe9c9c2ca756df9feaa445",
+    "src/styles.css": "bbad3faf44f1502b8043340ff8df64cea1f917f0d215a5d991f19628ed1e536f",
+    "src/research-theme.css": "9f882362211b1dbe5b066557a3810f0f4be36cd1f7db5ebb37f51b4725d7e1fc"
+  }
+}

@@ -694,11 +694,11 @@ export default function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <div className="eyebrow">YOUR RESEARCH, CONNECTED</div>
+                  <div className="eyebrow">文献档案 / LIBRARY</div>
                   <h1>
                     我的文献<span className="count-pill">{papers.length}</span>
                   </h1>
-                  <p>整理知识的碎片，让研究的脉络清晰可见。</p>
+                  <p>原件、阅读与研究线索，集中整理。</p>
                 </div>
                 <button
                   className="button primary"
@@ -709,51 +709,45 @@ export default function App() {
                 </button>
               </div>
               {health && <ArchivePanel changed={changed} notify={notify} />}
-              <section className="welcome-banner">
+              <section className="welcome-banner" aria-label="文献工作流程">
                 <div className="banner-copy">
-                  <span className="banner-label">
-                    <Sparkles size={14} />
-                    让阅读更进一步
-                  </span>
+                  <span className="banner-label">研析 · 文献工作台</span>
                   <h2>
-                    读懂一篇论文，
+                    从原文出发，
                     <br />
-                    连接一整个研究方向。
+                    把研究线索留在案头。
                   </h2>
-                  <p>从文献解析到证据问答，让灵感不止停留在阅读。</p>
+                  <p>归档论文，核对证据，再把想法写下来。</p>
                   <button onClick={() => go("chat")}>
-                    开始一次有据可循的探索 <ArrowRight size={16} />
+                    带着问题阅读 <ArrowRight size={16} />
                   </button>
                 </div>
-                <div className="banner-visual" aria-hidden="true">
-                  <div className="orbit orbit-one" />
-                  <div className="orbit orbit-two" />
-                  <div className="orbit orbit-three" />
-                  <svg viewBox="0 0 400 220">
-                    <path d="M100 140 L208 84 L303 146 M208 84 L242 193 M100 140 L242 193 M303 146 L242 193" />
-                  </svg>
-                  <div className="floating-doc doc-one">
-                    <FileText size={23} />
-                    <i />
-                    <i />
-                    <span>文献</span>
-                  </div>
-                  <div className="floating-doc doc-two">
-                    <Network size={22} />
-                    <i />
-                    <i />
-                    <span>关联</span>
-                  </div>
-                  <div className="visual-center">
-                    <Sparkles size={27} />
-                  </div>
-                  <div className="evidence-badge">
-                    <ShieldCheck size={15} />
-                    让知识有迹可循
-                  </div>
-                  <span className="visual-star star-one">✦</span>
-                  <span className="visual-star star-two">✧</span>
-                </div>
+                <ol className="banner-register" aria-label="研究流程">
+                  <li>
+                    <span>01</span>
+                    <div>
+                      <strong>收录原文</strong>
+                      <small>PDF 解析 · 版本管理</small>
+                    </div>
+                    <FolderOpen size={18} />
+                  </li>
+                  <li>
+                    <span>02</span>
+                    <div>
+                      <strong>核对出处</strong>
+                      <small>原文问答 · 引用回看</small>
+                    </div>
+                    <BookOpen size={18} />
+                  </li>
+                  <li>
+                    <span>03</span>
+                    <div>
+                      <strong>整理研究</strong>
+                      <small>引用图谱 · 研究计划</small>
+                    </div>
+                    <GitBranch size={18} />
+                  </li>
+                </ol>
               </section>
               <div className="stats-row">
                 <div>

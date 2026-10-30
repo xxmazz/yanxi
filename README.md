@@ -4,6 +4,8 @@
 
 2026-10-31 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；200项后端与29项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
 
+界面采用墨蓝导航、暖白阅读区与砖红批注色的文献档案室样式；网页形式依据、设计与窄屏验证见[界面说明](docs/INTERFACE_DESIGN.md)。
+
 阅读器新增[本地悬停翻译](docs/HOVER_TRANSLATION.md)，支持完整句子、原文核对、会话缓存及翻页隔离。
 
 10月30日继续补齐了[参考文献批量下载、每日/每周论文订阅与反馈](docs/FOLLOWING.md)，入口在“探索发现”。参考文献支持明确arXiv/CoRR编号，并可[按题名、作者和年份匹配无编号书目](docs/REFERENCE_MATCHING.md)后勾选下载；订阅每次获取最新8篇并用本地E5给出库内关联理由。
