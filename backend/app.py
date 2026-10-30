@@ -21,6 +21,7 @@ from .access import AccessSettings, ReviewAccess
 from .architecture import architecture_comparison
 from .bibliography import author_ordinal, ordered_author
 from .comparison import explicit_configuration_facts
+from .conversation import context_scope
 from .core import Store, chunks_for_page, retrieve, validate_answer
 from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, valid_id
 from .graph import build_graph
@@ -422,10 +423,41 @@ def render_page(doc_id: str, number: int):
 class Question(BaseModel):
     question: str = Field(min_length=1, max_length=1500)
     document_ids: list[str] = Field(default_factory=list, max_length=50)
+    previous_document_ids: list[str] = Field(default_factory=list, max_length=6)
 
 
 @app.post("/api/chat")
 async def chat(request: Question):
+    scope, continued = context_scope(
+        request.question, request.document_ids, request.previous_document_ids
+    )
+    if continued:
+        # 不允许文献失效后悄悄退回全库，原文仍需经过有效状态检查。
+        unavailable = [
+            doc_id
+            for doc_id in scope
+            if not (doc := store.document(doc_id))
+            or doc["status"] != "ready"
+            or not doc["is_active"]
+            or doc["trashed_at"]
+        ]
+        if unavailable:
+            return {
+                "answer": "上次回答的文献已不可用，请重新选择文献范围后提问。",
+                "citations": [],
+                "insufficient_evidence": True,
+                "steps": ["核对追问文献状态"],
+                "context_used": False,
+            }
+    result = await answer_question(request.model_copy(update={"document_ids": scope}))
+    return {
+        **result,
+        "context_used": continued,
+        "steps": (["沿用上次回答的原文范围，重新检索证据"] if continued else []) + result["steps"],
+    }
+
+
+async def answer_question(request: Question):
     if chat_lock.locked():
         raise HTTPException(429, "模型正在回答另一个问题，请稍后重试")
     async with chat_lock:

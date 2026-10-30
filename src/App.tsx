@@ -132,6 +132,10 @@ export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
   const [chatScope, setChatScope] = useState("all");
+  const [conversation, setConversation] = useState<{
+    scope: string;
+    documentIds: string[];
+  } | null>(null);
   const [health, setHealth] = useState<Health | null>(null);
   const [serverDocs, setServerDocs] = useState<ServerDocument[]>([]);
   const [refreshTick, setRefreshTick] = useState(0);
@@ -449,14 +453,27 @@ export default function App() {
         answer: string;
         citations: Evidence[];
         steps: string[];
+        insufficient_evidence: boolean;
       }>("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           question: prompt,
           document_ids: scoped?.backendId ? [scoped.backendId] : [],
+          previous_document_ids:
+            conversation?.scope === chatScope ? conversation.documentIds : [],
         }),
       });
+      if (!result.insufficient_evidence && result.citations.length) {
+        setConversation({
+          scope: chatScope,
+          documentIds: [
+            ...new Set(result.citations.map((item) => item.document_id)),
+          ].slice(0, 6),
+        });
+      } else {
+        setConversation(null);
+      }
       setMessages((items) => [
         ...items,
         {
@@ -468,6 +485,7 @@ export default function App() {
         },
       ]);
     } catch (error) {
+      setConversation(null);
       setMessages((items) => [
         ...items,
         {
@@ -1054,6 +1072,7 @@ export default function App() {
                   </div>
                   {active.backendId ? (
                     <ServerReader
+                      key={active.backendId}
                       documentId={active.backendId}
                       title={active.title}
                       pages={active.pages}
@@ -1182,7 +1201,10 @@ export default function App() {
                 <button
                   className="button secondary"
                   disabled={busy || !messages.length}
-                  onClick={() => setMessages([])}
+                  onClick={() => {
+                    setMessages([]);
+                    setConversation(null);
+                  }}
                 >
                   <Plus size={16} />
                   新对话
@@ -1326,11 +1348,16 @@ export default function App() {
                     <FolderOpen size={17} />
                     研究范围
                   </h3>
-                  <p>限定文献，聚焦问题。</p>
+                  <p>
+                    限定文献，聚焦问题。可用“这篇”“其中”接着问；新对话或切换范围会清空追问关联。
+                  </p>
                   <select
                     aria-label="问答文献范围"
                     value={chatScope}
-                    onChange={(e) => setChatScope(e.target.value)}
+                    onChange={(e) => {
+                      setChatScope(e.target.value);
+                      setConversation(null);
+                    }}
                   >
                     <option value="all">全部已解析文献</option>
                     {papers

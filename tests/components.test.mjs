@@ -412,3 +412,67 @@ test("writing exports preserve edited provenance, source snapshot and escaped di
     await env.cleanup();
   }
 });
+
+test("chat follow-ups carry only last successful source IDs and reset on new conversation or scope change", async () => {
+  const env = setup();
+  const doc = {
+    id: "context-doc",
+    title: "Context source",
+    authors: "Test",
+    status: "ready",
+    created: "2026-10-30T00:00:00",
+    pages: 1,
+    warnings: [],
+    is_active: true,
+    trashed_at: null,
+    filename: "context.pdf",
+    similar_documents: [],
+    abstract: "source",
+  };
+  env.routes.set("GET /api/documents", [doc]);
+  env.routes.set("POST /api/chat", {
+    answer: "Supported result",
+    insufficient_evidence: false,
+    steps: [],
+    citations: [
+      {
+        id: "E1",
+        document_id: doc.id,
+        title: doc.title,
+        page: 1,
+        quote: "source",
+        url: "/api/documents/context-doc/pdf#page=1",
+      },
+    ],
+  });
+  try {
+    await env.render(components.App);
+    await click(button("文献问答AI", document.querySelector(".sidebar")));
+    const ask = async (text) => {
+      await change(document.querySelector('[aria-label="输入文献问题"]'), text);
+      await click(document.querySelector('[aria-label="发送问题"]'));
+      return env.calls.filter((call) => call.url === "/api/chat").at(-1).body;
+    };
+    assert.deepEqual((await ask("第一问")).previous_document_ids, []);
+    assert.deepEqual((await ask("其中Adam的参数？")).previous_document_ids, [
+      doc.id,
+    ]);
+    await click(button("新对话"));
+    assert.deepEqual((await ask("新问题")).previous_document_ids, []);
+    await change(document.querySelector('[aria-label="问答文献范围"]'), doc.id);
+    assert.deepEqual(
+      (await ask("这篇用了什么GPU？")).previous_document_ids,
+      [],
+    );
+    env.routes.set("POST /api/chat", {
+      answer: "Evidence missing",
+      insufficient_evidence: true,
+      steps: [],
+      citations: [],
+    });
+    await ask("这篇的其他内容？");
+    assert.deepEqual((await ask("其中还有什么？")).previous_document_ids, []);
+  } finally {
+    await env.cleanup();
+  }
+});

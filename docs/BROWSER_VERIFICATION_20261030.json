@@ -1,0 +1,250 @@
+{
+  "date": "2026-10-30",
+  "browser": "151.0.7922.34",
+  "engineering_baseline": "437ab76",
+  "candidate": true,
+  "api_stubs_used": false,
+  "desktop_mouse_used": false,
+  "authenticated_loopback": true,
+  "checks": [
+    {
+      "name": "浏览器认证与页面加载",
+      "passed": true,
+      "seconds": 0.8,
+      "anonymous_rejected": true,
+      "credentials_supplied_by_browser_context": true,
+      "native_password_dialog_manually_tested": false,
+      "models_ready": true
+    },
+    {
+      "name": "目录下载与原PDF文件",
+      "passed": true,
+      "seconds": 0.317,
+      "pdf_sha256_matches": true
+    },
+    {
+      "name": "原页、三级章节和数字引用双向跳转",
+      "passed": true,
+      "seconds": 0.517,
+      "numeric_reference": "[13]: physical 2 → 11 → 2",
+      "chapter": "3.2.2 Multi-Head Attention"
+    },
+    {
+      "name": "作者年份引用双向跳转",
+      "passed": true,
+      "seconds": 0.262,
+      "author_year": "Peters et al., 2018a: physical 1 → 11 → 1"
+    },
+    {
+      "name": "真实本地问答与连续追问",
+      "passed": true,
+      "seconds": 3.666,
+      "answers": [
+        {
+          "question": "论文的第6作者是谁，在哪个机构工作？",
+          "answer": "Aidan N. Gomez，署名机构：University of Toronto。[E1]\n\n署名脚注：†Work performed while at Google Brain.[E2]",
+          "pages": [1, 1]
+        },
+        {
+          "question": "其中Adam优化器的β1和β2分别是多少？",
+          "answer": "Adam优化器的β1和β2分别是0.9和0.98[E1]",
+          "pages": [7]
+        }
+      ],
+      "scope": "显式单篇；每问真实检索生成"
+    },
+    {
+      "name": "历史研究任务、真实来源和原页",
+      "passed": true,
+      "seconds": 0.188,
+      "task_id": "aa41f4e331394c628397fd50d2dca3d1",
+      "pages": [1, 5],
+      "history_marked": true
+    },
+    {
+      "name": "八页对照翻译、双向滚动及Markdown落盘",
+      "passed": true,
+      "seconds": 0.899,
+      "existing_translation_cache": true,
+      "bytes": 62842,
+      "scroll": {
+        "toChinese": true,
+        "toEnglish": true
+      }
+    },
+    {
+      "name": "20篇100边引用图谱及JSON落盘",
+      "passed": true,
+      "seconds": 0.839,
+      "nodes": 20,
+      "edges": 100,
+      "bytes": 242653
+    },
+    {
+      "name": "三篇论文计划生成、原页、编辑、刷新与四种导出",
+      "passed": true,
+      "seconds": 11.947,
+      "references": 3,
+      "real_model_generation": true,
+      "source_png_loaded": true,
+      "edited_draft_persisted_after_reload": true
+    },
+    {
+      "name": "CSV导入、两类切页与SVG图注落盘",
+      "passed": true,
+      "seconds": 0.167,
+      "file_import": true,
+      "line_chart_preserved": true,
+      "values": [47, 43, 72]
+    },
+    {
+      "name": "同字节改名PDF上传去重",
+      "passed": true,
+      "seconds": 0.316,
+      "duplicate": true,
+      "pdf_unchanged": true
+    },
+    {
+      "name": "窄屏导航与布局",
+      "passed": true,
+      "seconds": 0.067,
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "downloads": [
+    {
+      "kind": "library-json",
+      "name": "研析-文献目录.json",
+      "bytes": 13546,
+      "sha256": "914d1219d85968638ac61eba7317de14b64f6a9704bc56608024293acec85e6b",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "translation-markdown",
+      "name": "研析-对照翻译-zh.md",
+      "bytes": 62842,
+      "sha256": "b0b0838c6a5f595becad3caddf252d67d4cf06cf1fe02c1ec2dfcd7dd1d77c72",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "graph-json",
+      "name": "研析-局域引用图谱.json",
+      "bytes": 242653,
+      "sha256": "1448e82eaf11165798f203bc7a80738a0a19218f33a7f8161b297f1c421dc255",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "writing-markdown",
+      "name": "研析-研究计划.md",
+      "bytes": 3803,
+      "sha256": "b19ca25ec5774badbd3637f004c0110a86a13aca2fbd6b3e8fb7af2907e85c97",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "writing-sources",
+      "name": "研析-写作来源.json",
+      "bytes": 17181,
+      "sha256": "71f8993385579629e7bab72f04650e65103200ba0c96551960cc9227a4728216",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "writing-mermaid",
+      "name": "研析-方法架构.mmd",
+      "bytes": 553,
+      "sha256": "a34a7aefc902168c73b107baaced8826b8526039aa841a3b8b7bce1c42f4c3e6",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "writing-svg",
+      "name": "研析-方法架构.svg",
+      "bytes": 2455,
+      "sha256": "0f82ce17f211de6ce50dc5dd8c6b4ec58d1c0050791dd0f646b57f878353f8a2",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "chart-svg",
+      "name": "研析-数据图表.svg",
+      "bytes": 2789,
+      "sha256": "e4530b3f1fff1ac5af11aa47c4e504c79e3b2eab165eb779dbd70d2a80814924",
+      "saved_to_disk": true
+    },
+    {
+      "kind": "chart-caption",
+      "name": "研析-图表说明.md",
+      "bytes": 283,
+      "sha256": "d9a8b622e055923dd6df3a9c051d8cf671aab939db3163400b38db5bdc5ded06",
+      "saved_to_disk": true
+    }
+  ],
+  "scope": "真实无头Chromium + 已有四卡隔离文献库；不等于公网、手动密码弹窗、其他浏览器或全部赛题扩展方向验收",
+  "javascript_errors": [],
+  "passed": true,
+  "candidate_source_sha256": {
+    "backend/app.py": "da06ad3d6edc9127c3ef2bff17eeb34860f7b983013183dcb13fea7b472d1363",
+    "backend/conversation.py": "0f16c281fb5081809eb9e3723e93af203c1d8ca83eeff615b79b48675f1ffdb5",
+    "src/App.tsx": "c21a4c33d8c85f2faf7170c00602d3842bea3680acab5758caf1b400d443ec67",
+    "tests/components.test.mjs": "66ad892fbc9fc165d9b5aaae24e39c2ffc38ae2fab80b3a1e3c7b1efdfe99667",
+    "scripts/verify_browser.mjs": "4d81a5402d48668cbde28d5b97f23326786385bfe90883ece1816ae21e6da601"
+  },
+  "report_sha256": "97595da909ca1e2c043acd5347d71ea077efd4742e0ff75168a43f693a207c5c",
+  "followup_api": {
+    "scope": "真实四卡Qwen；原件来自既有隔离库；只继承文献范围，每问重新检索；无历史答案注入",
+    "cases": [
+      {
+        "question": "论文Attention Is All You Need的第6作者是谁，在哪个公司工作？",
+        "answer": "Aidan N. Gomez，署名机构：University of Toronto。[E1]\n\n署名脚注：†Work performed while at Google Brain.[E2]",
+        "context_used": false,
+        "sources": [
+          {
+            "page": 1,
+            "quote_sha256": "ecd40b0a4b445baea60a54bd7b3a2ae1c79430d4951a0c836f9f733fc9b4d299"
+          },
+          {
+            "page": 1,
+            "quote_sha256": "114beab5d78d2bdb907b9245986e186bfaa60e4b9d1c9288dd74f2fafbb6c30c"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "question": "其中Adam优化器的β1和β2分别是多少？",
+        "answer": "Adam优化器的β1和β2分别是0.9和0.98[E1]",
+        "context_used": true,
+        "sources": [
+          {
+            "page": 7,
+            "quote_sha256": "9e3b5699520619b6634d481111ed8b6d8a1a39ab4398732fbfb9d8f95b90155d"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "question": "这篇论文训练Base模型用了多少GPU，是什么型号？",
+        "answer": "训练Base模型使用了8块NVIDIA P100 GPU[E3]",
+        "context_used": true,
+        "sources": [
+          {
+            "page": 7,
+            "quote_sha256": "9e3b5699520619b6634d481111ed8b6d8a1a39ab4398732fbfb9d8f95b90155d"
+          }
+        ],
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "backend_tests_passed": 169,
+  "frontend_tests_passed": 13,
+  "full_api_regression": "本轮增加追问实机3问及浏览器12组；上一工程版10组API联合回归见ENGINEERING_VERIFICATION_20261030.json，不将其说成本轮全部重跑",
+  "initial_runs": "前三轮保留原始失败记录；修正验收脚本的选择器、响应路径与等待条件，并为阅读文献添加key隔离状态；完整第四轮12组全部通过。",
+  "visual_review": "已查看1440×1000文献首页及390×844写作页截图，布局可读，无页面横向溢出；不是全页面/全设备视觉验收。",
+  "preservation": {
+    "production_unchanged": true,
+    "documents": 33,
+    "page_rows": 1574,
+    "pdfs": 33,
+    "compared_against": "pre-release production choices and PDF hashes; all pages directly compared with isolated clone",
+    "gpu_service_stopped": true
+  }
+}
