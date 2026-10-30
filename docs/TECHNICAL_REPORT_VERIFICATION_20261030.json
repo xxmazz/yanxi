@@ -1,10 +1,10 @@
 {
   "document_date": "2026-10-30",
-  "engineering_baseline": "03301edf32978738523aab576266facbaecb1b39",
+  "engineering_baseline": "d79123ada6a0b71b94be98d4bd01c684b2c728bb",
   "pdf_path": "output/pdf/yanxi-technical-draft.pdf",
-  "pdf_sha256": "f27a6491ce6e1440ea508ed4a2b5461a7b1b201f3f2682ef53718b4a48782926",
-  "source_sha256": "9fbce39d9ca3b96dc1bee596b611ca124e342d1675e777219e0ec55eb483f798",
-  "builder_sha256": "59a5c2a52ece0692a0b41f1f9b9eace2b306cb9a17dafa1927a2b5ad51b737d7",
+  "pdf_sha256": "6b611f77386d06751cc89dac58265e2f288612d3d77e8fa688bbc48f1fadf165",
+  "source_sha256": "f7c4e4cdd4f6b23ec1527d9a324bb8e1a63c40ca202461861922cce74792ea27",
+  "builder_sha256": "1060dfc31201047c0655b09cc873a753fa820a95514e1bd955ae2a12aea6a1cc",
   "pages": 10,
   "page_limit": 30,
   "encrypted": false,
@@ -16,7 +16,7 @@
     "/AAAAAD+STHeitiTC-Light-0": true,
     "/AAAAAA+STHeitiTC-Medium-0": true
   },
-  "unique_external_links": 55,
+  "unique_external_links": 59,
   "baseline_link_targets_verified": true,
   "outline_destinations": [
     {
@@ -73,11 +73,11 @@
     }
   ],
   "visual_review": {
-    "renderer": "Poppler80DPI",
+    "renderer": "Poppler, scale-to1000 PNG",
     "rendered_pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     "contact_sheets_reviewed": 4,
-    "outcome": "已逐页查看；新增结构提取、图表、更新研究及测试段落排版完整，表格、目录及中文可读。"
+    "outcome": "逐页查看；新增悬停翻译、书目核对、192/25测试及引用链接排版完整，架构图、目录、表格和中文可读。"
   },
   "team_information": "信息待补",
-  "scope": "新增结构阅读、多系列/雷达、较新摘要对照及183/18测试更新；视频和公网由参赛者负责。"
+  "scope": "工程d79123a：结构阅读、图表、较新摘要、无编号书目匹配下载及悬停翻译；视频和公网由本人安排。"
 }

@@ -2,7 +2,7 @@
 
 面向科研阅读与写作场景的本地模型文献工作台，支持 PDF 入库、混合检索、带原文页码的文献问答。引用图谱从参考文献原文构建，写作工坊基于真实摘要生成可编辑研究计划和架构图。
 
-2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；183项后端与18项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
+2026-10-30 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；192项后端与25项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
 
 阅读器新增[本地悬停翻译](docs/HOVER_TRANSLATION.md)，支持完整句子、原文核对、会话缓存及翻页隔离。
 

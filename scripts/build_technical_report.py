@@ -31,7 +31,7 @@ PALE = colors.HexColor("#EDF4F6")
 WIDTH = A4[0] - 90
 
 
-def inline(value, baseline="03301ed"):
+def inline(value, baseline="d79123a"):
     text = html.escape(re.sub(r"[\u2010-\u2015]", "-", value))
     text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", text)
     text = re.sub(r"`([^`]+)`", r'<font color="#1F6079">\1</font>', text)
@@ -400,7 +400,7 @@ def main():
     parser.add_argument(
         "--bold-font", type=Path, default=Path("/System/Library/Fonts/STHeiti Medium.ttc")
     )
-    parser.add_argument("--baseline", default="03301ed")
+    parser.add_argument("--baseline", default="d79123a")
     parser.add_argument("--date", default="2026-10-30")
     args = parser.parse_args()
     build(args.source, args.output, args.font, args.bold_font, args.baseline, args.date)
