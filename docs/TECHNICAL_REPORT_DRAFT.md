@@ -190,7 +190,7 @@ cp .env.example .env
 - **[11]** [访问控制设计](REVIEW_ACCESS.md)、[本机 HTTPS 记录](REVIEW_ACCESS_VERIFICATION_20261029.json)。
 - **[12]** [正式库向量修复](EMBEDDING_REPAIR_20261029.json)。
 - **[13]** [基础独立复现](CLEAN_REPRODUCTION.md)、[基础复现记录](CLEAN_REPRODUCTION_20261029.json)。
-- **[14]** [AI 协作记录](AI_COLLABORATION.md)、[开发记录](DEVELOPMENT.md)、[月底交付清单](DELIVERY_PLAN.md)。
+- **[14]** [AI 协作记录](AI_COLLABORATION.md)、[提交历史](https://github.com/xxmazz/yanxi/commits/main)、[月底交付清单](DELIVERY_PLAN.md)。
 - **[15]** [Chromium及追问实测](BROWSER_VERIFICATION_20261030.json)、[四卡联合回归](ENGINEERING_VERIFICATION_20261030.json)。
 - **[16]** [赛题逐项覆盖](REQUIREMENTS_COVERAGE.md)、[工程使用与交付](FINAL_HANDOFF.md)、[团队填写位置](TEAM.md)。
 - **[17]** [订阅与批量下载](FOLLOWING.md)、[本轮真实验证](FOLLOWING_VERIFICATION_20261030.json)。

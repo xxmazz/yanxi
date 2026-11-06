@@ -1,97 +1,93 @@
-# 研析 · 科研文献智能助手
+# 研析
 
-面向科研阅读与写作场景的本地模型文献工作台，支持 PDF 入库、混合检索、带原文页码的文献问答。引用图谱从参考文献原文构建，写作工坊基于真实摘要生成可编辑研究计划和架构图。
+研析是一个使用本地模型的科研文献工作台。上传 PDF 后，可以阅读原文、翻译段落、针对单篇或多篇论文提问，也可以整理引用关系和研究计划。回答附带摘录与页码，方便回到论文核对。
 
-2026-10-31 已完成核心版工程收尾：四卡本地模型、接上文追问、真实Chromium页面流程及9个文件下载核验；200项后端与29项前端测试通过。怎样启动、评委体验路径及剩余个人信息见[交付说明](docs/FINAL_HANDOFF.md)，赛题逐项覆盖见[需求核对](docs/REQUIREMENTS_COVERAGE.md)。此前10组API联合回归保留在[工程验收说明](docs/ENGINEERING_RELEASE.md)。
+## 功能
 
-界面采用墨蓝导航、暖白阅读区与砖红批注色的文献档案室样式；网页形式依据、设计与窄屏验证见[界面说明](docs/INTERFACE_DESIGN.md)。
+| 页面     | 用途                                                                           |
+| -------- | ------------------------------------------------------------------------------ |
+| 我的文献 | 批量上传 PDF、扫描件 OCR、内容去重、相似版本选择、星标与归档                   |
+| 沉浸阅读 | 原页与解析正文、章节目录、引用跳转、选句与整篇翻译、表格 CSV 和公式 LaTeX 导出 |
+| 文献问答 | 在所选论文中检索，支持接着上文提问、跨篇比较和原文回看                         |
+| 探索发现 | arXiv 检索与下载、参考文献批量获取、主题订阅、研究任务                         |
+| 引用图谱 | 查看库内引用关系、局部排名、摘要综述，结合较新论文核对研究方向                 |
+| 写作工坊 | 根据所选摘要起草研究计划，编辑 Markdown，导出方法图和 CSV 数据图表             |
 
-阅读器新增[本地悬停翻译](docs/HOVER_TRANSLATION.md)，支持完整句子、原文核对、会话缓存及翻页隔离。
+模型在本地运行。论文检索、下载和主题订阅需要连接 arXiv；问答、翻译和图片识别读取本机权重。
 
-10月30日继续补齐了[参考文献批量下载、每日/每周论文订阅与反馈](docs/FOLLOWING.md)，入口在“探索发现”。参考文献支持明确arXiv/CoRR编号，并可[按题名、作者和年份匹配无编号书目](docs/REFERENCE_MATCHING.md)后勾选下载；订阅每次获取最新8篇并用本地E5给出库内关联理由。
+## 安装与启动
 
-新增[表格与编号公式提取、多系列及雷达图、更新研究核对](docs/STRUCTURED_READING_AND_RESEARCH.md)：可查看原图、导出表格CSV，并将Future Work原文与较新arXiv摘要一起核对。
-
-## 功能概览
-
-- 文献管理：关键词搜索、筛选、星标、排序、卡片与列表切换，以及目录 JSON 导出。
-- 文献对比：多篇文献元数据并排查看。
-- PDF 入库：上传到本地服务器，逐页解析、后台索引与持久化，支持本地 OCR、正文相似版本提示、保留／替换决策、归档恢复及逐页正文回看。
-- 文献问答：本地 Qwen2.5-7B-Instruct + multilingual-e5-small / BM25，支持范围筛选、原文摘录、页码跳转和数值检查。
-- 研究任务：中文主题转换、本地 E5 主题重排、入库、解析等待与带来源的摘要综述，保存进度，支持检查点重试、摘要补生成、版本确认暂停和取消，详见 [研究任务](docs/RESEARCH_TASKS.md)。
-- 论文检索：arXiv 官方搜索、中文主题转换、摘要与来源展示、本页 E5 相关排序、一键下载与后台解析。
-- 对照翻译：本地 Qwen 逐页／整篇翻译、中英段落对应、双向联动滚动、局部翻译与中文摘要英译、对照 Markdown 导出。
-- 研究图谱：真实参考文献连边、同作品版本合并、局部 PageRank／入度、逐页引用证据、本地模型简短综述、Future Work 原文与 JSON 导出。
-- 写作工具：本地模型生成有来源的研究计划、服务端真实书目、摘要原页核对、Markdown 编辑预览与导出、Mermaid／SVG 架构图。
-- 结构阅读：原生页表格候选、跨列及科学计数法标记、编号公式原图与转写、坐标和CSV导出。
-- 数据图表：1–6列数值系列、分组柱状／多折线／雷达图、数值校验、SVG和图注导出。
-- 自适应布局：桌面与移动端导航、弹窗和内容排版。
-
-## 运行方式
-
-前端环境：Node.js 22.18+ 或 Node.js 24。完整模型版还需要 Python 3.12 与 NVIDIA GPU，安装、显卡分配和启动说明见 [本地模型后端](docs/LOCAL_BACKEND.md)。以下命令只启动前端开发服务。
+完整部署需要 Python 3.12、Node.js 22.18+、NVIDIA 驱动和本地模型权重。当前部署使用四张 RTX 2080 Ti。依赖版本见 [环境锁文件](backend/server-environment.lock.txt)，模型准备和系统依赖见 [后端安装说明](docs/LOCAL_BACKEND.md)。
 
 ```sh
+git clone https://github.com/xxmazz/yanxi.git
+cd yanxi
+uv venv --python 3.12
+uv pip install --python .venv/bin/python -r backend/server-environment.lock.txt --extra-index-url https://download.pytorch.org/whl/cu130
 npm ci
-npm run dev
+npm run build
+cp .env.example .env
 ```
 
-浏览器访问 `http://localhost:4173`。
+按 [模型与 OCR 配置](docs/OCR_AND_VERSIONS.md) 和 [视觉模型配置](docs/VISUAL_AND_FULLTEXT.md) 准备权重，再填写 `.env` 中的模型路径、数据目录和显卡编号。
 
 ```sh
-npm run build
-npm test
-npm run preview
+bash scripts/serve.sh
 ```
 
-## 技术栈与目录
+默认入口为 `http://127.0.0.1:18474/`，前端和 API 由同一服务提供。模型加载完成后，页面会显示“模型就绪”。
 
-React 19、TypeScript、Vite、FastAPI、SQLite、pypdf／pdfplumber、PyTorch、Transformers；NetworkX／SciPy 计算引用网络；React Markdown 与 GFM 负责写作排版。
+已经安装用户级服务的机器可以直接运行：
 
-处理链：PDF → 文本层／本地 OCR → 相似版本确认 → 按页切块 → 本地 E5 向量与 BM25 → 模型扩展中英检索词 → RRF 召回 → Qwen 证据问答 → 来源与数值检查 → PDF 页码回看。
+```sh
+systemctl --user start yanxi
+systemctl --user status yanxi --no-pager
+# 用完释放显卡
+systemctl --user stop yanxi
+```
 
-| 目录     | 内容                                    |
-| -------- | --------------------------------------- |
-| src/     | 页面、样式、演示数据与 CSV 解析         |
-| tests/   | React 组件、CSV 与 PDF 文件头校验测试   |
-| backend/ | 本地模型、PDF 索引、问答 API 与后端测试 |
-| scripts/ | 运行辅助、联合回归与工程打包工具        |
-| docs/    | 开发记录、协作说明与验证记录            |
+公网部署使用 HTTPS 反向代理，并配置评审账号；具体步骤见 [访问控制](docs/REVIEW_ACCESS.md)。当前局域网部署地址为 `http://192.168.3.193:18474/`。
 
-## 演示范围与数据
+只开发前端时运行 `npm run dev`，访问 `http://localhost:4173`。开发服务将 `/api` 转发到本机 18474 端口；没有后端时只能预览界面和浏览器内的 PDF。
 
-连接后端时，上传的 PDF、文本和向量保存在用户自己的服务器，模型只加载本地权重。前端无法连接后端时，仅支持浏览器 PDF 预览，不用预置回答冒充推理。
+## 架构
 
-正文词组与本地语义向量联合识别相似版本，扫描页通过本地 OCR 入库；详见 [扫描件与版本管理](docs/OCR_AND_VERSIONS.md)。显式编号三级目录定位见 [章节导航](docs/CHAPTER_NAVIGATION.md)。数字制与有限英文作者年份制正文引用／书目双向跳转见 [引用导航](docs/READING_LINKS.md)。原生页表格与编号公式已提供结构候选、原图和导出；新增本地视觉框选扫描表格、公式LaTeX与两页续表导出，见[视觉识别与全文对照](docs/VISUAL_AND_FULLTEXT.md)；复杂版式仍需核对原图，定期论文追踪见[订阅说明](docs/FOLLOWING.md)。对照翻译见 [本地翻译说明](docs/TRANSLATION.md)。真实检索与一键入库见 [论文检索说明](docs/DISCOVERY.md)。真实引用网络与摘要综述见 [图谱说明](docs/GRAPH.md)；官方 20 篇、100 条引用边的核对见 [真实图谱验收](docs/GRAPH20.md)，现支持按主题对照较新论文摘要，以及选择较新库内论文检索正文、核对原页并导出；有限检索不能证明方向是否已被彻底解决。来源和数值检查不能代替完整事实核验。文献库保留明确标注的示例卡片，写作仅使用所选文献摘要，方法与评估标明研究计划，详见 [写作说明](docs/WRITING.md)；图表初始数值为演示数据。
+前端使用 React、TypeScript 和 Vite；后端使用 FastAPI、SQLite 和 PyTorch。PDF 经文本提取或 OCR 后按页切块，E5 向量检索与 BM25 经 RRF 合并召回，再由 Qwen 根据摘录作答。引用关系根据论文书目匹配，由 NetworkX 计算局部排名。
 
-541 页教材的完整索引、逐页复核和固定问答用例见 [长文档回归](docs/LONG_DOCUMENT.md)，支持明确图号定位并保留解析警告；已与用户提供的比赛资料包原件核对哈希；官方扫描件和版本回归见 [官方样本验证](docs/OFFICIAL_FIXTURES.md)。
+| 模块             | 模型                       | 当前显卡分配 |
+| ---------------- | -------------------------- | ------------ |
+| 问答、翻译与写作 | Qwen2.5-7B-Instruct，FP16  | GPU 0、1     |
+| 语义检索         | multilingual-e5-small      | GPU 2        |
+| 扫描表格与公式   | Qwen3-VL-4B-Instruct，FP16 | GPU 2        |
+| 扫描文字         | EasyOCR                    | GPU 3        |
 
-官方问答抽查发现的作者顺序与训练硬件问题已修复，署名区直接核对顺序及机构脚注，GPU 问题补召回训练配置段。五问与八项边界检查见 [问答改进](docs/QA_RELIABILITY.md)。
+上传文件、解析结果和向量保存在服务器。仓库不包含论文原件、模型权重、数据库或密钥。
 
-BLEU 问答增加原生表格列坐标核对与明确标注的差值计算；跨篇问题分别取证并检查所选文献引用覆盖。七项真实用例、两篇架构对比及支持范围见 [表格与跨篇问答](docs/COMPARISON_QA.md)。
+| 目录       | 内容                           |
+| ---------- | ------------------------------ |
+| `src/`     | 前端页面与样式                 |
+| `backend/` | 模型加载、索引、API 与后端测试 |
+| `tests/`   | 前端组件和工具测试             |
+| `scripts/` | 服务启动、验证与打包           |
+| `docs/`    | 安装、功能说明和验证资料       |
 
-GPT 系列参数量、LN 位置和上下文比较已验证，支持按指标逐篇召回、有限配置表原单位读数及归纳来源标注，见 [GPT 跨篇验收](docs/GPT_COMPARISON.md)。
+## 测试与使用说明
 
-当前服务是内部开发实例，公网访问控制与评审部署另行验收。模型权重、PDF、数据库和密钥均不进入 Git。不要将密钥放进前端变量。
+```sh
+npm test
+npm run build
+npm run format:check
+.venv/bin/python -m unittest discover -s backend -t . -q
+```
 
-完整本地模型栈已在四张RTX2080Ti的新虚拟环境中复现，实际验证Qwen问答、E5索引及官方扫描件GPU OCR，见[四卡GPU复现](docs/GPU_REPRODUCTION.md)。早期CPU检查仅用于基础安装、原文解析和重启持久化，见[基础复现记录](docs/CLEAN_REPRODUCTION.md)。可选共享评审账号保护全站页面、API和论文文件；本机HTTPS、认证与跨站请求验收见[评审访问控制](docs/REVIEW_ACCESS.md)。Chromium回环认证与页面流程已完成；实际公网域名、手动密码弹窗及评审保活仍由后续外网验收核对。
+后端已有 200 项测试通过记录，当前前端 29 项测试通过。四卡模型与浏览器操作的验证范围见 [工程交付说明](docs/FINAL_HANDOFF.md)；最新界面调整完成了六个页面、三种宽度的布局检查，见 [界面验证](docs/INTERFACE_VERIFICATION_20261107.json)。
 
-## 开发与验证
+回答和译文需要结合原文复核，复杂表格识别后应检查原图。图谱排名仅针对所选文献；研究方向核对是有限检索。写作生成的是研究计划，图表初始内容为示例数据。具体覆盖范围见 [功能核对表](docs/REQUIREMENTS_COVERAGE.md)。
 
-2026-10-23 完成工程初始化、工作台交互、写作与图表工具、响应式检查，以及内网 HTTP 兼容性修复。2026-10-25 增加本地 PDF 文件头校验和重复文件检测。2026-10-26 增加写作草稿编辑／预览切换，支持 GFM 表格；模块来源见 [依赖说明](docs/MARKDOWN_MODULES.md)。生产构建、5 项自动化测试与 11 组浏览器交互检查通过，详情见 docs/VERIFICATION.md。
+[技术文档](output/pdf/yanxi-technical-draft.pdf) · [录制脚本](docs/DEMO_SCRIPT.md) · [部署与使用](docs/FINAL_HANDOFF.md)
 
-开发日志：docs/DEVELOPMENT.md · 进度记录：docs/PROGRESS.md · AI 协作说明：docs/AI_COLLABORATION.md
+## 团队与贡献
 
-## 后续计划
+负责人 GitHub 账号：[xxmazz](https://github.com/xxmazz)。团队名称、学校和成员信息按报名资料填写，位置见 [团队信息](docs/TEAM.md)。
 
-各模块现状及扩展方向见 [比赛工程清单](docs/COMPETITION_PLAN.md)，本轮核心链路验收见 [工程候选版](docs/ENGINEERING_RELEASE.md)。公网和视频发布按参赛者安排另行处理；团队信息及最终提交材料仍需补齐。历次后端验证见 [后端验证记录](docs/BACKEND_VERIFICATION.md)。
-
-仓库：https://github.com/xxmazz/yanxi
-
-## 团队与协作
-
-参赛负责人：xxmazz（GitHub 账号）。正式姓名、学校及评审所需团队信息在最终提交前由参赛者补齐，填写位置见[团队信息](docs/TEAM.md)。AI 辅助开发过程见 [协作说明](docs/AI_COLLABORATION.md)。
-
-## 技术说明与演示准备
-
-[技术文档](output/pdf/yanxi-technical-draft.pdf)已按工程1e05378更新，包含系统架构、四卡本地模型方案、实现与测试依据，技术内容定稿，团队信息待补。源稿与重建方式见[文档构建](docs/REPORT_BUILD.md)，视频按[七分钟脚本](docs/DEMO_SCRIPT.md)准备，尚未录制发布。工程和材料的剩余事项见[交付清单](docs/DELIVERY_PLAN.md)。
+开发中使用了 AI 编程工具辅助实现和测试；需求、资料及服务器由参赛者提供，协作情况见 [贡献说明](docs/AI_COLLABORATION.md)。使用的模型和依赖遵循各自许可证。
