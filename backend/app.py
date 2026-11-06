@@ -627,13 +627,24 @@ async def answer_question(request: Question):
             "本地模型阅读证据",
             "校验原文摘录与数值",
         ]
-        if not evidence:
+        async def explain_gap(reason):
+            # 未核验的补充回答不附论文引用，也不能被后续任务当作有效摘要。
+            try:
+                text = await asyncio.to_thread(models.explain_gap, request.question, evidence)
+            except (ValueError, RuntimeError) as exc:
+                log.warning("Model explanation failed: %s", exc)
+                raise HTTPException(503, "本次生成失败，请稍后重试") from exc
             return {
-                "answer": "未检索到相关原文，请尝试论文中的关键词或扩大文献范围。",
+                "answer": text,
                 "citations": [],
                 "insufficient_evidence": True,
-                "steps": steps[:2],
+                "answer_mode": "model_explanation",
+                "steps": steps + ["生成补充分析（暂无已核验的原文引用）"],
+                "validation_error": reason[:200],
             }
+
+        if not evidence:
+            return await explain_gap("本次检索未找到相关原文")
         structural = (
             architecture_comparison(request.question, evidence)
             if coverage_ids and len(coverage_ids) == 2
@@ -714,7 +725,26 @@ async def answer_question(request: Question):
                     "校验原文数值及引用覆盖",
                 ]
             else:
-                raw = await asyncio.to_thread(models.answer, request.question, evidence)
+                # 单篇或普通问答有一次有界重读；不放宽原文、数值和引用检查。
+                retry_note = ""
+                for attempt in range(2):
+                    try:
+                        if attempt:
+                            raw = await asyncio.to_thread(
+                                models.answer, request.question, evidence, retry_note=retry_note
+                            )
+                        else:
+                            raw = await asyncio.to_thread(models.answer, request.question, evidence)
+                        _, _, refused = validate_answer(raw, evidence)
+                        if not refused:
+                            break
+                        retry_note = "上一轮认为原文依据不足，请重新核对相关章节与作者的后续工作"
+                    except (ValueError, RuntimeError) as exc:
+                        retry_note = str(exc)[:200]
+                    if attempt == 0:
+                        steps.append("重读相关原文并重新生成")
+                else:
+                    return await explain_gap(retry_note)
             answer, labels, refused = validate_answer(raw, evidence)
             if coverage_ids and not refused:
                 cited_docs = {e["document_id"] for e in evidence if e["label"] in labels}
@@ -722,13 +752,7 @@ async def answer_question(request: Question):
                     raise ValueError("对比回答没有覆盖全部所选文献来源")
         except (ValueError, RuntimeError) as exc:
             log.warning("Answer rejected: %s", exc)
-            return {
-                "answer": "本次模型回答未通过格式或引用校验，暂不展示。请换一种问法，或直接核对下方原文。",
-                "citations": [citation(e) for e in evidence],
-                "insufficient_evidence": True,
-                "steps": steps,
-                "validation_error": str(exc)[:200],
-            }
+            return await explain_gap(str(exc))
         return {
             "answer": answer,
             "citations": [

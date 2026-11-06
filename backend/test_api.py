@@ -142,6 +142,66 @@ class ApiTests(unittest.TestCase):
             ).json()
             self.assertTrue(denied["insufficient_evidence"])
 
+    def test_refused_or_invalid_answer_retries_once_with_checked_sources(self):
+        doc, _ = self.module.store.create(b"%PDF-retry-answer", "retry.pdf")
+        source = "A Limitations\nOnly rated attributes are included in our method."
+        self.module.store.finish(doc["id"], 1, [{"page": 1, "offset": 0, "text": source}])
+        valid = {"claims": [{"text": "方法仅覆盖已有评分的属性。", "source": "E1"}]}
+        for first in [
+            {"claims": [], "insufficient_evidence": True},
+            ValueError("模型返回了不完整的 JSON"),
+            {"claims": [{"text": "有99个属性。", "source": "E1"}]},
+        ]:
+            with (
+                self.subTest(first=first),
+                patch.object(self.module.models, "llm", object()),
+                patch.object(self.module.models, "encode", return_value=None),
+                patch.object(self.module.models, "search_query", return_value="limitations"),
+                patch.object(self.module.models, "answer", side_effect=[first, valid]) as answer,
+                patch.object(self.module.models, "explain_gap") as explain,
+            ):
+                result = self.client.post("/api/chat", json={
+                    "question": "所选文献提出了哪些局限？", "document_ids": [doc["id"]],
+                }).json()
+                self.assertFalse(result["insufficient_evidence"])
+                self.assertEqual(result["citations"][0]["quote"], source)
+                self.assertEqual(answer.call_count, 2)
+                self.assertTrue(answer.call_args.kwargs["retry_note"])
+                explain.assert_not_called()
+
+    def test_unsupported_answer_uses_model_explanation_without_paper_citations(self):
+        doc, _ = self.module.store.create(b"%PDF-model-explanation", "explain.pdf")
+        self.module.store.finish(doc["id"], 1, [{
+            "page": 1, "offset": 0, "text": "A paper about attribute mapping methods.",
+        }])
+        explanation = "当前片段只介绍属性映射方法，没有可核对的训练配置。可继续查看方法和附录。"
+        with (
+            patch.object(self.module.models, "llm", object()),
+            patch.object(self.module.models, "encode", return_value=None),
+            patch.object(self.module.models, "search_query", return_value="attribute mapping"),
+            patch.object(self.module.models, "answer", return_value={
+                "claims": [{"text": "使用99张GPU", "source": "E1"}],
+            }) as answer,
+            patch.object(self.module.models, "explain_gap", return_value=explanation) as explain,
+        ):
+            result = self.client.post("/api/chat", json={
+                "question": "用了多少GPU？", "document_ids": [doc["id"]],
+            }).json()
+            self.assertEqual(result["answer"], explanation)
+            self.assertTrue(result["insufficient_evidence"])
+            self.assertEqual(result["answer_mode"], "model_explanation")
+            self.assertEqual(result["citations"], [])
+            self.assertEqual(answer.call_count, 2)
+            explain.assert_called_once()
+            self.assertIn("未支持的数值", result["validation_error"])
+            with patch.object(self.module, "retrieve", return_value=[]):
+                empty = self.client.post("/api/chat", json={
+                    "question": "如何理解这个概念？", "document_ids": [doc["id"]],
+                }).json()
+            self.assertEqual(empty["answer"], explanation)
+            self.assertEqual(empty["citations"], [])
+            self.assertEqual(answer.call_count, 2)
+
     def test_multiple_claims_keep_one_contiguous_source_quote(self):
         doc, _ = self.module.store.create(b"%PDF-multiple-claims", "test.pdf")
         source = "The learning rate is 0.0003. Intervening text. The batch size is 32."
@@ -226,6 +286,7 @@ class ApiTests(unittest.TestCase):
                     "insufficient_evidence": False,
                 },
             ) as model,
+            patch.object(self.module.models, "explain_gap", return_value="当前片段不足以对比两篇论文。"),
         ):
             missing = self.client.post(
                 "/api/chat", json={"question": "比较两篇论文", "document_ids": [ids[0], "missing"]}

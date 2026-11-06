@@ -618,7 +618,11 @@ test("chat follow-ups carry only last successful source IDs and reset on new con
       [...document.querySelectorAll(".suggestion-grid button")].map((item) =>
         item.textContent.replace(/^0\d/, "").trim(),
       ),
-      ["所选文献的主要研究问题是什么？", "所选文献提出了哪些局限？"],
+      [
+        "所选文献的主要研究问题是什么？",
+        "所选文献使用了哪些实验设置？",
+        "所选文献提出了哪些局限？",
+      ],
     );
     assert.deepEqual((await ask("第一问")).previous_document_ids, []);
     assert.deepEqual((await ask("其中Adam的参数？")).previous_document_ids, [
@@ -634,10 +638,12 @@ test("chat follow-ups carry only last successful source IDs and reset on new con
     env.routes.set("POST /api/chat", {
       answer: "Evidence missing",
       insufficient_evidence: true,
+      answer_mode: "model_explanation",
       steps: [],
       citations: [],
     });
     await ask("这篇的其他内容？");
+    assert.match(document.body.textContent, /补充分析 · 暂无已核验的原文引用/);
     assert.deepEqual((await ask("其中还有什么？")).previous_document_ids, []);
   } finally {
     await env.cleanup();

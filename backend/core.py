@@ -437,11 +437,14 @@ def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None, c
         if not re.search(intent, original, re.I):
             continue
         heading = re.compile(
-            rf"^\s*(?:(?:\d+(?:\.\d+)*|[A-Z])\.?\s+)?(?:{titles})\s*$",
+            rf"^\s*(?:(?:\d+(?:\.\d+)*|[A-Z])\.?\s+)?(?P<title>{titles})\s*$",
             re.I | re.M,
         )
         matches = [i for i, row in enumerate(rows) if heading.search(row["text"])]
-        matches.sort(key=lambda i: (not bool(re.search(r"limitations?|局限", rows[i]["text"], re.I)), -ranks.get(i, 0)))
+        matches.sort(key=lambda i: (
+            not bool(re.search(r"limitations?|局限", heading.search(rows[i]["text"])["title"], re.I)),
+            -ranks.get(i, 0),
+        ))
         for i in matches:
             following = [
                 j for j, row in enumerate(rows)
@@ -450,7 +453,7 @@ def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None, c
                 >= (rows[i].get("page", 0), rows[i].get("offset", 0))
             ]
             following.sort(key=lambda j: (rows[j].get("page", 0), rows[j].get("offset", 0)))
-            sections.extend(following[:2])
+            sections.extend(following[:3])
     order = list(dict.fromkeys(anchored + hardware[:2] + architecture + sections + overview + ranked))
     if coverage_ids:
         groups = []

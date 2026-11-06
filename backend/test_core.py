@@ -90,6 +90,20 @@ class EvidenceTests(unittest.TestCase):
         normal = retrieve(rows, "limitation research", anchor_question="训练用了几天？")
         self.assertEqual(normal[0]["id"], 1)
 
+    def test_limitation_section_includes_third_chunk_and_beats_conclusion_bibliography(self):
+        rows = [
+            {"id": 1, "document_id": "a", "page": 7, "offset": 0,
+             "text": "7 Conclusions\nOur work. References limitations limitations limitations"},
+            {"id": 2, "document_id": "a", "page": 8, "offset": 0,
+             "text": "A Limitations\nOnly rated attributes are included."},
+            {"id": 3, "document_id": "a", "page": 8, "offset": 940,
+             "text": "This constraint reduces diversity."},
+            {"id": 4, "document_id": "a", "page": 8, "offset": 1880,
+             "text": "In future work we will support multiple values."},
+        ]
+        result = retrieve(rows, "limitations", anchor_question="所选文献提出了哪些局限？")
+        self.assertEqual([r["id"] for r in result[:3]], [2, 3, 4])
+
     def test_explicit_figure_recovers_caption_from_long_document(self):
         rows = [
             {"id": i, "text": "discount factor Figure 19.1 Markov reward discount " * 10}

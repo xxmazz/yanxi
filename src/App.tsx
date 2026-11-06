@@ -100,6 +100,7 @@ type Message = {
   text: string;
   evidence?: Evidence[];
   steps?: string[];
+  answerMode?: string;
 };
 
 export default function App() {
@@ -451,6 +452,7 @@ export default function App() {
         citations: Evidence[];
         steps: string[];
         insufficient_evidence: boolean;
+        answer_mode?: string;
       }>("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -479,6 +481,7 @@ export default function App() {
           text: result.answer,
           evidence: result.citations,
           steps: result.steps,
+          answerMode: result.answer_mode,
         },
       ]);
     } catch (error) {
@@ -1168,6 +1171,7 @@ export default function App() {
                         <div className="suggestion-grid">
                           {[
                             "所选文献的主要研究问题是什么？",
+                            "所选文献使用了哪些实验设置？",
                             "所选文献提出了哪些局限？",
                           ].map((q, i) => (
                             <button key={q} onClick={() => ask(q)}>
@@ -1197,6 +1201,11 @@ export default function App() {
                               ? "研析 · 文献回答"
                               : "你"}
                           </b>
+                          {message.answerMode === "model_explanation" && (
+                            <small className="answer-steps">
+                              补充分析 · 暂无已核验的原文引用
+                            </small>
+                          )}
                           <p>{message.text}</p>
                           {message.steps && (
                             <div className="answer-steps">
