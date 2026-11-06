@@ -298,11 +298,12 @@ class GraphTests(unittest.TestCase):
     def test_empty_and_limit(self):
         self.assertEqual(build_graph(self.store)["nodes"], [])
         ids = [
-            self.add(f"Scientific document number {i:02d}", ["References\nnone"]) for i in range(31)
+            self.add(f"Scientific document number {i:02d}", ["References\nnone"]) for i in range(101)
         ]
-        with self.assertRaisesRegex(ValueError, "30"):
+        with self.assertRaisesRegex(ValueError, "100"):
             build_graph(self.store)
         self.assertEqual(build_graph(self.store, ids[:20])["stats"]["documents"], 20)
+        self.assertEqual(build_graph(self.store, ids[:100])["stats"]["documents"], 100)
 
     def test_fingerprint_tracks_metadata_and_page_changes(self):
         a = self.add(TITLE, ["References\nnone"])
@@ -347,7 +348,7 @@ class GraphTests(unittest.TestCase):
                 client.post("/api/graph/build", json={"document_ids": ["missing"]}).status_code, 409
             )
             self.assertEqual(
-                client.post("/api/graph/build", json={"document_ids": ["x"] * 31}).status_code, 422
+                client.post("/api/graph/build", json={"document_ids": ["x"] * 101}).status_code, 422
             )
             for text, expected in [
                 ("使用注意力机制翻译。", False),

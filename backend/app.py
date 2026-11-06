@@ -27,7 +27,7 @@ from .discovery import ArxivDiscovery, DiscoveryError, rank_topic_candidates, va
 from .following import Following
 from .fulltext_check import evidence_for as prepare_fulltext_check
 from .future import prepare as prepare_future
-from .graph import build_graph
+from .graph import MAX_DOCUMENTS, build_graph
 from .metric_tables import bleu_column, read_bleu_table, table_answer
 from .models import LocalModels
 from .parsing import LocalOCR, extract_page, metadata, page_payload
@@ -849,7 +849,7 @@ def export_translation(doc_id: str, target: Literal["zh", "en"] = "zh"):
 
 
 class GraphScope(BaseModel):
-    document_ids: list[str] = Field(default_factory=list, max_length=30)
+    document_ids: list[str] = Field(default_factory=list, max_length=MAX_DOCUMENTS)
 
 
 @app.post("/api/graph/build")

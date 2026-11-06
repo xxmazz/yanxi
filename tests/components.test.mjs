@@ -18,9 +18,9 @@ const csv =
   "文献,E5向量段数\nTransformer v7,47\nTransformer官方扫描件,43\nBERT,72";
 after(disposeEnvironment);
 
-test("graph defaults to at most 30 PDFs, supports replacing a selection, and explains validation errors", async () => {
+test("graph defaults to at most 100 PDFs, supports replacing a selection, and explains validation errors", async () => {
   const env = setup();
-  const documents = Array.from({ length: 34 }, (_, i) => ({
+  const documents = Array.from({ length: 104 }, (_, i) => ({
     id: `graph-doc-${i}`,
     title: `Graph source ${i}`,
     status: "ready",
@@ -37,8 +37,8 @@ test("graph defaults to at most 30 PDFs, supports replacing a selection, and exp
           {
             type: "too_long",
             loc: ["body", "document_ids"],
-            msg: "List should have at most 30 items",
-            ctx: { max_length: 30 },
+            msg: "List should have at most 100 items",
+            ctx: { max_length: 100 },
           },
         ],
       },
@@ -47,32 +47,70 @@ test("graph defaults to at most 30 PDFs, supports replacing a selection, and exp
   );
   try {
     await env.render(components.CitationGraph, { documents, open() {} });
-    assert.match(document.body.textContent, /当前选择 30 \/ 34 个 PDF/);
+    assert.match(document.body.textContent, /当前选择 100 \/ 104 个 PDF/);
     const boxes = () => [
       ...document.querySelectorAll(
         '.graph-document-picker input[type="checkbox"]',
       ),
     ];
-    assert.equal(boxes().filter((box) => box.checked).length, 30);
-    assert.equal(boxes()[30].disabled, true);
+    assert.equal(boxes().filter((box) => box.checked).length, 100);
+    assert.equal(boxes()[100].disabled, true);
     await click(boxes()[0]);
-    assert.equal(boxes()[30].disabled, false);
-    await click(boxes()[30]);
+    assert.equal(boxes()[100].disabled, false);
+    await click(boxes()[100]);
     assert.equal(boxes()[0].disabled, true);
     await click(button("构建引用图谱"));
     const request = env.calls.find((call) => call.url === "/api/graph/build");
-    assert.equal(request.body.document_ids.length, 30);
+    assert.equal(request.body.document_ids.length, 100);
     assert.equal(request.body.document_ids.includes("graph-doc-0"), false);
-    assert.equal(request.body.document_ids.includes("graph-doc-30"), true);
+    assert.equal(request.body.document_ids.includes("graph-doc-100"), true);
     assert.match(
       document.querySelector('[role="alert"]').textContent,
-      /最多选择 30 个 PDF/,
+      /最多选择 100 个 PDF/,
     );
     assert.doesNotMatch(document.body.textContent, /\[object Object\]/);
     await click(button("清空选择"));
     assert.equal(button("构建引用图谱").disabled, true);
-    await click(button("选择前 30 篇"));
-    assert.equal(boxes().filter((box) => box.checked).length, 30);
+    await click(button("选择前 100 篇"));
+    assert.equal(boxes().filter((box) => box.checked).length, 100);
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("graph selects all 34 PDFs and does not enable neighbor-only filtering by default", async () => {
+  const env = setup();
+  const documents = Array.from({ length: 34 }, (_, i) => ({
+    id: `scope-${i}`,
+    title: `Scientific source ${i}`,
+    status: "ready",
+    is_active: 1,
+    trashed_at: null,
+    version: 1,
+    pages: 1,
+    ocr_pages: 0,
+  }));
+  env.routes.set("POST /api/graph/build", (request) => ({
+    fingerprint: "a".repeat(64),
+    generated_at: "2026-11-07",
+    document_ids: request.body.document_ids,
+    nodes: [],
+    edges: [],
+    stats: { documents: 34, works: 0, edges: 0, components: 0, isolated: 0 },
+    warnings: [],
+    interpretation: "Component fixture",
+  }));
+  try {
+    await env.render(components.CitationGraph, { documents, open() {} });
+    assert.match(document.body.textContent, /当前选择 34 \/ 34 个 PDF/);
+    await click(button("构建引用图谱"));
+    const request = env.calls.find((call) => call.url === "/api/graph/build");
+    assert.equal(request.body.document_ids.length, 34);
+    const toggle = document.querySelector(".graph-neighbor-toggle input");
+    assert.ok(toggle);
+    assert.equal(toggle.checked, false);
+    await click(toggle);
+    assert.equal(toggle.checked, true);
   } finally {
     await env.cleanup();
   }

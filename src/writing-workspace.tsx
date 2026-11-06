@@ -293,6 +293,24 @@ export function WritingWorkspace({
             disabled={busy}
             onChange={(e) => setIdea(e.target.value)}
           />
+          <button
+            className="button primary"
+            disabled={
+              busy ||
+              checking ||
+              idea.trim().length < 3 ||
+              !selected.length ||
+              !!unavailable.length
+            }
+            onClick={() => void generate()}
+          >
+            {busy ? (
+              <Loader2 className="spin" size={16} />
+            ) : (
+              <Sparkles size={16} />
+            )}
+            {busy ? "正在生成…" : "生成研究计划"}
+          </button>
           <fieldset className="writing-picker" disabled={busy}>
             <legend>参考文献 · 最多六篇作品</legend>
             <div className="action-row">
@@ -341,24 +359,7 @@ export function WritingWorkspace({
             <ShieldCheck size={18} />
             <p>依据所选摘要生成草稿；方法与实验部分为研究计划。</p>
           </div>
-          <button
-            className="button primary"
-            disabled={
-              busy ||
-              checking ||
-              idea.trim().length < 3 ||
-              !selected.length ||
-              !!unavailable.length
-            }
-            onClick={() => void generate()}
-          >
-            {busy ? (
-              <Loader2 className="spin" size={16} />
-            ) : (
-              <Sparkles size={16} />
-            )}
-            {busy ? "正在生成…" : "生成研究计划"}
-          </button>
+
           {error && (
             <p role="alert" className="writing-error">
               {error}

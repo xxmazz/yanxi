@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 import networkx as nx
 
 VERSION = "references-v4"
-MAX_DOCUMENTS = 30
+MAX_DOCUMENTS = 100
 HEADING = re.compile(r"(?im)^\s*(?:\d+[.\s]+)?(?:references|bibliography|参考文献)\s*[:：]?\s*$")
 APPENDIX = re.compile(
     r"(?im)^\s*(?:appendix|appendices|supplementary material|附录)\b[^\n]*$|"

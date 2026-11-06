@@ -69,7 +69,7 @@ type Review = {
   insufficient_evidence: boolean;
   covered_documents: string[];
 };
-const MAX_GRAPH_PDFS = 30;
+const MAX_GRAPH_PDFS = 100;
 
 function save(name: string, value: unknown) {
   const url = URL.createObjectURL(
@@ -184,7 +184,7 @@ export function CitationGraph({
   const [review, setReview] = useState<Review | null>(null);
   const [reviewBusy, setReviewBusy] = useState(false);
   const [connectedOnly, setConnectedOnly] = useState(false);
-  const [adjacentOnly, setAdjacentOnly] = useState(true);
+  const [adjacentOnly, setAdjacentOnly] = useState(false);
   const [ranking, setRanking] = useState("pagerank");
   const generation = useRef(0);
   const readyIds = new Set(ready.map((doc) => doc.id));
@@ -278,7 +278,7 @@ export function CitationGraph({
         <div className="action-row">
           <strong>选择构图文献</strong>
           <span>
-            每次最多选择 30 个 PDF；构图时同一作品的版本合并为一个节点。
+            每次最多选择 100 个 PDF；构图时同一作品的版本合并为一个节点。
           </span>
         </div>
         <details>
@@ -291,7 +291,7 @@ export function CitationGraph({
                 setSelected(ready.slice(0, MAX_GRAPH_PDFS).map((doc) => doc.id))
               }
             >
-              {ready.length > MAX_GRAPH_PDFS ? "选择前 30 篇" : "全选"}
+              {ready.length > MAX_GRAPH_PDFS ? "选择前 100 篇" : "全选"}
             </button>
             <button onClick={() => setSelected([])}>清空选择</button>
             {ready.map((doc) => (
@@ -321,7 +321,7 @@ export function CitationGraph({
         </details>
         {ready.length > MAX_GRAPH_PDFS && (
           <p>
-            默认选择前 30 篇。要换入其他论文，请先取消一篇，或清空后重新勾选。
+            默认选择前 100 篇。要换入其他论文，请先取消一篇，或清空后重新勾选。
           </p>
         )}
         <div className="action-row">
