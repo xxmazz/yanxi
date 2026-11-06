@@ -372,7 +372,7 @@ try {
         .getByRole("checkbox")
         .check();
       await page
-        .getByRole("button", { name: /构建真实引用图谱|重新构建图谱/u })
+        .getByRole("button", { name: /构建引用图谱|重新构建图谱/u })
         .click();
       await page.getByLabel("正文核对主题", { exact: true }).waitFor();
       await page

@@ -41,10 +41,7 @@ export function FutureCheckPanel({
     <>
       <section className="future-check">
         <h3>对照更新研究，核对拟议方向</h3>
-        <p>
-          输入准备研究的主题，检索较新 arXiv
-          论文，并由本地模型逐篇概括摘要，和上方 Future Work 原文一起核对。
-        </p>
+        <p>按主题查找较新的 arXiv 论文，对照摘要与上方 Future Work 原文。</p>
         <form
           onSubmit={async (e) => {
             e.preventDefault();

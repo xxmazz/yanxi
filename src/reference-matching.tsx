@@ -109,10 +109,7 @@ export function ReferenceMatching({
     <section className="reference-matching" aria-label="按题名匹配参考文献">
       <h3>无编号书目：按题名匹配</h3>
       {errors.refresh && <p role="alert">{errors.refresh}</p>}
-      <p>
-        从书目原文读取题名、作者和年份，在 arXiv
-        官方检索。只有完整标题、作者和兼容年份共同通过且结果唯一，才加入上方下载候选；下载仍需勾选。
-      </p>
+      <p>在 arXiv 核对题名、作者和年份；唯一匹配后可勾选下载。</p>
       <button
         disabled={disabled || !!running || !missing.length}
         onClick={() => void match(missing.slice(0, 5))}

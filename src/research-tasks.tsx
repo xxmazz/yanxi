@@ -104,9 +104,7 @@ export function ResearchTasks({
   return (
     <section className="research-task-panel">
       <h2>研究任务</h2>
-      <p>
-        输入研究主题，自动检索并选择最多三篇论文，逐篇入库、等待解析、汇总来源。中文主题和摘要综述使用服务器本地模型。
-      </p>
+      <p>按主题查找最多三篇论文，入库后整理摘要。</p>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -174,9 +172,7 @@ export function ResearchTasks({
             </p>
           )}
           {task.selection_method === "e5_topic" && (
-            <small>
-              相似度仅用于当前页最多八篇候选的主题排序，不表示论文质量或相关概率。
-            </small>
+            <small>按主题相似度排序，不代表论文质量。</small>
           )}
           {task.search_steps && (
             <details>
@@ -251,12 +247,10 @@ export function ResearchTasks({
           {task.summary && (
             <section>
               <h3>
-                {task.summary.insufficient_evidence
-                  ? "综述状态"
-                  : "有来源的摘要综述"}
+                {task.summary.insufficient_evidence ? "综述状态" : "摘要综述"}
               </h3>
               {!task.summary.insufficient_evidence && (
-                <small>按来源分别概括论文作者的研究工作，仅基于摘要。</small>
+                <small>依据论文摘要整理。</small>
               )}
               <p className="task-answer">{task.summary.answer}</p>
               {task.summary.citations.map((item) => (

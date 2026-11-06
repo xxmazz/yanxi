@@ -283,9 +283,8 @@ export function WritingWorkspace({
     <>
       <div className="writing-layout grounded-writing-layout">
         <section className="writing-input panel">
-          <span className="eyebrow">WRITE WITH SOURCES</span>
-          <h2>把想法变成研究计划</h2>
-          <p>选择真实论文，本地模型梳理已有研究，再组织方法与评估计划。</p>
+          <h2>研究计划</h2>
+          <p>写下研究设想，选择参考文献。</p>
           <label htmlFor="grounded-idea">研究设想</label>
           <textarea
             id="grounded-idea"
@@ -340,9 +339,7 @@ export function WritingWorkspace({
           )}
           <div className="info-note">
             <ShieldCheck size={18} />
-            <p>
-              已有结论附真实文献；方法与实验为研究计划。书目由所选文献生成。
-            </p>
+            <p>依据所选摘要生成草稿；方法与实验部分为研究计划。</p>
           </div>
           <button
             className="button primary"
@@ -360,7 +357,7 @@ export function WritingWorkspace({
             ) : (
               <Sparkles size={16} />
             )}
-            {busy ? "本地模型正在组织研究计划…" : "生成有来源的论文框架"}
+            {busy ? "正在生成…" : "生成研究计划"}
           </button>
           {error && (
             <p role="alert" className="writing-error">
@@ -461,11 +458,8 @@ export function WritingWorkspace({
           ) : (
             <div className="empty-state">
               <BookOpen size={34} />
-              <h3>从真实文献出发</h3>
-              <p>
-                生成 Abstract、Introduction、Related
-                Work、方法与评估计划、References，附来源证据与架构图脚本。
-              </p>
+              <h3>还没有草稿</h3>
+              <p>选好文献后生成研究计划，可编辑并导出。</p>
             </div>
           )}
         </section>
@@ -503,11 +497,10 @@ export function WritingWorkspace({
                 导出来源记录
               </button>
             </div>
-            <p>
-              本稿依据 {result.references.length} 篇摘要生成。生成时检查：
-              {result.checks.join("、")}
-              。逐字来源与数值检查不能代替完整语义核验。
-            </p>
+            <details className="usage-details">
+              <summary>生成依据 · {result.references.length} 篇摘要</summary>
+              <p>已检查：{result.checks.join("、")}。内容仍需对照原文复核。</p>
+            </details>
             {result.references.map((item) => (
               <SourceCard key={item.label + result.fingerprint} item={item} />
             ))}

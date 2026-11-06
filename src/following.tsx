@@ -154,9 +154,14 @@ export function FollowingPanel({
           </select>
           <button disabled={busy || query.trim().length < 2}>创建订阅</button>
         </form>
-        <p>
-          服务运行时自动到期刷新；停止期间不占显卡，重启后补一次查询。每次取官方最新8篇；库内摘要相关性说明使用本地E5，不是论文质量评分。推荐保存在这里，不发送站外通知。
-        </p>
+        <details className="usage-details">
+          <summary>订阅说明</summary>
+          <p>
+            服务运行时按周期更新，每次查询最新 8
+            篇；重启后补查到期订阅。结果在此查看，不发送站外通知。
+          </p>
+          <p>相似度用于主题排序，不代表论文质量。</p>
+        </details>
         {state.subscriptions.map((sub) => (
           <article
             key={sub.id}
@@ -299,7 +304,7 @@ export function FollowingPanel({
               识别到{candidates.references}条书目，其中{candidates.items.length}
               个不同arXiv编号可勾选下载（其中{candidates.resolved_by_title || 0}
               个由题名核对）；{candidates.unresolved}
-              条待按题名匹配。每批最多30篇。上传后仍需等待解析及版本确认。
+              条待匹配。每批最多 30 篇，下载后自动解析。
             </p>
             <button
               onClick={() =>

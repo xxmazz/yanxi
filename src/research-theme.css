@@ -116,16 +116,6 @@ textarea {
 .collection.selected {
   background: #304854;
 }
-.demo-card {
-  background: transparent;
-  border-color: #526570;
-  border-radius: 3px;
-  color: #e5d5ba;
-}
-.demo-card p,
-.demo-card button {
-  color: #c0cbd0;
-}
 .utility-button {
   color: #d2dce0;
 }
@@ -231,92 +221,6 @@ textarea {
 }
 .icon-button:hover {
   background: #e9e5db;
-}
-
-/* 首页用工作目录代替悬浮装饰，三步均对应已有功能。 */
-.welcome-banner {
-  height: auto;
-  min-height: 208px;
-  border: 1px solid var(--rule);
-  border-left: 4px solid var(--annotation);
-  border-radius: 3px;
-  background: var(--sheet);
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 26px;
-  padding: 25px 30px;
-  margin-bottom: 18px;
-}
-.banner-copy {
-  padding: 0;
-  width: auto;
-}
-.banner-label {
-  color: var(--annotation);
-  font-size: 10px;
-  letter-spacing: 1.4px;
-}
-.banner-copy h2 {
-  color: var(--ink);
-  font-family: "Songti SC", STSong, Georgia, serif;
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.55;
-  margin: 12px 0 9px;
-  letter-spacing: 0.5px;
-}
-.banner-copy p {
-  color: #657078;
-  font-size: 12px;
-  line-height: 1.8;
-}
-.banner-copy > button {
-  color: var(--annotation);
-  margin-top: 16px;
-  font-size: 12px;
-  gap: 16px;
-}
-.banner-register {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 24px;
-  border-left: 1px solid var(--rule);
-  display: grid;
-  align-content: center;
-}
-.banner-register li {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 13px 0;
-  border-bottom: 1px solid #e6e1d6;
-}
-.banner-register li:last-child {
-  border-bottom: 0;
-}
-.banner-register li > span {
-  color: #a17d5f;
-  font-family: Georgia, serif;
-  font-style: italic;
-  font-size: 21px;
-}
-.banner-register li > div {
-  flex: 1;
-}
-.banner-register strong {
-  display: block;
-  color: var(--ink);
-  font-size: 12px;
-  font-weight: 600;
-}
-.banner-register small {
-  display: block;
-  color: #717971;
-  font-size: 11px;
-  margin-top: 5px;
-}
-.banner-register svg {
-  color: #7f8d91;
 }
 
 .stats-row {
@@ -679,17 +583,6 @@ textarea {
 }
 
 @media (max-width: 1050px) {
-  .welcome-banner {
-    grid-template-columns: 1.1fr 1fr;
-    gap: 18px;
-    padding: 22px;
-  }
-  .banner-copy h2 {
-    font-size: 24px;
-  }
-  .banner-register {
-    padding-left: 18px;
-  }
   .stats-row em {
     display: none;
   }
@@ -728,22 +621,6 @@ textarea {
     font-size: 9px;
     padding: 5px;
   }
-  .welcome-banner {
-    display: block;
-    padding: 22px 20px;
-  }
-  .banner-copy h2 {
-    font-size: 25px;
-  }
-  .banner-register {
-    margin-top: 20px;
-    border-left: 0;
-    border-top: 1px solid var(--rule);
-    padding: 5px 0 0;
-  }
-  .banner-register li {
-    padding: 10px 0;
-  }
   .stats-row > div {
     gap: 8px;
     padding: 0 8px;
@@ -780,4 +657,46 @@ textarea {
     grid-column: 1;
     grid-row: auto;
   }
+}
+
+/* 操作保持在前，说明按需展开。 */
+.usage-details {
+  margin: 14px 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.75;
+}
+.usage-details > summary {
+  width: fit-content;
+  cursor: pointer;
+  color: #62716e;
+}
+.usage-details[open] > summary {
+  margin-bottom: 8px;
+}
+.usage-details p {
+  margin: 6px 0;
+  overflow-wrap: anywhere;
+}
+.page-heading {
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+}
+.stats-row {
+  border-top: 0;
+  padding-top: 0;
+}
+.nav-caption {
+  letter-spacing: 1px;
+}
+.chat-welcome h2 {
+  font-size: 23px;
+}
+.demo-pill[data-ready="false"] {
+  color: #79694d;
+  background: #f3eee3;
+  border-color: #d8cbb2;
+}
+:is(.demo-pill, .small-status)[data-ready="false"] i {
+  background: #9a8157;
 }

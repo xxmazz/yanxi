@@ -1,0 +1,152 @@
+{
+  "date": "2026-11-07",
+  "scope": "静态生产构建的文案和布局预览，API全部由固定只读替身提供；未运行模型推理或修改正式数据",
+  "checks": [
+    {
+      "page": "我的文献",
+      "width": 1440,
+      "scroll": 1440,
+      "body": 1440,
+      "overflow": false
+    },
+    {
+      "page": "沉浸阅读",
+      "width": 1440,
+      "scroll": 1440,
+      "body": 1440,
+      "overflow": false
+    },
+    {
+      "page": "文献问答",
+      "width": 1440,
+      "scroll": 1440,
+      "body": 1440,
+      "overflow": false
+    },
+    {
+      "page": "探索发现",
+      "width": 1440,
+      "scroll": 1440,
+      "body": 1440,
+      "overflow": false
+    },
+    {
+      "page": "引用图谱",
+      "width": 1440,
+      "scroll": 1440,
+      "body": 1440,
+      "overflow": false
+    },
+    {
+      "page": "写作工坊",
+      "width": 1440,
+      "scroll": 1440,
+      "body": 1440,
+      "overflow": false
+    },
+    {
+      "page": "我的文献",
+      "width": 390,
+      "scroll": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "page": "沉浸阅读",
+      "width": 390,
+      "scroll": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "page": "文献问答",
+      "width": 390,
+      "scroll": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "page": "探索发现",
+      "width": 390,
+      "scroll": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "page": "引用图谱",
+      "width": 390,
+      "scroll": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "page": "写作工坊",
+      "width": 390,
+      "scroll": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "page": "我的文献",
+      "width": 320,
+      "scroll": 320,
+      "body": 320,
+      "overflow": false
+    },
+    {
+      "page": "沉浸阅读",
+      "width": 320,
+      "scroll": 320,
+      "body": 320,
+      "overflow": false
+    },
+    {
+      "page": "文献问答",
+      "width": 320,
+      "scroll": 320,
+      "body": 320,
+      "overflow": false
+    },
+    {
+      "page": "探索发现",
+      "width": 320,
+      "scroll": 320,
+      "body": 320,
+      "overflow": false
+    },
+    {
+      "page": "引用图谱",
+      "width": 320,
+      "scroll": 320,
+      "body": 320,
+      "overflow": false
+    },
+    {
+      "page": "写作工坊",
+      "width": 320,
+      "scroll": 320,
+      "body": 320,
+      "overflow": false
+    }
+  ],
+  "jsErrors": [],
+  "unexpectedRequests": [],
+  "networkMethods": ["GET"],
+  "interactions": [
+    "六页导航",
+    "问答帮助默认折叠与展开",
+    "检索说明默认折叠与展开",
+    "导入弹窗与Esc关闭",
+    "设置弹窗与Esc关闭",
+    "图表页示例标记可见"
+  ],
+  "frontendTests": {
+    "passed": 29,
+    "failed": 0
+  },
+  "productionBuild": "TypeScript / Vite passed",
+  "earlierPreviewInterruptions": [
+    "未选服务器原文样本，等待解析正文超时；预览脚本改为显式选择文献",
+    "窄屏侧栏帮助不可见，预览脚本将该交互限于桌面"
+  ]
+}

@@ -261,10 +261,7 @@ export function useHoverTranslation(
         )}
       </div>
       {enabled && (
-        <small>
-          在下方正文句子停留片刻、点击或按 Enter
-          查看本地译文。公式和代码保留原文；关闭浮层不撤销已经提交的短句任务。
-        </small>
+        <small>悬停、点击句子或按 Enter 查看译文；公式和代码保留原文。</small>
       )}
       {notice && <p role="status">{notice}</p>}
       {enabled && selection && (

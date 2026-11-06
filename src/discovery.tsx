@@ -131,15 +131,11 @@ export function Discovery({
   };
   return (
     <>
-      <FollowingPanel documents={documents} open={open} changed={changed} />
-      <ResearchTasks changed={changed} open={open} />
       <div className="page-heading">
         <div>
-          <div className="eyebrow">FOLLOW YOUR CURIOSITY</div>
           <h1>探索发现</h1>
-          <p>检索真实论文，把下一条研究线索带回文献库。</p>
         </div>
-        <span className="subtle-label">arXiv 官方来源 · 本地模型辅助</span>
+        <span className="subtle-label">来源：arXiv</span>
       </div>
       <section className="discovery-search panel">
         <form
@@ -192,10 +188,10 @@ export function Discovery({
             ),
           )}
         </div>
-        <p>
-          中文主题通过本地术语词表与 Qwen 转成英文检索词；搜索与下载连接
-          arXiv，论文问答仍在本地完成。
-        </p>
+        <details className="usage-details">
+          <summary>检索说明</summary>
+          <p>中文主题会转为英文检索词，再查询 arXiv。搜索和下载需要联网。</p>
+        </details>
         {error && (
           <p className="chart-error" role="alert">
             {error}
@@ -205,6 +201,8 @@ export function Discovery({
           <p role="status">正在查询官方论文元数据，网络较慢时可能需要几十秒…</p>
         )}
       </section>
+      <FollowingPanel documents={documents} open={open} changed={changed} />
+      <ResearchTasks changed={changed} open={open} />
       {!!jobs.length && (
         <details
           className="archive-panel"
@@ -258,15 +256,15 @@ export function Discovery({
               {results.cached ? "缓存结果" : "官方接口结果"} · 获取于{" "}
               {new Date(results.fetched_at).toLocaleString("zh-CN")}
             </p>
-            <p>{results.steps.join(" → ")}</p>
+            <details className="usage-details">
+              <summary>检索过程</summary>
+              <p>{results.steps.join(" → ")}</p>
+            </details>
             {results.warning && (
               <p className="chart-error">{results.warning}</p>
             )}
             {results.sort === "library" && results.library_ranked && (
-              <p>
-                仅对本页最多 8 篇按本地 E5 相似度排序，依据库中最近 40
-                篇已解析论文；相似度表示主题接近程度。
-              </p>
+              <p>本页结果按与库内最近 40 篇文献的主题相似度排序。</p>
             )}
           </div>
           {results.sort === "library" && !results.library_ranked && (

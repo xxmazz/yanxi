@@ -211,7 +211,7 @@ test("research entry submits the Chinese topic and renders the returned source a
     assert.equal(request.headers.get("X-Yanxi-Request"), "1");
     const panel = document.querySelector(".research-task-panel");
     assert.match(panel.textContent, /本地 E5 按本次主题重排/);
-    assert.match(panel.textContent, /有来源的摘要综述/);
+    assert.match(panel.textContent, /摘要综述/);
     assert.match(panel.textContent, /第 5 页/);
     assert.match(panel.textContent, /固定引用段落/);
     assert.equal(
@@ -247,7 +247,12 @@ test("missing-summary retry preserves prior sources on API failure and replaces 
       open: () => {},
     });
     assert.match(document.body.textContent, /综述状态/);
-    assert.doesNotMatch(document.body.textContent, /有来源的摘要综述/);
+    assert.equal(
+      [...document.querySelectorAll(".research-task-panel h3")].some(
+        (heading) => heading.textContent === "摘要综述",
+      ),
+      false,
+    );
     await click(button("重试摘要综述"));
     assert.match(document.body.textContent, /本地模型繁忙/);
     assert.match(document.body.textContent, /组件测试来源/);
@@ -260,7 +265,7 @@ test("missing-summary retry preserves prior sources on API failure and replaces 
     });
     await click(button("重试摘要综述"));
     assert.match(document.body.textContent, /第 2 次运行/);
-    assert.match(document.body.textContent, /有来源的摘要综述/);
+    assert.match(document.body.textContent, /摘要综述/);
     assert.equal(
       [...document.querySelectorAll("button")].some(
         (item) => item.textContent === "重试摘要综述",
@@ -369,7 +374,7 @@ test("writing exports preserve edited provenance, source snapshot and escaped di
     });
     await change(document.querySelector("#grounded-idea"), result.idea);
     await click(button("全选"));
-    await click(button("生成有来源的论文框架"));
+    await click(button("生成研究计划"));
     assert.deepEqual(env.calls.find((item) => item.method === "POST").body, {
       idea: result.idea,
       document_ids: ["doc-fixture"],
@@ -447,7 +452,7 @@ test("chat follow-ups carry only last successful source IDs and reset on new con
   });
   try {
     await env.render(components.App);
-    await click(button("文献问答AI", document.querySelector(".sidebar")));
+    await click(button("文献问答", document.querySelector(".sidebar")));
     const ask = async (text) => {
       await change(document.querySelector('[aria-label="输入文献问题"]'), text);
       await click(document.querySelector('[aria-label="发送问题"]'));

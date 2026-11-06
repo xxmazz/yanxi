@@ -63,7 +63,8 @@ export function FulltextCheckPanel({
     <section className="future-check fulltext-check">
       <h3>对照已入库较新论文正文</h3>
       <p>
-        先在探索发现下载需要核对的论文，解析完成后刷新列表并勾选最多4篇。系统在正文中检索原句，由本地模型概括相关工作并给出物理页码。
+        选择最多 4
+        篇已解析文献，检索正文并查看相关工作的原页证据。新下载的文献请先刷新列表。
       </p>
       <button
         type="button"

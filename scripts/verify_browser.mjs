@@ -383,7 +383,7 @@ try {
     );
     build.catch(() => {});
     await page
-      .getByRole("button", { name: /^(构建真实引用图谱|重新构建图谱)$/ })
+      .getByRole("button", { name: /^(构建引用图谱|重新构建图谱)$/ })
       .click();
     assert((await build).ok());
     await page.getByLabel("真实文献引用图谱", { exact: true }).waitFor();
@@ -419,7 +419,7 @@ try {
     );
     event.catch(() => {});
     await page
-      .getByRole("button", { name: "生成有来源的论文框架", exact: true })
+      .getByRole("button", { name: "生成研究计划", exact: true })
       .click();
     const response = await event;
     assert(response.ok());

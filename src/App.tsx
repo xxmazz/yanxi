@@ -11,12 +11,10 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleHelp,
-  Clock3,
   Columns2,
   FileText,
   FlaskConical,
   FolderOpen,
-  GitBranch,
   Globe2,
   LayoutGrid,
   List,
@@ -29,7 +27,6 @@ import {
   Search,
   Settings2,
   ShieldCheck,
-  Sparkles,
   Star,
   Trash2,
   Upload,
@@ -49,10 +46,10 @@ import { WritingWorkspace } from "./writing-workspace";
 import { DocumentActions, ArchivePanel, ServerReader } from "./document-tools";
 import type { Evidence, Health, ServerDocument } from "./api";
 
-const nav: { id: View; label: string; icon: LucideIcon; hint?: string }[] = [
+const nav: { id: View; label: string; icon: LucideIcon }[] = [
   { id: "library", label: "我的文献", icon: FolderOpen },
   { id: "reader", label: "沉浸阅读", icon: BookOpen },
-  { id: "chat", label: "文献问答", icon: MessageSquare, hint: "AI" },
+  { id: "chat", label: "文献问答", icon: MessageSquare },
   { id: "discover", label: "探索发现", icon: Globe2 },
   { id: "graph", label: "引用图谱", icon: Network },
   { id: "write", label: "写作工坊", icon: FlaskConical },
@@ -546,9 +543,7 @@ export default function App() {
           </span>
           <ChevronDown size={14} />
         </button>
-        <div className="nav-caption">
-          WORKSPACE <span>工作空间</span>
-        </div>
+        <div className="nav-caption">工作空间</div>
         <nav>
           {nav.map((item) => (
             <button
@@ -558,15 +553,12 @@ export default function App() {
             >
               <item.icon size={19} strokeWidth={1.7} />
               <span>{item.label}</span>
-              {item.hint && <small>{item.hint}</small>}
               {item.id === "library" && <em>{papers.length}</em>}
             </button>
           ))}
         </nav>
         <div className="sidebar-line" />
-        <div className="nav-caption">
-          COLLECTIONS <span>我的收藏夹</span>
-        </div>
+        <div className="nav-caption">收藏夹</div>
         <button
           className={
             "collection " +
@@ -619,16 +611,6 @@ export default function App() {
           </span>
         </button>
         <div className="sidebar-bottom">
-          <div className="demo-card">
-            <div>
-              <Sparkles size={16} />
-              <b>从文献，到洞见。</b>
-            </div>
-            <p>每一个回答，都应该有出处。</p>
-            <button onClick={() => setModal("settings")}>
-              了解当前演示 <ArrowUpRight size={13} />
-            </button>
-          </div>
           <button
             className="utility-button"
             onClick={() => setModal("settings")}
@@ -640,7 +622,7 @@ export default function App() {
           <div className="profile">
             <div className="avatar">X</div>
             <span>
-              xxmacc<small>个人研究者</small>
+              研究工作区<small>个人文献库</small>
             </span>
             <span className="profile-dot" />
           </div>
@@ -676,9 +658,13 @@ export default function App() {
               />
               <kbd>/</kbd>
             </label>
-            <span className="demo-pill">
+            <span className="demo-pill" data-ready={!!health?.model_ready}>
               <i />
-              {health?.model_ready ? "本地模型已连接" : "浏览器预览"}
+              {health?.model_ready
+                ? "模型就绪"
+                : health
+                  ? "模型未就绪"
+                  : "服务未连接"}
             </span>
             <button
               className="icon-button"
@@ -694,11 +680,9 @@ export default function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <div className="eyebrow">文献档案 / LIBRARY</div>
                   <h1>
                     我的文献<span className="count-pill">{papers.length}</span>
                   </h1>
-                  <p>原件、阅读与研究线索，集中整理。</p>
                 </div>
                 <button
                   className="button primary"
@@ -709,46 +693,6 @@ export default function App() {
                 </button>
               </div>
               {health && <ArchivePanel changed={changed} notify={notify} />}
-              <section className="welcome-banner" aria-label="文献工作流程">
-                <div className="banner-copy">
-                  <span className="banner-label">研析 · 文献工作台</span>
-                  <h2>
-                    从原文出发，
-                    <br />
-                    把研究线索留在案头。
-                  </h2>
-                  <p>归档论文，核对证据，再把想法写下来。</p>
-                  <button onClick={() => go("chat")}>
-                    带着问题阅读 <ArrowRight size={16} />
-                  </button>
-                </div>
-                <ol className="banner-register" aria-label="研究流程">
-                  <li>
-                    <span>01</span>
-                    <div>
-                      <strong>收录原文</strong>
-                      <small>PDF 解析 · 版本管理</small>
-                    </div>
-                    <FolderOpen size={18} />
-                  </li>
-                  <li>
-                    <span>02</span>
-                    <div>
-                      <strong>核对出处</strong>
-                      <small>原文问答 · 引用回看</small>
-                    </div>
-                    <BookOpen size={18} />
-                  </li>
-                  <li>
-                    <span>03</span>
-                    <div>
-                      <strong>整理研究</strong>
-                      <small>引用图谱 · 研究计划</small>
-                    </div>
-                    <GitBranch size={18} />
-                  </li>
-                </ol>
-              </section>
               <div className="stats-row">
                 <div>
                   <span className="stat-icon sage">
@@ -761,7 +705,6 @@ export default function App() {
                       <small>篇</small>
                     </strong>
                   </span>
-                  <em>你的知识积累</em>
                 </div>
                 <div>
                   <span className="stat-icon sand">
@@ -774,20 +717,18 @@ export default function App() {
                       <small>篇</small>
                     </strong>
                   </span>
-                  <em>值得反复阅读</em>
                 </div>
                 <div>
                   <span className="stat-icon blue">
                     <Network size={18} />
                   </span>
                   <span>
-                    研究主题
+                    文献标签
                     <strong>
                       {new Set(papers.map((p) => p.tag)).size}
                       <small>个</small>
                     </strong>
                   </span>
-                  <em>连接研究脉络</em>
                 </div>
               </div>
               <div className="library-toolbar">
@@ -1010,21 +951,18 @@ export default function App() {
                   </button>
                 </div>
               )}
-              <div className="bottom-note">
-                <ShieldCheck size={14} />
-                {health
-                  ? "上传的 PDF 保存在你的服务器；索引完成后可用于本地模型问答。示例卡片用于体验界面。"
-                  : "浏览器预览模式：本地 PDF 尚未上传服务器，不能用于模型问答。"}
-              </div>
+              {!health && (
+                <p className="bottom-note">
+                  服务未连接，当前文件只能在浏览器预览。
+                </p>
+              )}
             </>
           )}
           {view === "reader" && (
             <>
               <div className="page-heading compact">
                 <div>
-                  <div className="eyebrow">READ WITH CONTEXT</div>
                   <h1>沉浸阅读</h1>
-                  <p>让理解与证据，始终在同一个页面。</p>
                 </div>
                 {!active?.local && (
                   <button
@@ -1060,7 +998,7 @@ export default function App() {
                         go("chat");
                       }}
                     >
-                      <Sparkles size={14} />
+                      <BookOpen size={14} />
                       问这篇论文
                     </button>
                   </div>
@@ -1188,9 +1126,7 @@ export default function App() {
             <>
               <div className="page-heading compact">
                 <div>
-                  <div className="eyebrow">ANSWERS WITH EVIDENCE</div>
                   <h1>文献问答</h1>
-                  <p>不止于回答，更在于有据可循。</p>
                 </div>
                 <button
                   className="button secondary"
@@ -1209,16 +1145,14 @@ export default function App() {
                   <div className="chat-panel-header">
                     <span>
                       <span className="mini-mark">
-                        <Sparkles size={15} />
+                        <BookOpen size={15} />
                       </span>
                       研析助手
-                      <small>
-                        {health?.model_ready
-                          ? "本地模型 · 原文证据"
-                          : "等待模型连接"}
-                      </small>
                     </span>
-                    <span className="small-status">
+                    <span
+                      className="small-status"
+                      data-ready={!!health?.model_ready}
+                    >
                       <i />
                       {health?.model_ready ? "模型已就绪" : "模型未连接"}
                     </span>
@@ -1227,10 +1161,10 @@ export default function App() {
                     {!messages.length && (
                       <div className="chat-welcome">
                         <div className="chat-logo">
-                          <Sparkles size={30} />
+                          <BookOpen size={30} />
                         </div>
-                        <h2>让文献，回答你的问题。</h2>
-                        <p>选择研究范围，从一个好问题开始。</p>
+                        <h2>想了解论文的哪一部分？</h2>
+                        <p>选择文献后提问，回答中可以查看原文。</p>
                         <div className="suggestion-grid">
                           {[
                             "所选文献的主要研究问题是什么？",
@@ -1253,7 +1187,7 @@ export default function App() {
                       >
                         <span className="message-avatar">
                           {message.role === "assistant" ? (
-                            <Sparkles size={15} />
+                            <BookOpen size={15} />
                           ) : (
                             "X"
                           )}
@@ -1323,7 +1257,7 @@ export default function App() {
                       <span>
                         <ShieldCheck size={14} />
                         {health?.model_ready
-                          ? "本地模型推理 · 关键结论请核对原文"
+                          ? "回答供参考，请核对引用"
                           : "模型未连接 · 请先启动服务器"}
                       </span>
                       <button
@@ -1342,9 +1276,7 @@ export default function App() {
                     <FolderOpen size={17} />
                     研究范围
                   </h3>
-                  <p>
-                    限定文献，聚焦问题。可用“这篇”“其中”接着问；新对话或切换范围会清空追问关联。
-                  </p>
+                  <p>可选择单篇文献，也可以跨篇提问。</p>
                   <select
                     aria-label="问答文献范围"
                     value={chatScope}
@@ -1382,14 +1314,13 @@ export default function App() {
                         </button>
                       ))}
                   </div>
-                  <div className="info-note">
-                    <ShieldCheck size={20} />
-                    <strong>证据，比答案更重要</strong>
+                  <details className="usage-details">
+                    <summary>问答帮助</summary>
                     <p>
-                      问答仅使用服务器已解析的文献。展开引用可查看检索原文，并跳转
-                      PDF 页码；引用标号校验不等于结论一定正确。
+                      使用已解析文献作答。展开引用可查看摘录和原页；回答仍需核对。
                     </p>
-                  </div>
+                    <p>可用“这篇”“其中”追问。新对话或切换文献后重新开始。</p>
+                  </details>
                 </aside>
               </div>
             </>
@@ -1422,11 +1353,8 @@ export default function App() {
             <>
               <div className="page-heading">
                 <div>
-                  <div className="eyebrow">TURN IDEAS INTO RESEARCH</div>
                   <h1>写作工坊</h1>
-                  <p>从一个想法开始，把研究组织得更清楚。</p>
                 </div>
-                <span className="subtle-label">本地模型与真实文献</span>
               </div>
               <div className="tabs writing-tabs">
                 <button
@@ -1458,11 +1386,9 @@ export default function App() {
           <footer className="page-footer">
             <span>
               研析 <i />
-              让知识连接，让研究发生。
+              科研文献工作台
             </span>
-            <span>
-              {health ? "本地科研工作台 · v0.2" : "浏览器预览 · v0.2"}
-            </span>
+            <span>v0.2</span>
           </footer>
         </main>
       </div>
@@ -1508,8 +1434,8 @@ export default function App() {
                 <span className="modal-symbol">
                   <Upload size={24} />
                 </span>
-                <h2 id="modal-title">把知识，带进你的工作空间。</h2>
-                <p>导入 PDF，建立属于你的研究文献库。</p>
+                <h2 id="modal-title">导入文献</h2>
+                <p>支持批量选择 PDF。</p>
                 <div
                   className="dropzone"
                   role="button"
@@ -1535,7 +1461,6 @@ export default function App() {
                       ? "上传至本地服务器 · 单文件不超过 100 MB"
                       : "浏览器本地预览 · 单文件不超过 20 MB"}
                   </span>
-                  <span>本地文件指纹可识别内容完全相同的重复 PDF</span>
                   <span className="button primary small">
                     {importing ? "正在上传…" : "选择文件"} <Plus size={14} />
                   </span>
@@ -1555,15 +1480,15 @@ export default function App() {
                   <ShieldCheck size={17} />
                   <p>
                     {health
-                      ? "PDF 保存到你的服务器，后台逐页解析并建立问答索引；扫描页使用本地 OCR，相似版本由你确认保留策略。"
+                      ? "文件保存在服务器，上传后自动解析。相似版本会提示你确认。"
                       : "后端未连接：文件只在浏览器预览，刷新后需重新选择。"}
                   </p>
                 </div>
               </>
             ) : modal === "compare" ? (
               <>
-                <h2 id="modal-title">并排看见，文献之间的联系。</h2>
-                <p>元数据对比演示 · 未进行跨论文自动推理</p>
+                <h2 id="modal-title">文献信息对比</h2>
+                <p>并排查看题名、作者和摘要。</p>
                 <div className="compare-grid">
                   {papers
                     .filter((p) => selected.includes(p.id))
@@ -1596,39 +1521,39 @@ export default function App() {
                 <span className="modal-symbol">
                   <FlaskConical size={24} />
                 </span>
-                <h2 id="modal-title">研析 · 当前演示说明</h2>
-                <p>文献与问答连接本地服务器，模型推理不调用商业 API。</p>
+                <h2 id="modal-title">设置与帮助</h2>
+                <p>研析 · 科研文献工作台</p>
                 <div className="settings-features">
                   <div>
                     <Check size={16} />
                     <span>
-                      已实现
+                      服务状态
                       <b>
-                        文献上传、逐页正文与扫描件
-                        OCR、内容相似检测、版本保留与恢复、本地模型问答、原文引用及
-                        CSV
-                        图表、中英逐段翻译与双向联动阅读、真实引用图谱与有来源的摘要综述、参考文献批量下载及每日／每周主题订阅。
+                        {health?.model_ready
+                          ? "本地模型已就绪"
+                          : health
+                            ? "服务已连接，模型未就绪"
+                            : "服务未连接"}
                       </b>
                     </span>
                   </div>
                   <div>
-                    <Clock3 size={16} />
+                    <FolderOpen size={16} />
                     <span>
-                      后续接入
+                      文件与存储
                       <b>
-                        复杂表格与公式还原、更多引用格式、研究方向时效核验。
+                        上传的 PDF
+                        保存在服务器；浏览器保存收藏和界面偏好。示例卡片不参与问答。
                       </b>
                     </span>
                   </div>
                   <div>
                     <ShieldCheck size={16} />
                     <span>
-                      数据说明
+                      来源与使用
                       <b>
-                        所有 AI 文献问答连接本地服务器模型与按页索引；探索页连接
-                        arXiv
-                        真实检索；图谱由已入库论文的参考文献匹配构建，写作可依据真实文献生成研究计划与架构图。浏览器保存目录偏好，上传的
-                        PDF 保存在服务器。
+                        模型在本地运行，论文检索连接
+                        arXiv。回答和译文请对照原文；写作生成的是研究计划。
                       </b>
                     </span>
                   </div>
@@ -1714,12 +1639,8 @@ function ChartWorkspace({
   return (
     <div className="chart-layout">
       <section className="chart-input panel">
-        <span className="eyebrow">FROM DATA TO INSIGHT</span>
-        <h3>让数据，讲述你的发现。</h3>
-        <p>
-          粘贴 CSV：第一列类别，后续 1–6
-          列数值。下方初始数据为虚构演示，不是实验结果。
-        </p>
+        <h3>数据图表</h3>
+        <p>CSV 第一列为类别，后续 1–6 列为数值。初始内容为示例数据。</p>
         <label htmlFor="csv-data">CSV 数据 · 类别 + 一列或多列数值</label>
         <textarea
           id="csv-data"
@@ -1760,10 +1681,7 @@ function ChartWorkspace({
         />
         <div className="info-note" style={{ marginTop: 22 }}>
           <ShieldCheck size={18} />
-          <p>
-            图表在浏览器本地计算。支持负值、零值和带引号的类别。最多 30 行。
-            页面内切换会保留输入；刷新前请导出图注备份数据。
-          </p>
+          <p>最多 30 行。刷新前请导出图注，以保存当前数据。</p>
         </div>
       </section>
       <section className="chart-output panel">

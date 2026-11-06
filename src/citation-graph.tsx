@@ -255,9 +255,7 @@ export function CitationGraph({
     <>
       <div className="page-heading">
         <div>
-          <div className="eyebrow">FOLLOW THE REFERENCES</div>
           <h1>引用图谱</h1>
-          <p>沿着论文的真实引用，发现当前文献库中的研究脉络。</p>
         </div>
         <button
           className="button secondary"
@@ -314,7 +312,7 @@ export function CitationGraph({
               ? "正在核对参考文献…"
               : graph
                 ? "重新构建图谱"
-                : "构建真实引用图谱"}
+                : "构建引用图谱"}
           </button>
           <label>
             <input
@@ -326,8 +324,8 @@ export function CitationGraph({
           </label>
         </div>
         <p>
-          箭头：引用论文 <ArrowRight size={13} /> 被引论文。完整标题或标识符在
-          References 中匹配才连边，主题相近不会自动连边。
+          箭头：引用论文 <ArrowRight size={13} />{" "}
+          被引论文。连线来自参考文献匹配。
         </p>
         {error && (
           <p role="alert" className="graph-error">
@@ -658,10 +656,10 @@ export function CitationGraph({
               </div>
             </section>
             <section className="graph-analysis-card">
-              <h2>有来源的研究综述</h2>
+              <h2>摘要综述</h2>
               <p>
-                本地 Qwen 根据本图中最多 6 篇论文的摘要生成，优先覆盖局部
-                PageRank 较高的作品。引用与数值校验不能代替完整语义核对。
+                根据最多 6
+                篇论文的摘要生成，优先选取图中排名靠前的文献，请核对原文。
               </p>
               <button
                 className="button primary"
