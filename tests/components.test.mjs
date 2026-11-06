@@ -18,6 +18,66 @@ const csv =
   "文献,E5向量段数\nTransformer v7,47\nTransformer官方扫描件,43\nBERT,72";
 after(disposeEnvironment);
 
+test("graph defaults to at most 30 PDFs, supports replacing a selection, and explains validation errors", async () => {
+  const env = setup();
+  const documents = Array.from({ length: 34 }, (_, i) => ({
+    id: `graph-doc-${i}`,
+    title: `Graph source ${i}`,
+    status: "ready",
+    is_active: 1,
+    trashed_at: null,
+    version: 1,
+    pages: 1,
+    ocr_pages: 0,
+  }));
+  env.routes.set("POST /api/graph/build", () =>
+    Response.json(
+      {
+        detail: [
+          {
+            type: "too_long",
+            loc: ["body", "document_ids"],
+            msg: "List should have at most 30 items",
+            ctx: { max_length: 30 },
+          },
+        ],
+      },
+      { status: 422 },
+    ),
+  );
+  try {
+    await env.render(components.CitationGraph, { documents, open() {} });
+    assert.match(document.body.textContent, /当前选择 30 \/ 34 个 PDF/);
+    const boxes = () => [
+      ...document.querySelectorAll(
+        '.graph-document-picker input[type="checkbox"]',
+      ),
+    ];
+    assert.equal(boxes().filter((box) => box.checked).length, 30);
+    assert.equal(boxes()[30].disabled, true);
+    await click(boxes()[0]);
+    assert.equal(boxes()[30].disabled, false);
+    await click(boxes()[30]);
+    assert.equal(boxes()[0].disabled, true);
+    await click(button("构建引用图谱"));
+    const request = env.calls.find((call) => call.url === "/api/graph/build");
+    assert.equal(request.body.document_ids.length, 30);
+    assert.equal(request.body.document_ids.includes("graph-doc-0"), false);
+    assert.equal(request.body.document_ids.includes("graph-doc-30"), true);
+    assert.match(
+      document.querySelector('[role="alert"]').textContent,
+      /最多选择 30 个 PDF/,
+    );
+    assert.doesNotMatch(document.body.textContent, /\[object Object\]/);
+    await click(button("清空选择"));
+    assert.equal(button("构建引用图谱").disabled, true);
+    await click(button("选择前 30 篇"));
+    assert.equal(boxes().filter((box) => box.checked).length, 30);
+  } finally {
+    await env.cleanup();
+  }
+});
+
 async function charts(environment) {
   await environment.render(components.App);
   await click(button("写作工坊", document.querySelector(".sidebar")));

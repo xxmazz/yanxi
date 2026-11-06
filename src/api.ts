@@ -49,6 +49,27 @@ export type Health = {
   retrieval: string;
 };
 
+function errorDetail(value: unknown): string {
+  if (typeof value === "string") return value;
+  if (Array.isArray(value))
+    return value.map(errorDetail).filter(Boolean).join("；");
+  if (value && typeof value === "object") {
+    const item = value as Record<string, unknown>;
+    if (
+      item.type === "too_long" &&
+      Array.isArray(item.loc) &&
+      item.loc.includes("document_ids")
+    ) {
+      const context = item.ctx as Record<string, unknown> | undefined;
+      const maximum = context?.max_length;
+      if (typeof maximum === "number")
+        return `所选文献超过上限，每次最多选择 ${maximum} 个 PDF，请减少选择后重试。`;
+    }
+    return errorDetail(item.msg ?? item.message ?? item.detail);
+  }
+  return "";
+}
+
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers);
   headers.set("X-Yanxi-Request", "1");
@@ -59,7 +80,9 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   });
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
-    throw new Error(body.detail || `服务器请求失败（${response.status}）`);
+    throw new Error(
+      errorDetail(body.detail) || `服务器请求失败（${response.status}）`,
+    );
   }
   return response.json();
 }

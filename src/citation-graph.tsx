@@ -69,6 +69,7 @@ type Review = {
   insufficient_evidence: boolean;
   covered_documents: string[];
 };
+const MAX_GRAPH_PDFS = 30;
 
 function save(name: string, value: unknown) {
   const url = URL.createObjectURL(
@@ -186,7 +187,10 @@ export function CitationGraph({
   const [adjacentOnly, setAdjacentOnly] = useState(true);
   const [ranking, setRanking] = useState("pagerank");
   const generation = useRef(0);
-  const pendingScope = selected ?? ready.map((doc) => doc.id);
+  const readyIds = new Set(ready.map((doc) => doc.id));
+  const pendingScope =
+    selected?.filter((id) => readyIds.has(id)) ??
+    ready.slice(0, MAX_GRAPH_PDFS).map((doc) => doc.id);
   const current = useRef("");
   current.current = JSON.stringify([...pendingScope].sort());
   const lastLibrary = useRef(signature);
@@ -224,6 +228,10 @@ export function CitationGraph({
     if (busy || reviewBusy) return;
     if (!pendingScope.length) {
       setError("请选择至少一篇已解析文献");
+      return;
+    }
+    if (pendingScope.length > MAX_GRAPH_PDFS) {
+      setError(`每次最多选择 ${MAX_GRAPH_PDFS} 个 PDF，请减少选择后重试。`);
       return;
     }
     const version = ++generation.current;
@@ -269,15 +277,21 @@ export function CitationGraph({
       <section className="graph-controls">
         <div className="action-row">
           <strong>选择构图文献</strong>
-          <span>最多 30 个 PDF；同一作品的版本合并计数。</span>
+          <span>
+            每次最多选择 30 个 PDF；构图时同一作品的版本合并为一个节点。
+          </span>
         </div>
         <details>
           <summary>
             当前选择 {pendingScope.length} / {ready.length} 个 PDF
           </summary>
           <div className="graph-document-picker">
-            <button onClick={() => setSelected(ready.map((doc) => doc.id))}>
-              全选
+            <button
+              onClick={() =>
+                setSelected(ready.slice(0, MAX_GRAPH_PDFS).map((doc) => doc.id))
+              }
+            >
+              {ready.length > MAX_GRAPH_PDFS ? "选择前 30 篇" : "全选"}
             </button>
             <button onClick={() => setSelected([])}>清空选择</button>
             {ready.map((doc) => (
@@ -285,6 +299,10 @@ export function CitationGraph({
                 <input
                   type="checkbox"
                   checked={pendingScope.includes(doc.id)}
+                  disabled={
+                    !pendingScope.includes(doc.id) &&
+                    pendingScope.length >= MAX_GRAPH_PDFS
+                  }
                   onChange={(e) =>
                     setSelected(
                       e.target.checked
@@ -301,6 +319,11 @@ export function CitationGraph({
             {!ready.length && <p>请先导入论文并完成解析与版本确认。</p>}
           </div>
         </details>
+        {ready.length > MAX_GRAPH_PDFS && (
+          <p>
+            默认选择前 30 篇。要换入其他论文，请先取消一篇，或清空后重新勾选。
+          </p>
+        )}
         <div className="action-row">
           <button
             className="button primary"
