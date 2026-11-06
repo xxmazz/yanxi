@@ -2,6 +2,11 @@
 
 研析是一个使用本地模型的科研文献工作台。上传 PDF 后，可以阅读原文、翻译段落、针对单篇或多篇论文提问，也可以整理引用关系和研究计划。回答附带摘录与页码，方便回到论文核对。
 
+## 团队与贡献
+
+负责人 GitHub 账号：[xxmazz](https://github.com/xxmazz)。
+马兴贤 东莞理工学院
+
 ## 功能
 
 | 页面     | 用途                                                                           |
@@ -17,7 +22,7 @@
 
 ## 安装与启动
 
-完整部署需要 Python 3.12、Node.js 22.18+、NVIDIA 驱动和本地模型权重。当前部署使用四张 RTX 2080 Ti。依赖版本见 [环境锁文件](backend/server-environment.lock.txt)，模型准备和系统依赖见 [后端安装说明](docs/LOCAL_BACKEND.md)。
+完整部署需要 Python 3.12、Node.js 22.18+、NVIDIA 驱动和本地模型权重。
 
 ```sh
 git clone https://github.com/xxmazz/yanxi.git
@@ -28,16 +33,11 @@ npm ci
 npm run build
 cp .env.example .env
 ```
-
-按 [模型与 OCR 配置](docs/OCR_AND_VERSIONS.md) 和 [视觉模型配置](docs/VISUAL_AND_FULLTEXT.md) 准备权重，再填写 `.env` 中的模型路径、数据目录和显卡编号。
+启动命令
 
 ```sh
 bash scripts/serve.sh
 ```
-
-默认入口为 `http://127.0.0.1:18474/`，前端和 API 由同一服务提供。模型加载完成后，页面会显示“模型就绪”。
-
-已经安装用户级服务的机器可以直接运行：
 
 ```sh
 systemctl --user start yanxi
@@ -46,9 +46,6 @@ systemctl --user status yanxi --no-pager
 systemctl --user stop yanxi
 ```
 
-公网部署使用 HTTPS 反向代理，并配置评审账号；具体步骤见 [访问控制](docs/REVIEW_ACCESS.md)。当前局域网部署地址为 `http://192.168.3.193:18474/`。
-
-只开发前端时运行 `npm run dev`，访问 `http://localhost:4173`。开发服务将 `/api` 转发到本机 18474 端口；没有后端时只能预览界面和浏览器内的 PDF。
 
 ## 架构
 
@@ -61,7 +58,7 @@ systemctl --user stop yanxi
 | 扫描表格与公式   | Qwen3-VL-4B-Instruct，FP16 | GPU 2        |
 | 扫描文字         | EasyOCR                    | GPU 3        |
 
-上传文件、解析结果和向量保存在服务器。仓库不包含论文原件、模型权重、数据库或密钥。
+上传文件、解析结果和向量保存在服务器。
 
 | 目录       | 内容                           |
 | ---------- | ------------------------------ |
