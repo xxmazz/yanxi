@@ -123,7 +123,7 @@ export default function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
-  const [readerMode, setReaderMode] = useState<"pdf" | "parsed">("pdf");
+  const [readerMode, setReaderMode] = useState<"pdf" | "parsed">("parsed");
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
@@ -294,7 +294,7 @@ export default function App() {
   }, [modal]);
   const go = (next: View, paperId?: string) => {
     if (next === "reader") {
-      setReaderMode("pdf");
+      setReaderMode("parsed");
       setCurrentId(paperId || readerPapers[0]?.id || "");
     }
     setView(next);
@@ -305,7 +305,7 @@ export default function App() {
   };
   const openPaper = (paper: Paper) => {
     setCurrentId(paper.id);
-    setReaderMode("pdf");
+    setReaderMode("parsed");
     go("reader", paper.id);
   };
   const favorite = (id: string) =>
@@ -989,7 +989,7 @@ export default function App() {
                       value={readerPaper.id}
                       onChange={(e) => {
                         setCurrentId(e.target.value);
-                        setReaderMode("pdf");
+                        setReaderMode("parsed");
                       }}
                     >
                       {readerPapers.map((paper) => (
