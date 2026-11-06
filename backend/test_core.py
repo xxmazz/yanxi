@@ -50,6 +50,46 @@ class EvidenceTests(unittest.TestCase):
         )
         self.assertTrue(validate_answer({"claims": [], "insufficient_evidence": True}, evidence)[2])
 
+    def test_overview_question_recovers_abstract_before_references(self):
+        rows = [
+            {"id": i, "document_id": "paper", "page": 8, "offset": i,
+             "text": "References main research question literature " * 8}
+            for i in range(10)
+        ] + [
+            {"id": 20, "document_id": "paper", "page": 1, "offset": 0,
+             "text": "Title and authors. Abstract We map objective features to customer needs."},
+            {"id": 21, "document_id": "paper", "page": 1, "offset": 940,
+             "text": "We combine observed correlations with language model judgments."},
+        ]
+        result = retrieve(rows, "main research question literature",
+                          anchor_question="所选文献的主要研究问题是什么？")
+        self.assertEqual([r["id"] for r in result[:2]], [20, 21])
+        normal = retrieve(rows, "main research question literature", anchor_question="实验用多少样本？")
+        self.assertEqual(normal[0]["page"], 8)
+
+    def test_overview_abstract_selection_covers_scoped_documents(self):
+        rows = [
+            {"id": f"{doc}{part}", "document_id": doc, "page": 1, "offset": part * 940,
+             "text": "Abstract A study of document-specific findings." if part == 0 else "A method."}
+            for doc in ("a", "b") for part in range(4)
+        ]
+        result = retrieve(rows, "overview", anchor_question="总结所选论文的主要贡献")
+        self.assertEqual([r["id"] for r in result], ["a0", "b0", "a1", "b1", "a2", "b2"])
+
+    def test_limitation_question_recovers_section_and_continuation(self):
+        rows = [
+            {"id": 1, "document_id": "a", "page": 7, "offset": 0,
+             "text": "References limitation evaluation research " * 10},
+            {"id": 2, "document_id": "a", "page": 8, "offset": 0,
+             "text": "A Limitations\nThe method handles only one attribute value."},
+            {"id": 3, "document_id": "a", "page": 8, "offset": 940,
+             "text": "Open-ended customer opinions require further work."},
+        ]
+        result = retrieve(rows, "limitation research", anchor_question="这篇论文的方法有什么局限？")
+        self.assertEqual([r["id"] for r in result[:2]], [2, 3])
+        normal = retrieve(rows, "limitation research", anchor_question="训练用了几天？")
+        self.assertEqual(normal[0]["id"], 1)
+
     def test_explicit_figure_recovers_caption_from_long_document(self):
         rows = [
             {"id": i, "text": "discount factor Figure 19.1 Markov reward discount " * 10}

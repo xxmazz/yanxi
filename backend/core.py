@@ -398,7 +398,60 @@ def retrieve(rows, question, query_vector=None, limit=6, anchor_question=None, c
         architecture += [
             i for i, row in enumerate(rows) if i not in architecture and heading.search(row["text"])
         ]
-    order = list(dict.fromkeys(anchored + hardware[:2] + architecture + ranked))
+    overview = []
+    if re.search(
+        r"研究问题|研究目标|研究目的|主要贡献|核心贡献|创新点|主要方法|核心方法|"
+        r"主要研究|主要内容|概括|总结|概述|解决.{0,8}问题|"
+        r"main research|research (?:question|problem|objective)|main contribution|summari[sz]e|overview",
+        original,
+        re.I,
+    ):
+        # 概括题本身不含论文主题词，语义近邻可能只有书目或相关工作。
+        # 按当前范围逐篇补召回摘要及后续段，不使用题名或论文专属答案。
+        groups = []
+        for doc_id in dict.fromkeys(row.get("document_id") for row in rows):
+            candidates = [
+                i for i, row in enumerate(rows) if row.get("document_id") == doc_id
+            ]
+            candidates.sort(key=lambda i: (rows[i].get("page", 0), rows[i].get("offset", 0)))
+            abstract = next(
+                (position for position, i in enumerate(candidates)
+                 if rows[i].get("page", 0) <= 3
+                 and re.search(r"\babstract\b|摘\s*要", rows[i]["text"], re.I)),
+                None,
+            )
+            start = abstract if abstract is not None else 0
+            groups.append(candidates[start : start + 3])
+        for position in range(3):
+            overview.extend(group[position] for group in groups if position < len(group))
+    sections = []
+    section_queries = [
+        (r"局限|不足|缺点|未来工作|改进方向|\blimitations?\b|future work",
+         r"limitations?|conclusions?|discussion|future work|局限性?|不足|结论|讨论"),
+        (r"主要方法|核心方法|具体方法|方法流程|如何结合|\bmethodology\b|main method",
+         r"methodology|(?:our |proposed )?(?:methods?|approach)|方法|方法论"),
+        (r"实验设置|实验配置|数据集|评估指标|experimental setup|datasets?|evaluation metrics?",
+         r"experimental (?:setup|settings?)|experiments?|datasets?|evaluation|实验|数据集|评估"),
+    ]
+    for intent, titles in section_queries:
+        if not re.search(intent, original, re.I):
+            continue
+        heading = re.compile(
+            rf"^\s*(?:(?:\d+(?:\.\d+)*|[A-Z])\.?\s+)?(?:{titles})\s*$",
+            re.I | re.M,
+        )
+        matches = [i for i, row in enumerate(rows) if heading.search(row["text"])]
+        matches.sort(key=lambda i: (not bool(re.search(r"limitations?|局限", rows[i]["text"], re.I)), -ranks.get(i, 0)))
+        for i in matches:
+            following = [
+                j for j, row in enumerate(rows)
+                if row.get("document_id") == rows[i].get("document_id")
+                and (row.get("page", 0), row.get("offset", 0))
+                >= (rows[i].get("page", 0), rows[i].get("offset", 0))
+            ]
+            following.sort(key=lambda j: (rows[j].get("page", 0), rows[j].get("offset", 0)))
+            sections.extend(following[:2])
+    order = list(dict.fromkeys(anchored + hardware[:2] + architecture + sections + overview + ranked))
     if coverage_ids:
         groups = []
         topic = comparison_topic(original)
