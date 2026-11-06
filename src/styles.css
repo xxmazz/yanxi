@@ -969,6 +969,8 @@ textarea {
 }
 .reader-toolbar {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   gap: 15px;
   border: 1px solid var(--line);
@@ -978,6 +980,8 @@ textarea {
   margin-bottom: 18px;
 }
 .reader-toolbar select {
+  flex: 1 1 220px;
+  min-width: 0;
   max-width: 75%;
   border: 0;
   background: none;

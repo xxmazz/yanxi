@@ -116,26 +116,6 @@ export const seedPapers: Paper[] = [
     source: "https://arxiv.org/abs/2210.03629",
   },
 ];
-export const readSections = [
-  {
-    title: "摘要 Abstract",
-    en: "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder.",
-    zh: "主流的序列转换模型基于复杂的循环神经网络或卷积神经网络，通常包含编码器与解码器。",
-    note: "研究背景：传统序列建模往往依赖循环或卷积结构。",
-  },
-  {
-    title: "1. Introduction",
-    en: "The Transformer proposes an architecture based on attention mechanisms. This reading sample highlights the paper’s motivation and architecture.",
-    zh: "Transformer 提出了基于注意力机制的架构。这份阅读示例聚焦论文的研究动机与整体结构。",
-    note: "后两段为演示释义，不是逐字原文；原始 PDF 将在后端解析接入后提供段落锚点。",
-  },
-  {
-    title: "3. Model Architecture",
-    en: "The model combines encoder and decoder stacks. Multi-head attention allows different representation subspaces to participate in the attention computation.",
-    zh: "模型由编码器与解码器堆叠组成。多头注意力允许多个表征子空间参与注意力计算。",
-    note: "演示释义。阅读器中的证据锚点目前是固定样例。",
-  },
-];
 export const graphNodes = [
   {
     id: "attention",

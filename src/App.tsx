@@ -8,7 +8,6 @@ import {
   Check,
   CheckCheck,
   ChevronDown,
-  ChevronLeft,
   ChevronRight,
   CircleHelp,
   Columns2,
@@ -33,7 +32,7 @@ import {
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { readSections, seedPapers } from "./data";
+import { seedPapers } from "./data";
 import type { Paper, View } from "./data";
 import { parseMultiChartCsv, radarError } from "./csv";
 import { ChartFigure, type ChartType } from "./chart-figure";
@@ -110,7 +109,7 @@ export default function App() {
   const [filter, setFilter] = useState("全部文献");
   const [layout, setLayout] = useState<"grid" | "list">("grid");
   const [selected, setSelected] = useState<string[]>([]);
-  const [currentId, setCurrentId] = useState("attention");
+  const [currentId, setCurrentId] = useState("");
   const [modal, setModal] = useState<"upload" | "compare" | "settings" | null>(
     null,
   );
@@ -124,8 +123,7 @@ export default function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
-  const [bilingual, setBilingual] = useState(true);
-  const [readerSection, setReaderSection] = useState(0);
+  const [readerMode, setReaderMode] = useState<"pdf" | "parsed">("pdf");
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
@@ -144,6 +142,17 @@ export default function App() {
   const [chartType, setChartType] = useState<ChartType>("bar");
 
   const active = papers.find((p) => p.id === currentId) || papers[0];
+  const readerPapers = papers
+    .filter((paper) => paper.backendId || paper.local)
+    .sort((a, b) => {
+      const aDate =
+        serverDocs.find((doc) => doc.id === a.backendId)?.created || a.date;
+      const bDate =
+        serverDocs.find((doc) => doc.id === b.backendId)?.created || b.date;
+      return bDate.localeCompare(aDate);
+    });
+  const readerPaper =
+    readerPapers.find((paper) => paper.id === currentId) || readerPapers[0];
   const title = nav.find((n) => n.id === view)!.label;
   const notify = (message: string) => setToast(message);
   useEffect(() => {
@@ -283,7 +292,11 @@ export default function App() {
       previous?.focus();
     };
   }, [modal]);
-  const go = (next: View) => {
+  const go = (next: View, paperId?: string) => {
+    if (next === "reader") {
+      setReaderMode("pdf");
+      setCurrentId(paperId || readerPapers[0]?.id || "");
+    }
     setView(next);
     setQuery("");
     setMenu(null);
@@ -292,8 +305,8 @@ export default function App() {
   };
   const openPaper = (paper: Paper) => {
     setCurrentId(paper.id);
-    setReaderSection(0);
-    go("reader");
+    setReaderMode("pdf");
+    go("reader", paper.id);
   };
   const favorite = (id: string) =>
     setPapers((items) =>
@@ -967,58 +980,71 @@ export default function App() {
                 <div>
                   <h1>沉浸阅读</h1>
                 </div>
-                {!active?.local && (
-                  <button
-                    className="button secondary"
-                    onClick={() => setBilingual(!bilingual)}
-                  >
-                    <Columns2 size={16} />
-                    {bilingual ? "中英对照" : "原文视图"}
-                  </button>
-                )}
               </div>
-              {active ? (
+              {readerPaper ? (
                 <>
                   <div className="reader-toolbar">
                     <select
                       aria-label="选择阅读文献"
-                      value={active.id}
+                      value={readerPaper.id}
                       onChange={(e) => {
                         setCurrentId(e.target.value);
-                        setReaderSection(0);
+                        setReaderMode("pdf");
                       }}
                     >
-                      {papers.map((p) => (
-                        <option value={p.id} key={p.id}>
-                          {p.title}
+                      {readerPapers.map((paper) => (
+                        <option value={paper.id} key={paper.id}>
+                          {paper.title}
                         </option>
                       ))}
                     </select>
-                    <button
-                      className="button primary small"
-                      onClick={() => {
-                        setChatScope(active.id);
-                        go("chat");
-                      }}
-                    >
-                      <BookOpen size={14} />
-                      问这篇论文
-                    </button>
+                    {readerPaper.backendId && (
+                      <>
+                        <button
+                          className={`button small ${readerMode === "pdf" ? "primary" : "secondary"}`}
+                          aria-pressed={readerMode === "pdf"}
+                          onClick={() => setReaderMode("pdf")}
+                        >
+                          原始 PDF
+                        </button>
+                        <button
+                          className={`button small ${readerMode === "parsed" ? "primary" : "secondary"}`}
+                          aria-pressed={readerMode === "parsed"}
+                          onClick={() => setReaderMode("parsed")}
+                        >
+                          逐页阅读与翻译
+                        </button>
+                        <button
+                          className="button secondary small"
+                          disabled={readerPaper.backendStatus !== "ready"}
+                          onClick={() => {
+                            setChatScope(readerPaper.id);
+                            go("chat");
+                          }}
+                        >
+                          <BookOpen size={14} />
+                          问这篇论文
+                        </button>
+                      </>
+                    )}
                   </div>
-                  {active.backendId ? (
+                  {readerPaper.backendId && readerMode === "parsed" ? (
                     <ServerReader
-                      key={active.backendId}
-                      documentId={active.backendId}
-                      title={active.title}
-                      pages={active.pages}
+                      key={readerPaper.backendId}
+                      documentId={readerPaper.backendId}
+                      title={readerPaper.title}
+                      pages={readerPaper.pages}
                     />
-                  ) : active.local ? (
+                  ) : (
                     <div className="local-preview">
-                      {active.backendId || urls[active.id] ? (
-                        <iframe
-                          title={active.title}
-                          src={
-                            active.backendId ? active.source : urls[active.id]
+                      {readerPaper.backendId || urls[readerPaper.id] ? (
+                        <PdfDocument
+                          key={readerPaper.id}
+                          title={readerPaper.title}
+                          source={
+                            readerPaper.backendId
+                              ? `/api/documents/${readerPaper.backendId}/pdf`
+                              : urls[readerPaper.id]
                           }
                         />
                       ) : (
@@ -1035,93 +1061,19 @@ export default function App() {
                         </div>
                       )}
                     </div>
-                  ) : (
-                    <div className="reader-layout">
-                      <aside className="document-toc">
-                        <span>文档大纲</span>
-                        {readSections.map((section, i) => (
-                          <button
-                            key={section.title}
-                            className={readerSection === i ? "active" : ""}
-                            onClick={() => setReaderSection(i)}
-                          >
-                            {section.title}
-                          </button>
-                        ))}
-                        <div className="info-note">
-                          <ShieldCheck size={17} />
-                          当前显示固定阅读样例，非完整论文解析。
-                        </div>
-                        {active.source && (
-                          <a
-                            href={active.source}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            打开原始文献 <ArrowUpRight size={14} />
-                          </a>
-                        )}
-                      </aside>
-                      <article className="document-paper">
-                        <span className="document-kicker">
-                          READING SAMPLE · 固定样例
-                        </span>
-                        <h2>
-                          {active.id === "attention"
-                            ? active.title
-                            : "Attention Is All You Need"}
-                        </h2>
-                        <p className="document-byline">
-                          Ashish Vaswani · Noam Shazeer · Niki Parmar et al.
-                        </p>
-                        {active.id !== "attention" && (
-                          <div className="notice">
-                            本阶段仅提供 Transformer
-                            阅读样例。当前文献可点击左侧“打开原始文献”查看。
-                          </div>
-                        )}
-                        <div className="document-rule" />
-                        <h3>{readSections[readerSection].title}</h3>
-                        <p className="document-english">
-                          {readSections[readerSection].en}
-                        </p>
-                        {bilingual && (
-                          <div className="translation">
-                            <span>中文对照</span>
-                            <p>{readSections[readerSection].zh}</p>
-                          </div>
-                        )}
-                        <div className="formula">
-                          Attention(Q, K, V) = softmax(QKᵀ / √dₖ)V
-                        </div>
-                        <p className="document-footnote">
-                          {readSections[readerSection].note}
-                        </p>
-                        <div className="reader-pagination">
-                          <button
-                            disabled={readerSection === 0}
-                            onClick={() => setReaderSection((i) => i - 1)}
-                          >
-                            <ChevronLeft size={16} />
-                            上一节
-                          </button>
-                          <span>
-                            {readerSection + 1} / {readSections.length}
-                          </span>
-                          <button
-                            disabled={readerSection === readSections.length - 1}
-                            onClick={() => setReaderSection((i) => i + 1)}
-                          >
-                            下一节
-                            <ChevronRight size={16} />
-                          </button>
-                        </div>
-                      </article>
-                    </div>
                   )}
                 </>
               ) : (
-                <div className="empty-state">请先导入或恢复文献。</div>
+                <div className="empty-state">
+                  <FileText size={32} />
+                  <h3>导入 PDF 后即可阅读</h3>
+                  <button
+                    className="button primary"
+                    onClick={() => setModal("upload")}
+                  >
+                    导入文献
+                  </button>
+                </div>
               )}
             </>
           )}
@@ -1772,6 +1724,49 @@ function ChartWorkspace({
           </div>
         )}
       </section>
+    </div>
+  );
+}
+
+function PdfDocument({ title, source }: { title: string; source: string }) {
+  const [url, setUrl] = useState(source.startsWith("blob:") ? source : "");
+  const [error, setError] = useState("");
+  useEffect(() => {
+    if (source.startsWith("blob:")) return;
+    const controller = new AbortController();
+    let objectUrl = "";
+    let disposed = false;
+    void (async () => {
+      try {
+        const response = await fetch(source, { signal: controller.signal });
+        if (!response.ok) throw new Error("PDF 加载失败，请重试或打开原文件。");
+        const blob = await response.blob();
+        if (disposed) return;
+        objectUrl = URL.createObjectURL(
+          new Blob([blob], { type: "application/pdf" }),
+        );
+        setUrl(objectUrl);
+      } catch (reason) {
+        if (!disposed)
+          setError(reason instanceof Error ? reason.message : "PDF 加载失败");
+      }
+    })();
+    return () => {
+      disposed = true;
+      controller.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [source]);
+  return url ? (
+    <iframe title={title} src={`${url}#page=1`} data-pdf-source={source} />
+  ) : (
+    <div className="empty-state">
+      <p role="status">{error || "正在打开 PDF…"}</p>
+      {error && (
+        <a href={source} target="_blank" rel="noreferrer">
+          打开原始 PDF
+        </a>
+      )}
     </div>
   );
 }

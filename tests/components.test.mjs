@@ -128,6 +128,120 @@ function assertChartInput(expected = csv) {
   assert.ok(document.querySelector(".chart-svg polyline"));
 }
 
+test("immersive reading opens the latest real PDF and keeps explicit paper selection", async () => {
+  const env = setup();
+  const first = {
+    id: "reader-first",
+    title: "A real paper",
+    authors: "Author",
+    pages: 3,
+    status: "ready",
+    is_active: 1,
+    trashed_at: null,
+    version: 1,
+    created: "2026-11-07T00:00:00",
+    filename: "first.pdf",
+    warnings: [],
+    similar_documents: [],
+    abstract: "Real abstract",
+  };
+  const second = {
+    ...first,
+    id: "reader-attention",
+    title: "Attention Is All You Need",
+    created: "2026-11-06T00:00:00",
+  };
+  env.routes.set("GET /api/documents", [first, second]);
+  for (const doc of [first, second]) {
+    env.routes.set(
+      `GET /api/documents/${doc.id}/pdf`,
+      () =>
+        new Response("%PDF-1.4 fixture", {
+          headers: { "Content-Type": "application/pdf" },
+        }),
+    );
+  }
+  env.routes.set(`GET /api/documents/${first.id}/sources`, []);
+  env.routes.set(`GET /api/documents/${first.id}/pages/1`, {
+    page: 1,
+    text: "Real first page text.",
+    method: "native",
+    blocks: [],
+  });
+  env.routes.set(`GET /api/documents/${first.id}/reading-links`, {
+    document_id: first.id,
+    fingerprint: "fixture",
+    entries: [],
+    mentions: [],
+    outline: [],
+    limitations: "",
+  });
+  try {
+    await env.render(components.App);
+    await click(button("沉浸阅读", document.querySelector(".sidebar")));
+    const picker = document.querySelector('[aria-label="选择阅读文献"]');
+    assert.equal(picker.value, first.id);
+    assert.deepEqual(
+      [...picker.options].map((option) => option.value),
+      [first.id, second.id],
+    );
+    assert.equal(
+      document.querySelector(".local-preview iframe").dataset.pdfSource,
+      `/api/documents/${first.id}/pdf`,
+    );
+    assert.doesNotMatch(
+      document.body.textContent,
+      /固定阅读样例|READING SAMPLE|演示释义/,
+    );
+    assert.equal(document.querySelector(".document-paper"), null);
+    await change(picker, second.id);
+    assert.equal(
+      document.querySelector(".local-preview iframe").title,
+      second.title,
+    );
+    await change(picker, first.id);
+    assert.equal(
+      document.querySelector(".local-preview iframe").title,
+      first.title,
+    );
+    await click(button("逐页阅读与翻译"));
+    assert.match(
+      document.querySelector(".parsed-reader").textContent,
+      /Real first page text/,
+    );
+    await click(button("探索发现", document.querySelector(".sidebar")));
+    await click(button("沉浸阅读", document.querySelector(".sidebar")));
+    assert.equal(
+      document.querySelector(".local-preview iframe").dataset.pdfSource,
+      `/api/documents/${first.id}/pdf`,
+    );
+    await click(button("问这篇论文"));
+    assert.equal(
+      document.querySelector('[aria-label="问答文献范围"]').value,
+      first.id,
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("immersive reading with no imported PDF asks for a file instead of showing fixed text", async () => {
+  const env = setup();
+  try {
+    await env.render(components.App);
+    await click(button("沉浸阅读", document.querySelector(".sidebar")));
+    assert.match(document.body.textContent, /导入 PDF 后即可阅读/);
+    assert.equal(document.querySelector("iframe"), null);
+    assert.equal(document.querySelector(".document-paper"), null);
+    assert.doesNotMatch(
+      document.body.textContent,
+      /固定阅读样例|READING SAMPLE/,
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
 test("chart CSV and line selection survive both writing-tab and main-navigation unmounts", async () => {
   const env = setup();
   try {
