@@ -80,14 +80,7 @@ npm run format:check
 .venv/bin/python -m unittest discover -s backend -t . -q
 ```
 
-后端已有 200 项测试通过记录，当前前端 29 项测试通过。四卡模型与浏览器操作的验证范围见 [工程交付说明](docs/FINAL_HANDOFF.md)；最新界面调整完成了六个页面、三种宽度的布局检查，见 [界面验证](docs/INTERFACE_VERIFICATION_20261107.json)。
-
-回答和译文需要结合原文复核，复杂表格识别后应检查原图。图谱排名仅针对所选文献；研究方向核对是有限检索。写作生成的是研究计划，图表初始内容为示例数据。具体覆盖范围见 [功能核对表](docs/REQUIREMENTS_COVERAGE.md)。
-
-[技术文档](output/pdf/yanxi-technical-draft.pdf) · [录制脚本](docs/DEMO_SCRIPT.md) · [部署与使用](docs/FINAL_HANDOFF.md)
-
 ## 团队与贡献
 
-负责人 GitHub 账号：[xxmazz](https://github.com/xxmazz)。团队名称、学校和成员信息按报名资料填写，位置见 [团队信息](docs/TEAM.md)。
-
-开发中使用了 AI 编程工具辅助实现和测试；需求、资料及服务器由参赛者提供，协作情况见 [贡献说明](docs/AI_COLLABORATION.md)。使用的模型和依赖遵循各自许可证。
+负责人 GitHub 账号：[xxmazz](https://github.com/xxmazz)。
+马兴贤 东莞理工学院
