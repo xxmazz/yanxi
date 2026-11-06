@@ -319,29 +319,36 @@ export function WritingWorkspace({
               </button>
               <button onClick={() => setSelected([])}>清空</button>
             </div>
-            {ready.map((doc) => (
-              <label key={doc.id}>
-                <input
-                  type="checkbox"
-                  checked={selected.includes(doc.id)}
-                  onChange={(e) =>
-                    setSelected(
-                      e.target.checked
-                        ? [...selected, doc.id]
-                        : selected.filter((id) => id !== doc.id),
-                    )
-                  }
-                />
-                <span>
-                  {doc.title}
-                  <small>
-                    {doc.pages} 页{doc.ocr_pages ? " · OCR" : ""}
-                    {doc.version ? ` · v${doc.version}` : ""}
-                  </small>
-                </span>
-              </label>
-            ))}
-            {!ready.length && <p>请先导入论文，等待解析与版本确认完成。</p>}
+            <div
+              className="writing-picker-list"
+              role="region"
+              aria-label="可滚动参考文献列表"
+              tabIndex={0}
+            >
+              {ready.map((doc) => (
+                <label key={doc.id}>
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(doc.id)}
+                    onChange={(e) =>
+                      setSelected(
+                        e.target.checked
+                          ? [...selected, doc.id]
+                          : selected.filter((id) => id !== doc.id),
+                      )
+                    }
+                  />
+                  <span>
+                    {doc.title}
+                    <small>
+                      {doc.pages} 页{doc.ocr_pages ? " · OCR" : ""}
+                      {doc.version ? ` · v${doc.version}` : ""}
+                    </small>
+                  </span>
+                </label>
+              ))}
+              {!ready.length && <p>请先导入论文，等待解析与版本确认完成。</p>}
+            </div>
           </fieldset>
           {!!unavailable.length && (
             <p role="alert" className="writing-error">
