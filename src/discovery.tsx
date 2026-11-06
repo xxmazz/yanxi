@@ -201,48 +201,6 @@ export function Discovery({
           <p role="status">正在查询官方论文元数据，网络较慢时可能需要几十秒…</p>
         )}
       </section>
-      <FollowingPanel documents={documents} open={open} changed={changed} />
-      <ResearchTasks changed={changed} open={open} />
-      {!!jobs.length && (
-        <details
-          className="archive-panel"
-          open={jobs.some((job) =>
-            ["queued", "downloading"].includes(job.status),
-          )}
-        >
-          <summary>论文导入记录</summary>
-          {jobs.slice(0, 6).map((job) => {
-            const document = documents.find(
-              (doc) => doc.id === job.document_id,
-            );
-            return (
-              <div className="archive-item" key={job.id}>
-                <span>
-                  arXiv {job.arxiv_id} ·{" "}
-                  {job.status === "error"
-                    ? job.error
-                    : job.status === "downloading"
-                      ? "正在核对来源并下载 PDF"
-                      : job.status === "queued"
-                        ? "等待下载"
-                        : document?.status === "ready"
-                          ? "已入库，可问答"
-                          : document?.status === "review"
-                            ? "相似版本待确认，请到文献库处理"
-                            : document?.status === "error"
-                              ? `解析失败：${document.error}`
-                              : document
-                                ? `已下载，解析 ${document.processed_pages}/${document.pages} 页`
-                                : "下载完成，查看文献库或归档记录"}
-                </span>
-                {document && (
-                  <button onClick={() => open(document.id)}>查看文献</button>
-                )}
-              </div>
-            );
-          })}
-        </details>
-      )}
       {results && (
         <>
           <div className="discovery-result-summary" role="status">
@@ -402,6 +360,48 @@ export function Discovery({
           <h3>从一个主题开始</h3>
           <p>搜索后选择论文导入，后台会自动解析正文并检查相似版本。</p>
         </div>
+      )}
+      <FollowingPanel documents={documents} open={open} changed={changed} />
+      <ResearchTasks changed={changed} open={open} />
+      {!!jobs.length && (
+        <details
+          className="archive-panel"
+          open={jobs.some((job) =>
+            ["queued", "downloading"].includes(job.status),
+          )}
+        >
+          <summary>论文导入记录</summary>
+          {jobs.slice(0, 6).map((job) => {
+            const document = documents.find(
+              (doc) => doc.id === job.document_id,
+            );
+            return (
+              <div className="archive-item" key={job.id}>
+                <span>
+                  arXiv {job.arxiv_id} ·{" "}
+                  {job.status === "error"
+                    ? job.error
+                    : job.status === "downloading"
+                      ? "正在核对来源并下载 PDF"
+                      : job.status === "queued"
+                        ? "等待下载"
+                        : document?.status === "ready"
+                          ? "已入库，可问答"
+                          : document?.status === "review"
+                            ? "相似版本待确认，请到文献库处理"
+                            : document?.status === "error"
+                              ? `解析失败：${document.error}`
+                              : document
+                                ? `已下载，解析 ${document.processed_pages}/${document.pages} 页`
+                                : "下载完成，查看文献库或归档记录"}
+                </span>
+                {document && (
+                  <button onClick={() => open(document.id)}>查看文献</button>
+                )}
+              </div>
+            );
+          })}
+        </details>
       )}
     </>
   );

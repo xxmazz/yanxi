@@ -281,6 +281,60 @@ function task(overrides = {}) {
   };
 }
 
+test("discovery results appear directly below search and before tracking and research tasks", async () => {
+  const env = setup();
+  env.routes.set("GET /api/discovery/search?q=demo&start=0&sort=relevance", {
+    query: "demo",
+    search_query: "demo",
+    total: 1,
+    start: 0,
+    page_size: 8,
+    cached: false,
+    fetched_at: "2026-11-07T00:00:00Z",
+    steps: ["检索官方论文"],
+    sort: "relevance",
+    library_count: 0,
+    library_ranked: false,
+    items: [
+      {
+        arxiv_id: "2401.00001",
+        title: "Visible search result",
+        abstract: "Example abstract",
+        authors: ["Example Author"],
+        published: "2024-01-01",
+        updated: "2024-01-01",
+        categories: ["cs.CL"],
+        url: "https://arxiv.org/abs/2401.00001",
+        code_urls: [],
+      },
+    ],
+  });
+  try {
+    await env.render(components.App);
+    await click(button("探索发现", document.querySelector(".sidebar")));
+    await change(document.querySelector("#discovery-query"), "demo");
+    await submit(document.querySelector(".discovery-search form"));
+    const search = document.querySelector(".discovery-search");
+    const summary = document.querySelector(".discovery-result-summary");
+    const list = document.querySelector(".discovery-list");
+    const following = document.querySelector(".following-panel");
+    assert.equal(search.nextElementSibling, summary);
+    assert.equal(summary.nextElementSibling, list);
+    assert.match(list.textContent, /Visible search result/);
+    assert.ok(
+      list.compareDocumentPosition(following) &
+        window.Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    assert.ok(
+      following.compareDocumentPosition(
+        document.querySelector(".research-task-panel"),
+      ) & window.Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+  } finally {
+    await env.cleanup();
+  }
+});
+
 test("research entry submits the Chinese topic and renders the returned source and physical page", async () => {
   const env = setup();
   try {
@@ -478,6 +532,10 @@ test("writing exports preserve edited provenance, source snapshot and escaped di
       document_ids: ["doc-fixture"],
     });
     assert.match(document.body.textContent, /第 5 页/);
+    assert.equal(
+      document.querySelector(".writing-diagram").nextElementSibling,
+      document.querySelector(".writing-evidence"),
+    );
     await click(button("编辑"));
     const edited = result.markdown + "\n\n人工补充：实验仍待开展。";
     await change(document.querySelector('[aria-label="编辑研究计划"]'), edited);

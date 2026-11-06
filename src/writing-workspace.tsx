@@ -474,50 +474,6 @@ export function WritingWorkspace({
       </div>
       {result && (
         <>
-          <section className="panel writing-evidence">
-            <div className="action-row">
-              <h2>引用与来源核对</h2>
-              <button
-                className="button secondary small"
-                disabled={busy || checking}
-                onClick={() => void check()}
-              >
-                {checking ? "正在核对…" : "重新核对来源"}
-              </button>
-              <button
-                className="button secondary small"
-                onClick={() =>
-                  saveFile(
-                    "研析-写作来源.json",
-                    JSON.stringify(
-                      {
-                        ...result,
-                        edited_markdown: draft,
-                        manually_edited: edited,
-                      },
-                      null,
-                      2,
-                    ),
-                    "application/json",
-                  )
-                }
-              >
-                导出来源记录
-              </button>
-            </div>
-            <details className="usage-details">
-              <summary>生成依据 · {result.references.length} 篇摘要</summary>
-              <p>已检查：{result.checks.join("、")}。内容仍需对照原文复核。</p>
-            </details>
-            {result.references.map((item) => (
-              <SourceCard key={item.label + result.fingerprint} item={item} />
-            ))}
-            {result.skipped.map((item) => (
-              <p key={item.title}>
-                未纳入：{item.title}（{item.reason}）
-              </p>
-            ))}
-          </section>
           <section className="panel writing-diagram">
             <div className="action-row">
               <h2>拟议方法架构图</h2>
@@ -621,6 +577,50 @@ export function WritingWorkspace({
                 />
               </div>
             </div>
+          </section>
+          <section className="panel writing-evidence">
+            <div className="action-row">
+              <h2>引用与来源核对</h2>
+              <button
+                className="button secondary small"
+                disabled={busy || checking}
+                onClick={() => void check()}
+              >
+                {checking ? "正在核对…" : "重新核对来源"}
+              </button>
+              <button
+                className="button secondary small"
+                onClick={() =>
+                  saveFile(
+                    "研析-写作来源.json",
+                    JSON.stringify(
+                      {
+                        ...result,
+                        edited_markdown: draft,
+                        manually_edited: edited,
+                      },
+                      null,
+                      2,
+                    ),
+                    "application/json",
+                  )
+                }
+              >
+                导出来源记录
+              </button>
+            </div>
+            <details className="usage-details">
+              <summary>生成依据 · {result.references.length} 篇摘要</summary>
+              <p>已检查：{result.checks.join("、")}。内容仍需对照原文复核。</p>
+            </details>
+            {result.references.map((item) => (
+              <SourceCard key={item.label + result.fingerprint} item={item} />
+            ))}
+            {result.skipped.map((item) => (
+              <p key={item.title}>
+                未纳入：{item.title}（{item.reason}）
+              </p>
+            ))}
           </section>
         </>
       )}
