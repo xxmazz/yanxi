@@ -434,7 +434,6 @@ export default function App() {
     .filter(
       (p) =>
         (filter !== "星标文献" || p.favorite) &&
-        (filter !== "本地导入" || p.local) &&
         [p.title, p.authors, p.tag]
           .join(" ")
           .toLowerCase()
@@ -748,7 +747,7 @@ export default function App() {
               </div>
               <div className="library-toolbar">
                 <div className="tabs">
-                  {["全部文献", "星标文献", "本地导入"].map((f) => (
+                  {["全部文献", "星标文献"].map((f) => (
                     <button
                       key={f}
                       className={filter === f ? "active" : ""}
