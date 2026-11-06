@@ -391,6 +391,16 @@ def restore(doc_id: str):
     return document_action(lambda: store.trash(doc_id, restore=True))
 
 
+class ArchiveClear(BaseModel):
+    document_ids: list[str] = Field(min_length=1, max_length=1000)
+
+
+@app.post("/api/documents/archive/clear")
+def clear_archive(request: ArchiveClear):
+    with upload_lock:
+        return document_action(lambda: store.clear_archived(request.document_ids))
+
+
 class VersionDecision(BaseModel):
     existing_id: str
     action: Literal["keep_both", "keep_existing", "replace_existing"]

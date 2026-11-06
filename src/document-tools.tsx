@@ -135,6 +135,7 @@ export function ArchivePanel({
   const [docs, setDocs] = useState<ServerDocument[]>([]);
   const [opened, setOpened] = useState(false);
   const [pending, setPending] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
   const load = async () => {
     try {
       const all = await api<ServerDocument[]>(
@@ -151,12 +152,74 @@ export function ArchivePanel({
       onToggle={(e) => {
         setOpened(e.currentTarget.open);
         if (e.currentTarget.open) void load();
+        else setConfirmClear(false);
       }}
     >
       <summary>归档与已替换版本</summary>
       {opened && (
         <>
-          <p>原 PDF 和索引均保留，可恢复到文献库。</p>
+          <div className="archive-toolbar">
+            <p>归档文献可恢复；清空后无法恢复，当前文献库不受影响。</p>
+            <button
+              className="button secondary small"
+              disabled={pending || !docs.length || confirmClear}
+              onClick={() => setConfirmClear(true)}
+            >
+              清空归档
+            </button>
+          </div>
+          {confirmClear && (
+            <div
+              className="archive-clear-confirm"
+              role="alertdialog"
+              aria-label="确认清空归档"
+            >
+              <p>
+                确定永久删除这 {docs.length} 篇归档与已替换文献？原
+                PDF、解析结果和相关缓存将一并删除，此操作无法撤销。
+              </p>
+              <div className="action-row">
+                <button
+                  disabled={pending}
+                  onClick={() => setConfirmClear(false)}
+                >
+                  取消
+                </button>
+                <button
+                  className="archive-clear-delete"
+                  disabled={pending}
+                  onClick={async () => {
+                    if (pending) return;
+                    setPending(true);
+                    try {
+                      const result = await api<{ deleted: number }>(
+                        "/api/documents/archive/clear",
+                        {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            document_ids: docs.map((doc) => doc.id),
+                          }),
+                        },
+                      );
+                      setConfirmClear(false);
+                      await load();
+                      changed();
+                      notify(`已清空 ${result.deleted} 篇归档文献`);
+                    } catch (error) {
+                      notify(
+                        error instanceof Error ? error.message : "清空失败",
+                      );
+                    } finally {
+                      setPending(false);
+                    }
+                  }}
+                >
+                  {pending ? "正在清空…" : "确认永久清空"}
+                </button>
+              </div>
+            </div>
+          )}
           {!docs.length && <p>没有归档记录。</p>}
           {docs.map((doc) => (
             <div className="archive-item" key={doc.id}>
@@ -164,7 +227,7 @@ export function ArchivePanel({
                 {doc.title} · {doc.trashed_at ? "手动归档" : "版本替换"}
               </span>
               <button
-                disabled={pending}
+                disabled={pending || confirmClear}
                 onClick={async () => {
                   setPending(true);
                   try {
@@ -335,18 +398,6 @@ export function ServerReader({
                     : "来自 PDF 文本层"}
                 </p>
                 {page.warning && <p role="status">{page.warning}</p>}
-                <VisualStructure
-                  key={`visual-${documentId}-${number}`}
-                  documentId={documentId}
-                  number={number}
-                  pages={pages || 1}
-                />
-                <PageStructure
-                  key={`${documentId}-${number}`}
-                  documentId={documentId}
-                  number={number}
-                />
-
                 {page.method === "ocr" &&
                   page.blocks.map((block, i) => (
                     <details className="ocr-block" key={i}>
@@ -369,6 +420,25 @@ export function ServerReader({
             )}
           </article>
         </div>
+      )}
+      {page && !error && (
+        <section
+          className="reader-analysis-tools"
+          aria-label="表格与公式识别工具"
+        >
+          <h2>表格与公式识别</h2>
+          <VisualStructure
+            key={`visual-${documentId}-${number}`}
+            documentId={documentId}
+            number={number}
+            pages={pages || 1}
+          />
+          <PageStructure
+            key={`${documentId}-${number}`}
+            documentId={documentId}
+            number={number}
+          />
+        </section>
       )}
     </section>
   );

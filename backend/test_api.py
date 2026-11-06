@@ -98,6 +98,20 @@ class ApiTests(unittest.TestCase):
             self.module.pending.release()  # mock 不会执行 worker 的 finally
         self.assertEqual(self.client.post(base + "/archive").status_code, 409)
 
+    def test_archive_clear_route_preserves_active_documents_and_requires_ids(self):
+        active, archived = [self.module.store.create(f"%PDF-{i}".encode(), f"{i}.pdf")[0] for i in range(2)]
+        for doc in (active, archived):
+            self.module.store.finish(doc["id"], 1, [])
+        self.module.store.trash(archived["id"])
+        url = "/api/documents/archive/clear"
+        self.assertEqual(self.client.post(url, json={"document_ids": []}).status_code, 422)
+        self.assertEqual(self.client.post(url, json={"document_ids": [active["id"], archived["id"]]}).status_code, 409)
+        response = self.client.post(url, json={"document_ids": [archived["id"]]})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"deleted": 1})
+        self.assertEqual(self.client.get("/api/documents/" + archived["id"] + "/pdf").status_code, 404)
+        self.assertEqual(len(self.client.get("/api/documents").json()), 1)
+
     def test_scope_and_citation_endpoint(self):
         doc, _ = self.module.store.create(b"%PDF-test", "test.pdf")
         self.module.store.finish(

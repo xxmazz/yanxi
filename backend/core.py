@@ -5,6 +5,7 @@ import json
 import math
 import re
 import sqlite3
+import tempfile
 from collections import Counter
 from pathlib import Path
 
@@ -240,6 +241,7 @@ class Store:
 
     def trash(self, doc_id, restore=False):
         with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
             row = db.execute("SELECT * FROM documents WHERE id=?", (doc_id,)).fetchone()
             if not row:
                 raise KeyError("文献不存在")
@@ -256,6 +258,71 @@ class Store:
                     "UPDATE documents SET trashed_at=CURRENT_TIMESTAMP WHERE id=?", (doc_id,)
                 )
         return self.document(doc_id)
+
+    def clear_archived(self, document_ids):
+        ids = list(dict.fromkeys(document_ids))
+        if not ids:
+            return {"deleted": 0}
+        if any(not re.fullmatch(r"[a-f0-9]{64}", doc_id) for doc_id in ids):
+            raise ValueError("归档文献编号无效，请刷新后重试")
+        slots = ",".join("?" for _ in ids)
+        moved = []
+        with tempfile.TemporaryDirectory(prefix=".archive-clear-", dir=self.root) as work:
+            try:
+                with self.connect() as db:
+                    db.execute("BEGIN IMMEDIATE")
+                    docs = db.execute(
+                        f"SELECT * FROM documents WHERE id IN ({slots})", ids
+                    ).fetchall()
+                    if len(docs) != len(ids) or any(
+                        not row["trashed_at"] and row["is_active"] for row in docs
+                    ):
+                        raise ValueError("归档状态已变化，请刷新列表后重新确认")
+                    if any(row["status"] in ("queued", "processing") for row in docs):
+                        raise ValueError("归档文献仍在解析，请完成后再清空")
+                    tables = {
+                        row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")
+                    }
+                    if "translation_jobs" in tables and db.execute(
+                        f"SELECT 1 FROM translation_jobs WHERE document_id IN ({slots}) AND status IN ('queued','running') LIMIT 1",
+                        ids,
+                    ).fetchone():
+                        raise ValueError("归档文献仍有翻译任务，请结束任务后再清空")
+                    cache_roots = [self.root / "previews", *self.root.glob("structure-v*"),
+                                   *self.root.glob("visual-structure-v*")]
+                    for doc_id in ids:
+                        paths = [self.root / (doc_id + ".pdf"),
+                                 *(directory / doc_id for directory in cache_roots)]
+                        for path in paths:
+                            if path.exists() or path.is_symlink():
+                                destination = Path(work) / str(len(moved))
+                                path.replace(destination)
+                                moved.append((path, destination))
+                    for table in ("chunks", "pages", "translations", "translation_jobs",
+                                  "reference_resolutions", "document_sources", "discovery_jobs"):
+                        if table in tables:
+                            db.execute(f"DELETE FROM {table} WHERE document_id IN ({slots})", ids)
+                    db.execute(
+                        f"DELETE FROM version_decisions WHERE incoming_id IN ({slots}) OR existing_id IN ({slots})",
+                        ids + ids,
+                    )
+                    db.execute(f"DELETE FROM documents WHERE id IN ({slots})", ids)
+                    db.execute(f"UPDATE documents SET superseded_by=NULL WHERE superseded_by IN ({slots})", ids)
+                    removed = set(ids)
+                    for row in db.execute("SELECT id,status,similar_documents FROM documents").fetchall():
+                        matches = json.loads(row["similar_documents"] or "[]")
+                        remaining = [match for match in matches if match["id"] not in removed]
+                        if len(remaining) != len(matches):
+                            status = "ready" if row["status"] == "review" and not remaining else row["status"]
+                            db.execute(
+                                "UPDATE documents SET similar_documents=?,status=? WHERE id=?",
+                                (json.dumps(remaining, ensure_ascii=False), status, row["id"]),
+                            )
+            except Exception:
+                for path, destination in reversed(moved):
+                    destination.replace(path)
+                raise
+        return {"deleted": len(ids)}
 
     def resolve(self, doc_id, existing_id, action):
         if action not in ("keep_both", "keep_existing", "replace_existing"):

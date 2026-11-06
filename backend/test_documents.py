@@ -159,6 +159,65 @@ class DocumentTests(unittest.TestCase):
                         db.execute("SELECT count(*) FROM version_decisions").fetchone()[0], 1
                     )
 
+    def test_clear_archived_deletes_only_confirmed_files_and_indexes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = Store(Path(directory))
+            active, archived, replaced, later = [store.create(f"%PDF-{i}".encode(), f"{i}.pdf")[0] for i in range(4)]
+            for doc in (active, archived, replaced, later):
+                store.finish(doc["id"], 1, list(chunks_for_page("source evidence", 1)))
+                store.save_page(doc["id"], 1, {"text": "source evidence", "method": "native", "width": 100, "height": 100, "blocks": []})
+            store.trash(archived["id"])
+            store.trash(later["id"])
+            with store.connect() as db:
+                db.execute("UPDATE documents SET is_active=0,superseded_by=? WHERE id=?", (active["id"], replaced["id"]))
+                db.execute("CREATE TABLE translations(document_id TEXT,segments TEXT)")
+                db.execute("INSERT INTO translations VALUES(?,?)", (archived["id"], "cached"))
+                db.execute("INSERT INTO translations VALUES(?,?)", (active["id"], "keep"))
+            caches = []
+            for name in ("previews", "structure-v1", "visual-structure-v1"):
+                cache = store.root / name / archived["id"]
+                cache.mkdir(parents=True)
+                (cache / "page.txt").write_text("cache")
+                caches.append(cache)
+            self.assertEqual(store.clear_archived([archived["id"], replaced["id"], archived["id"]]), {"deleted": 2})
+            for doc in (archived, replaced):
+                self.assertIsNone(store.document(doc["id"]))
+                self.assertIsNone(store.page(doc["id"], 1))
+                self.assertFalse((store.root / (doc["id"] + ".pdf")).exists())
+            self.assertTrue(all(not cache.exists() for cache in caches))
+            self.assertEqual({doc["id"] for doc in store.documents(True)}, {active["id"], later["id"]})
+            self.assertEqual(len(store.rows([active["id"]])), 1)
+            with store.connect() as db:
+                self.assertEqual(db.execute("SELECT segments FROM translations").fetchone()[0], "keep")
+
+    def test_clear_archive_rejects_restored_processing_and_invalid_ids_without_partial_deletion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = Store(Path(directory))
+            first, second = [store.create(f"%PDF-{i}".encode(), f"{i}.pdf")[0] for i in range(2)]
+            for doc in (first, second):
+                store.finish(doc["id"], 1, [])
+                store.trash(doc["id"])
+            store.trash(second["id"], restore=True)
+            for ids in ([first["id"], second["id"]], [first["id"], "../other"]):
+                with self.assertRaises(ValueError): store.clear_archived(ids)
+                self.assertIsNotNone(store.document(first["id"]))
+                self.assertTrue((store.root / (first["id"] + ".pdf")).exists())
+            with store.connect() as db:
+                db.execute("UPDATE documents SET status='processing' WHERE id=?", (first["id"],))
+            with self.assertRaises(ValueError): store.clear_archived([first["id"]])
+
+    def test_clear_archive_restores_files_if_database_cleanup_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store = Store(Path(directory))
+            doc, _ = store.create(b"%PDF-rollback", "rollback.pdf")
+            store.finish(doc["id"], 1, [])
+            store.trash(doc["id"])
+            with store.connect() as db:
+                db.execute("CREATE TRIGGER deny_delete BEFORE DELETE ON documents BEGIN SELECT RAISE(ABORT, 'test failure'); END")
+            with self.assertRaises(sqlite3.IntegrityError): store.clear_archived([doc["id"]])
+            self.assertIsNotNone(store.document(doc["id"]))
+            self.assertTrue((store.root / (doc["id"] + ".pdf")).exists())
+
     def test_multiple_conflicts_require_individual_decisions(self):
         with tempfile.TemporaryDirectory() as directory:
             store = Store(Path(directory))

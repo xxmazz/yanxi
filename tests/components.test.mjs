@@ -18,6 +18,113 @@ const csv =
   "文献,E5向量段数\nTransformer v7,47\nTransformer官方扫描件,43\nBERT,72";
 after(disposeEnvironment);
 
+test("archive stays at the bottom of the library and clearing requires confirmation", async () => {
+  const env = setup();
+  const notifications = [];
+  let changed = 0;
+  let archived = [
+    {
+      id: "a".repeat(64),
+      title: "Archived paper",
+      trashed_at: "2026-11-07",
+      is_active: 1,
+    },
+    {
+      id: "b".repeat(64),
+      title: "Replaced paper",
+      trashed_at: null,
+      is_active: 0,
+    },
+  ];
+  env.routes.set("GET /api/documents?include_archived=true", () => [
+    { id: "active", title: "Active paper", trashed_at: null, is_active: 1 },
+    ...archived,
+  ]);
+  env.routes.set("POST /api/documents/archive/clear", (request) => {
+    assert.deepEqual(request.body.document_ids, [
+      "a".repeat(64),
+      "b".repeat(64),
+    ]);
+    archived = [];
+    return { deleted: 2 };
+  });
+  try {
+    await env.render(components.App);
+    assert.ok(document.querySelector(".archive-panel"));
+    assert.ok(
+      document
+        .querySelector(".archive-panel")
+        .nextElementSibling.matches(".page-footer"),
+    );
+    await env.render(components.ArchivePanel, {
+      changed: () => changed++,
+      notify: (message) => notifications.push(message),
+    });
+    await act(async () => {
+      const panel = document.querySelector(".archive-panel");
+      panel.open = true;
+      panel.dispatchEvent(new Event("toggle"));
+    });
+    assert.equal(document.querySelectorAll(".archive-item").length, 2);
+    await click(button("清空归档"));
+    assert.match(
+      document.querySelector('[role="alertdialog"]').textContent,
+      /2 篇/,
+    );
+    assert.equal(
+      env.calls.some((call) => call.method === "POST"),
+      false,
+    );
+    await click(button("取消"));
+    assert.equal(document.querySelector('[role="alertdialog"]'), null);
+    await click(button("清空归档"));
+    await click(button("确认永久清空"));
+    assert.equal(document.querySelectorAll(".archive-item").length, 0);
+    assert.equal(button("清空归档").disabled, true);
+    assert.equal(changed, 1);
+    assert.deepEqual(notifications, ["已清空 2 篇归档文献"]);
+  } finally {
+    await env.cleanup();
+  }
+});
+
+test("archive clear failure preserves entries and reports the error", async () => {
+  const env = setup();
+  const notifications = [];
+  env.routes.set("GET /api/documents?include_archived=true", [
+    {
+      id: "a".repeat(64),
+      title: "Archived paper",
+      trashed_at: "2026-11-07",
+      is_active: 1,
+    },
+  ]);
+  env.routes.set("POST /api/documents/archive/clear", () =>
+    Response.json(
+      { detail: "归档状态已变化，请刷新列表后重新确认" },
+      { status: 409 },
+    ),
+  );
+  try {
+    await env.render(components.ArchivePanel, {
+      changed: () => assert.fail("failed clear must not refresh the library"),
+      notify: (message) => notifications.push(message),
+    });
+    await act(async () => {
+      const panel = document.querySelector(".archive-panel");
+      panel.open = true;
+      panel.dispatchEvent(new Event("toggle"));
+    });
+    await click(button("清空归档"));
+    await click(button("确认永久清空"));
+    assert.equal(document.querySelectorAll(".archive-item").length, 1);
+    assert.equal(button("确认永久清空").disabled, false);
+    assert.deepEqual(notifications, ["归档状态已变化，请刷新列表后重新确认"]);
+  } finally {
+    await env.cleanup();
+  }
+});
+
 test("graph defaults to at most 100 PDFs, supports replacing a selection, and explains validation errors", async () => {
   const env = setup();
   const documents = Array.from({ length: 104 }, (_, i) => ({
@@ -189,6 +296,24 @@ test("immersive reading defaults to parsed pages for latest and explicitly selec
     );
     assert.equal(button("逐页阅读与翻译").getAttribute("aria-pressed"), "true");
     assert.equal(document.querySelector(".local-preview iframe"), null);
+    const tools = document.querySelector(".reader-analysis-tools");
+    assert.equal(
+      document.querySelector(".parsed-columns").nextElementSibling,
+      tools,
+    );
+    assert.equal(
+      document.querySelector(".visual-structure").parentElement,
+      tools,
+    );
+    assert.equal(
+      document.querySelector(".page-structure").parentElement,
+      tools,
+    );
+    assert.equal(
+      document.querySelector(".parsed-text .visual-structure"),
+      null,
+    );
+    assert.equal(document.querySelector(".parsed-text .page-structure"), null);
     assert.match(
       document.querySelector(".parsed-reader").textContent,
       /Real first page text/,

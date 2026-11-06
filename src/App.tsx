@@ -708,7 +708,6 @@ export default function App() {
                   导入文献
                 </button>
               </div>
-              {health && <ArchivePanel changed={changed} notify={notify} />}
               <div className="stats-row">
                 <div>
                   <span className="stat-icon sage">
@@ -972,6 +971,7 @@ export default function App() {
                   服务未连接，当前文件只能在浏览器预览。
                 </p>
               )}
+              {health && <ArchivePanel changed={changed} notify={notify} />}
             </>
           )}
           {view === "reader" && (

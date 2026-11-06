@@ -16,6 +16,7 @@ const bundle = await build({
     contents: `export { default as App } from "./src/App.tsx";
 export { ResearchTasks } from "./src/research-tasks.tsx";
 export { CitationGraph } from "./src/citation-graph.tsx";
+export { ArchivePanel } from "./src/document-tools.tsx";
 export { FutureCheckPanel } from "./src/future-check.tsx";
 export { PageStructure } from "./src/page-structure.tsx";
 export { ReferenceMatching } from "./src/reference-matching.tsx";
