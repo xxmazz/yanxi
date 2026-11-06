@@ -614,6 +614,12 @@ test("chat follow-ups carry only last successful source IDs and reset on new con
       await click(document.querySelector('[aria-label="发送问题"]'));
       return env.calls.filter((call) => call.url === "/api/chat").at(-1).body;
     };
+    assert.deepEqual(
+      [...document.querySelectorAll(".suggestion-grid button")].map((item) =>
+        item.textContent.replace(/^0\d/, "").trim(),
+      ),
+      ["所选文献的主要研究问题是什么？", "所选文献提出了哪些局限？"],
+    );
     assert.deepEqual((await ask("第一问")).previous_document_ids, []);
     assert.deepEqual((await ask("其中Adam的参数？")).previous_document_ids, [
       doc.id,

@@ -1168,7 +1168,6 @@ export default function App() {
                         <div className="suggestion-grid">
                           {[
                             "所选文献的主要研究问题是什么？",
-                            "所选文献使用了哪些实验设置？",
                             "所选文献提出了哪些局限？",
                           ].map((q, i) => (
                             <button key={q} onClick={() => ask(q)}>
