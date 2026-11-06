@@ -1391,6 +1391,15 @@ textarea {
 }
 .context-panel {
   padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  height: clamp(420px, 72vh, 720px);
+  min-height: 0;
+  align-self: start;
+  overflow: hidden;
+}
+.context-panel > :not(.scope-papers) {
+  flex-shrink: 0;
 }
 .context-panel h3 {
   display: flex;
@@ -1417,6 +1426,25 @@ textarea {
 }
 .scope-papers {
   margin-top: 10px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: scroll;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #a7b59b #f1f4eb;
+}
+.scope-papers::-webkit-scrollbar {
+  width: 8px;
+}
+.scope-papers::-webkit-scrollbar-track {
+  background: #f1f4eb;
+  border-radius: 4px;
+}
+.scope-papers::-webkit-scrollbar-thumb {
+  background: #a7b59b;
+  border-radius: 4px;
 }
 .scope-papers > button {
   display: flex;

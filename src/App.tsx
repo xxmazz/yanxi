@@ -1254,7 +1254,12 @@ export default function App() {
                         </option>
                       ))}
                   </select>
-                  <div className="scope-papers">
+                  <div
+                    className="scope-papers"
+                    role="region"
+                    aria-label="可滚动研究范围文献列表"
+                    tabIndex={0}
+                  >
                     {papers
                       .filter(
                         (p) =>
